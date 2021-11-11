@@ -5,7 +5,8 @@
     "target": "ES2019",
     "esModuleInterop": true,
     "allowJs": true,
-    "removeComments": true
+    "removeComments": true,
+    "strict": true
   },
   "include": ["src"],
   "exclude": ["node_modules"]
