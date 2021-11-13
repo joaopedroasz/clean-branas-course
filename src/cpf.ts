@@ -15,7 +15,7 @@ export class CPF {
     const firstVerifierDigit = this.calculateVerifierDigit(cpf, 11)
     const secundVerifierDigit = this.calculateVerifierDigit(cpf, 12)
 
-    const getVerifierDigitsFromGivenCpf = cpf.substring(cpf.length - 2, cpf.length)
+    const getVerifierDigitsFromGivenCpf = this.getVerifierDigits(cpf)
     const calculatedVerifierDigits = `${firstVerifierDigit}${secundVerifierDigit}`
 
     return getVerifierDigitsFromGivenCpf === calculatedVerifierDigits
@@ -47,5 +47,9 @@ export class CPF {
     const restFromCalculateDigit = calculateDigit % 11
 
     return (restFromCalculateDigit < 2) ? 0 : 11 - restFromCalculateDigit
+  }
+
+  private getVerifierDigits (cpf: string): string {
+    return cpf.substring(cpf.length - 2, cpf.length)
   }
 }
