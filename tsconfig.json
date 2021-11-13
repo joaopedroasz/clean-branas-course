@@ -6,8 +6,15 @@
     "esModuleInterop": true,
     "allowJs": true,
     "removeComments": true,
-    "strict": true
+    "strict": true,
+    "sourceMap": true,
+    "rootDirs": ["src", "tests"],
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["*"],
+      "@/tests/*": ["../tests/*"]
+    }
   },
-  "include": ["src"],
+  "include": ["src", "tests"],
   "exclude": ["node_modules"]
 }
