@@ -1,16 +1,17 @@
 export class CPF {
-  private readonly value: string
+  public readonly value: string
   private readonly MINIMUM_CPF_LENGTH = 11
   private readonly MAXIMUM_CPF_LENGTH = 14
 
   constructor (value: string) {
     this.value = value
+    this.isValid() || new Error('Invalid CPF')
   }
 
-  public validate (): boolean {
-    if (!this.value || !this.isCpfWithCorrectLength(this.value)) return false
+  public isValid (): boolean {
+    if (!this.value || !this.isWithCorrectLength(this.value)) return false
     const cpf = this.removeSpecialCharacters(this.value)
-    if (this.isCpfWithAllNumbersEquals(cpf)) return false
+    if (this.isWithAllNumbersEquals(cpf)) return false
 
     const firstVerifierDigit = this.calculateVerifierDigit(cpf, 11)
     const secundVerifierDigit = this.calculateVerifierDigit(cpf, 12)
@@ -21,7 +22,7 @@ export class CPF {
     return getVerifierDigitsFromGivenCpf === calculatedVerifierDigits
   }
 
-  private isCpfWithCorrectLength (cpf: string): boolean {
+  private isWithCorrectLength (cpf: string): boolean {
     return cpf.length >= this.MINIMUM_CPF_LENGTH || cpf.length <= this.MAXIMUM_CPF_LENGTH
   }
 
@@ -32,7 +33,7 @@ export class CPF {
       .join('')
   }
 
-  private isCpfWithAllNumbersEquals (cpf: string): boolean {
+  private isWithAllNumbersEquals (cpf: string): boolean {
     return cpf.split('').every(cpfCharacter => cpfCharacter === cpf[0])
   }
 
