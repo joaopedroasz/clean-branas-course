@@ -5,39 +5,29 @@ const makeSut = (cpf: string): CPF => {
 }
 
 describe('CPF component', () => {
-  test('should return true when CPF is valid', () => {
-    const isValidCPF = makeSut('289.246.570-20').isValid()
+  test('should be created when CPF is valid', () => {
+    const isValidCPF = makeSut('237.967.084-63')
 
-    expect(isValidCPF).toBeTruthy()
+    expect(isValidCPF).toBeDefined()
   })
 
-  test('should return true when CPF is invalid', () => {
-    const isValidCPF = makeSut('289.246.570-00').isValid()
-
-    expect(isValidCPF).toBeFalsy()
+  test('should throw an Error when CPF is invalid', () => {
+    expect(() => makeSut('289.246.570-00')).toThrowError('Invalid CPF')
   })
 
-  test('should return false when CPF is with all numbers equals', () => {
-    const isValidCPF = makeSut('111.111.111-11').isValid()
-
-    expect(isValidCPF).toBeFalsy()
+  test('should throw an Error when CPF has all equal numbers', () => {
+    expect(() => makeSut('111.111.111-11')).toThrowError('Invalid CPF')
   })
 
-  test('should return false when CPF smaller than allowed', () => {
-    const isValidCPF = makeSut('111.111.1').isValid()
-
-    expect(isValidCPF).toBeFalsy()
+  test('should throw an Error when CPF is smaller than allowed', () => {
+    expect(() => makeSut('111.111.1')).toThrowError('Invalid CPF')
   })
 
-  test('should return false when CPF bigger than allowed', () => {
-    const isValidCPF = makeSut('111.111.111-11111').isValid()
-
-    expect(isValidCPF).toBeFalsy()
+  test('should throw an Error when CPF is bigger than allowed', () => {
+    expect(() => makeSut('343.454.775-89543')).toThrowError('Invalid CPF')
   })
 
-  test('should return false when CPF is empty', () => {
-    const isValidCPF = makeSut('').isValid()
-
-    expect(isValidCPF).toBeFalsy()
+  test('should throw an Error when CPF is empty', () => {
+    expect(() => makeSut('')).toThrowError('Invalid CPF')
   })
 })

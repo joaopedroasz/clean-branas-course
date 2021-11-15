@@ -4,13 +4,13 @@ export class CPF {
   private readonly MAXIMUM_CPF_LENGTH = 14
 
   constructor (value: string) {
+    if (!this.isValid(value)) throw new Error('Invalid CPF')
     this.value = value
-    this.isValid() || new Error('Invalid CPF')
   }
 
-  public isValid (): boolean {
-    if (!this.value || !this.isWithCorrectLength(this.value)) return false
-    const cpf = this.removeSpecialCharacters(this.value)
+  private isValid (rawCpf: string): boolean {
+    if (!rawCpf || !this.isWithCorrectLength(rawCpf)) return false
+    const cpf = this.removeSpecialCharacters(rawCpf)
     if (this.isWithAllNumbersEquals(cpf)) return false
 
     const firstVerifierDigit = this.calculateVerifierDigit(cpf, 11)
