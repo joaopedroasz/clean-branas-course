@@ -10,4 +10,8 @@ describe('Order component', () => {
 
     expect(order).toBeDefined()
   })
+
+  test('should throw a Error when cpf is invalid', () => {
+    expect(() => makeSut('11', '111', '222.222.222-22')).toThrowError('Invalid CPF')
+  })
 })
