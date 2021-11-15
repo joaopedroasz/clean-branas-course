@@ -1,11 +1,11 @@
 export class Item {
+  public id: string
   public description: string
   public price: number
-  public quantity: number
 
-  constructor (description: string, price: number, quantity: number) {
+  constructor (id: string, description: string, price: number) {
+    this.id = id
     this.description = description
     this.price = price
-    this.quantity = quantity
   }
 }
