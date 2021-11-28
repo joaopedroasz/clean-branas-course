@@ -1,5 +1,5 @@
 export class CPF {
-  public readonly value: string
+  public value: string
   private readonly MINIMUM_CPF_LENGTH = 11
   private readonly MAXIMUM_CPF_LENGTH = 14
 
