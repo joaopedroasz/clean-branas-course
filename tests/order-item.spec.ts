@@ -9,7 +9,7 @@ const makeSut = (
   return new OrderItem(id, itemId, quantity, totalPrice)
 }
 
-describe('Order Item component', () => {
+describe('Order Item entity', () => {
   test('should create a order item', () => {
     const orderItem = makeSut('11', '12', 2, 100)
 

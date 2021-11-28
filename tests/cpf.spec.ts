@@ -4,7 +4,7 @@ const makeSut = (cpf: string): CPF => {
   return new CPF(cpf)
 }
 
-describe('CPF component', () => {
+describe('CPF entity', () => {
   test('should be created when CPF is valid', () => {
     const isValidCPF = makeSut('237.967.084-63')
 
