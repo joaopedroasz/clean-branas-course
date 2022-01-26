@@ -1,7 +1,6 @@
 export class CPF {
   public value: string
-  private readonly MINIMUM_CPF_LENGTH = 11
-  private readonly MAXIMUM_CPF_LENGTH = 14
+  private readonly CPF_VALID_LENGTH = 11
 
   constructor (value: string) {
     if (!this.isValid(value)) throw new Error('Invalid CPF')
@@ -9,12 +8,12 @@ export class CPF {
   }
 
   private isValid (rawCpf: string): boolean {
-    if (!rawCpf || !this.isWithCorrectLength(rawCpf)) return false
+    if (!rawCpf) return false
     const cpf = this.removeSpecialCharacters(rawCpf)
-    if (this.isWithAllNumbersEquals(cpf)) return false
+    if (!this.isWithCorrectLength(cpf) || this.isWithAllNumbersEquals(cpf)) return false
 
-    const firstVerifierDigit = this.calculateVerifierDigit(cpf, 11)
-    const secundVerifierDigit = this.calculateVerifierDigit(cpf, 12)
+    const firstVerifierDigit = this.calculateVerifierDigit(cpf, 10)
+    const secundVerifierDigit = this.calculateVerifierDigit(cpf, 11)
 
     const getVerifierDigitsFromGivenCpf = this.getVerifierDigits(cpf)
     const calculatedVerifierDigits = `${firstVerifierDigit}${secundVerifierDigit}`
@@ -23,7 +22,7 @@ export class CPF {
   }
 
   private isWithCorrectLength (cpf: string): boolean {
-    return cpf.length >= this.MINIMUM_CPF_LENGTH || cpf.length <= this.MAXIMUM_CPF_LENGTH
+    return cpf.length === this.CPF_VALID_LENGTH
   }
 
   private removeSpecialCharacters (cpf: string): string {
@@ -37,12 +36,10 @@ export class CPF {
     return cpf.split('').every(cpfCharacter => cpfCharacter === cpf[0])
   }
 
-  private calculateVerifierDigit (cpf: string, cpfRange: number): number {
+  private calculateVerifierDigit (cpf: string, factor: number): number {
     let calculateDigit = 0
-    for (let i = 1; i < cpfRange - 1; i++) {
-      const currentCpfCharacter = Number(cpf.substring(i - 1, i))
-
-      calculateDigit += (cpfRange - i) * currentCpfCharacter
+    for (const digit of cpf) {
+      if (factor > 1) calculateDigit += Number(digit) * factor--
     }
 
     const restFromCalculateDigit = calculateDigit % 11
