@@ -12,7 +12,9 @@ describe('CPF entity', () => {
   })
 
   test('should throw an Error when CPF is invalid', () => {
-    expect(() => makeSut('289.246.570-00')).toThrowError('Invalid CPF')
+    const invalidCPF = '289.246.570-00'
+
+    expect(() => makeSut(invalidCPF)).toThrowError('Invalid CPF')
   })
 
   test('should throw an Error when CPF has all equal numbers', () => {
