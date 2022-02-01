@@ -23,15 +23,15 @@ export class CPF {
     return getVerifierDigitsFromGivenCpf === calculatedVerifierDigits
   }
 
-  private isWithCorrectLength (cpf: string): boolean {
-    return cpf.length === this.CPF_VALID_LENGTH
-  }
-
   private removeSpecialCharacters (cpf: string): string {
     return cpf.split('')
       .filter(
         cpfCharacter => cpfCharacter !== '.' && cpfCharacter !== '-' && cpfCharacter !== ' ')
       .join('')
+  }
+
+  private isWithCorrectLength (cpf: string): boolean {
+    return cpf.length === this.CPF_VALID_LENGTH
   }
 
   private isWithAllNumbersEquals (cpf: string): boolean {
