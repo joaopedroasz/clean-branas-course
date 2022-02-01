@@ -1,6 +1,8 @@
 export class CPF {
   public value: string
   private readonly CPF_VALID_LENGTH = 11
+  private readonly CPF_FIRST_FACTOR_DIGIT = 10
+  private readonly CPF_SECOND_FACTOR_DIGIT = 11
 
   constructor (value: string) {
     if (!this.isValid(value)) throw new Error('Invalid CPF')
@@ -12,8 +14,8 @@ export class CPF {
     const cpf = this.removeSpecialCharacters(rawCpf)
     if (!this.isWithCorrectLength(cpf) || this.isWithAllNumbersEquals(cpf)) return false
 
-    const firstVerifierDigit = this.calculateVerifierDigit(cpf, 10)
-    const secundVerifierDigit = this.calculateVerifierDigit(cpf, 11)
+    const firstVerifierDigit = this.calculateVerifierDigit(cpf, this.CPF_FIRST_FACTOR_DIGIT)
+    const secundVerifierDigit = this.calculateVerifierDigit(cpf, this.CPF_SECOND_FACTOR_DIGIT)
 
     const getVerifierDigitsFromGivenCpf = this.getVerifierDigits(cpf)
     const calculatedVerifierDigits = `${firstVerifierDigit}${secundVerifierDigit}`
