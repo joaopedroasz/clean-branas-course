@@ -1,12 +1,12 @@
 import { Item } from '@/item'
 
-const makeSut = (id: string, category: string, description: string, price: number): Item => {
-  return new Item(id, category, description, price)
+const makeSut = (category: string, description: string, price: number, id?: string): Item => {
+  return new Item(category, description, price, id)
 }
 
 describe('Item entity', () => {
   test('should create a item', () => {
-    const item = makeSut('1', 'Categoria do item 1', 'Descrição do item 1', 2)
+    const item = makeSut('Categoria do item 1', 'Descrição do item 1', 2, '1')
 
     expect(item).toBeDefined()
   })
