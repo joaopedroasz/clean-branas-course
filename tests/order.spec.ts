@@ -30,4 +30,10 @@ describe('Order entity', () => {
 
     expect(order.orderItems).toBeDefined()
   })
+
+  test('should throw a error when add an item without id', () => {
+    const order = new Order('518.858.724-61', '1')
+
+    expect(() => order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100), 1)).toThrowError('invalid empty id')
+  })
 })
