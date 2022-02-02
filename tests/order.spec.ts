@@ -44,4 +44,10 @@ describe('Order entity', () => {
 
     expect(totalPrice).toBe(500)
   })
+
+  test('should return 0 when calculate total price before add items', () => {
+    const totalPrice = order.getTotalPrice()
+
+    expect(totalPrice).toBe(0)
+  })
 })
