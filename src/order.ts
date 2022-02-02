@@ -1,22 +1,22 @@
 import { CPF } from '@/cpf'
 import { Coupon } from './coupon'
+import { OrderItem } from './order-item'
 
 export class Order {
   public id: string
-  public orderItemIds: string[]
+  public orderItems: OrderItem[]
   public cpf: CPF
   public totalPrice: number
   public readonly coupon?: Coupon
 
   constructor (
     id: string,
-    orderItemId: string[],
     cpf: string,
     totalPrice: number,
     coupon?: Coupon
   ) {
     this.id = id
-    this.orderItemIds = orderItemId
+    this.orderItems = []
     this.cpf = new CPF(cpf)
     this.totalPrice = totalPrice
     this.coupon = coupon
