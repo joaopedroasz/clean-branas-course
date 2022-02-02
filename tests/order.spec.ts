@@ -18,8 +18,10 @@ describe('Order entity', () => {
     expect(order).toBeDefined()
   })
 
-  test('should throw a Error when cpf is invalid', () => {
-    expect(() => makeSut('11', ['111'], '222.222.222-22', 100)).toThrowError('Invalid CPF')
+  test('should not create a Order when CPF is invalid', () => {
+    const invalidCPF = '222.222.222-22'
+
+    expect(() => makeSut('11', ['111'], invalidCPF, 100)).toThrowError('Invalid CPF')
   })
 
   test('should create a order with many items', () => {
