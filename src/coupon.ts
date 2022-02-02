@@ -9,7 +9,15 @@ export class Coupon {
     this.percentage = percentage
   }
 
-  public calculatePercentage (): number {
+  public calculateNewValue (value: number): number {
+    return value - this.calculateDiscount(value)
+  }
+
+  private calculateDiscount (value: number): number {
+    return value * this.calculatePercentage()
+  }
+
+  private calculatePercentage (): number {
     return this.percentage / 100
   }
 }
