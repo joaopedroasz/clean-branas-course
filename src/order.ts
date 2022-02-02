@@ -7,7 +7,7 @@ export class Order {
   public id?: string
   public orderItems: OrderItem[]
   public cpf: CPF
-  public readonly coupon?: Coupon
+  public coupon?: Coupon
 
   constructor (
     cpf: string,
@@ -28,6 +28,10 @@ export class Order {
     this.orderItems.push(new OrderItem(item.id, quantity, item.price))
   }
 
+  public addCoupon (coupon: Coupon): void {
+    this.coupon = coupon
+  }
+
   public getTotalPrice (): number {
     if (this.isItemsEmpty()) return 0
 
@@ -36,6 +40,8 @@ export class Order {
       totalPrice += orderItem.getTotalPrice()
     }
 
-    return totalPrice
+    if (!this.coupon) return totalPrice
+
+    return this.coupon.calculateValueWithDiscount(totalPrice)
   }
 }
