@@ -1,10 +1,10 @@
 export class OrderItem {
-  public readonly id: string
   public readonly itemId: string
   public readonly quantity: number
   public readonly price: number
+  public readonly id?: string
 
-  constructor (id: string, itemId: string, quantity: number, price: number) {
+  constructor (itemId: string, quantity: number, price: number, id?: string) {
     this.id = id
     this.itemId = itemId
     this.quantity = quantity
