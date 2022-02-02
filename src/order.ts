@@ -18,11 +18,24 @@ export class Order {
     this.cpf = new CPF(cpf)
   }
 
+  private isItemsEmpty (): boolean {
+    return !this.orderItems || this.orderItems.length === 0
+  }
+
   public addItem (item: Item, quantity: number): void {
-    if (!item.id) {
-      throw new Error('invalid empty id')
-    }
+    if (!item.id) throw new Error('invalid empty id')
 
     this.orderItems.push(new OrderItem(item.id, quantity, item.price))
+  }
+
+  public getTotalPrice (): number {
+    if (this.isItemsEmpty()) return 0
+
+    let totalPrice = 0
+    for (const orderItem of this.orderItems) {
+      totalPrice += (orderItem.price * orderItem.quantity)
+    }
+
+    return totalPrice
   }
 }

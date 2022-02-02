@@ -36,4 +36,12 @@ describe('Order entity', () => {
   test('should throw a error when add an item without id', () => {
     expect(() => order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100), 1)).toThrowError('invalid empty id')
   })
+
+  test('should calculate total price of an Order after add some items', () => {
+    order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100, '1'), 1)
+    order.addItem(new Item('Categoria do item 2', 'Descrição do item 2', 200, '2'), 2)
+    const totalPrice = order.getTotalPrice()
+
+    expect(totalPrice).toBe(500)
+  })
 })
