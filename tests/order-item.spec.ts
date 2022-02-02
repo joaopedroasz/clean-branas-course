@@ -4,9 +4,9 @@ const makeSut = (
   id: string,
   itemId: string,
   quantity: number,
-  totalPrice: number
+  price: number
 ): OrderItem => {
-  return new OrderItem(id, itemId, quantity, totalPrice)
+  return new OrderItem(id, itemId, quantity, price)
 }
 
 describe('Order Item entity', () => {
