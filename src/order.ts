@@ -3,17 +3,17 @@ import { Coupon } from './coupon'
 import { OrderItem } from './order-item'
 
 export class Order {
-  public id: string
+  public id?: string
   public orderItems: OrderItem[]
   public cpf: CPF
   public totalPrice: number
   public readonly coupon?: Coupon
 
   constructor (
-    id: string,
     cpf: string,
     totalPrice: number,
-    coupon?: Coupon
+    coupon?: Coupon,
+    id?: string
   ) {
     this.id = id
     this.orderItems = []
