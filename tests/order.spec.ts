@@ -1,5 +1,6 @@
 import { Order } from '@/order'
 import { Item } from '@/item'
+import { Coupon } from '@/coupon'
 
 const makeSut = (
   cpf: string,
@@ -49,5 +50,15 @@ describe('Order entity', () => {
     const totalPrice = order.getTotalPrice()
 
     expect(totalPrice).toBe(0)
+  })
+
+  test('should calculate total price with Coupon Discount', () => {
+    order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100, '1'), 1)
+    order.addItem(new Item('Categoria do item 2', 'Descrição do item 2', 200, '2'), 2)
+    order.addCoupon(new Coupon('Código do cupom 1', 25, '1'))
+
+    const totalPrice = order.getTotalPrice()
+
+    expect(totalPrice).toBe(375)
   })
 })
