@@ -8,4 +8,8 @@ export class Coupon {
     this.code = code
     this.percentage = percentage
   }
+
+  public calculatePercentage (): number {
+    return this.percentage / 100
+  }
 }
