@@ -1,7 +1,9 @@
 export class Coupon {
-  public percentage: number
+  public readonly id?: string
+  public readonly percentage: number
 
-  constructor (percentage: number) {
+  constructor (percentage: number, id?: string) {
+    this.id = id
     this.percentage = percentage
   }
 }
