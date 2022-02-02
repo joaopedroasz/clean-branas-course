@@ -16,7 +16,7 @@ describe('Coupon entity', () => {
   })
 
   test('should calculate new value from discount', () => {
-    const newValue = coupon.calculateNewValue(100)
+    const newValue = coupon.calculateValueWithDiscount(100)
 
     expect(newValue).toBe(90)
   })
