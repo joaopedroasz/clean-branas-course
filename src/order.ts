@@ -33,7 +33,7 @@ export class Order {
 
     let totalPrice = 0
     for (const orderItem of this.orderItems) {
-      totalPrice += (orderItem.price * orderItem.quantity)
+      totalPrice += orderItem.getTotalPrice()
     }
 
     return totalPrice
