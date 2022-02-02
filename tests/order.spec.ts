@@ -9,9 +9,13 @@ const makeSut = (
 }
 
 describe('Order entity', () => {
-  test('should create a order', () => {
-    const order = makeSut('518.858.724-61','123')
+  let order: Order
 
+  beforeEach(() => {
+    order = makeSut('518.858.724-61', '123')
+  })
+
+  test('should create a order', () => {
     expect(order).toBeDefined()
   })
 
@@ -22,8 +26,6 @@ describe('Order entity', () => {
   })
 
   test('should create a Order with many items', () => {
-    const order = new Order('518.858.724-61', '1')
-
     order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100, '1'), 1)
     order.addItem(new Item('Categoria do item 2', 'Descrição do item 2', 200, '2'), 2)
     order.addItem(new Item('Categoria do item 3', 'Descrição do item 3', 300, '3'), 3)
@@ -32,8 +34,6 @@ describe('Order entity', () => {
   })
 
   test('should throw a error when add an item without id', () => {
-    const order = new Order('518.858.724-61', '1')
-
     expect(() => order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100), 1)).toThrowError('invalid empty id')
   })
 })
