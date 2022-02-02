@@ -1,4 +1,5 @@
 import { Order } from '@/order'
+import { Item } from '@/item'
 
 const makeSut = (
   cpf: string,
@@ -18,5 +19,15 @@ describe('Order entity', () => {
     const invalidCPF = '222.222.222-22'
 
     expect(() => makeSut(invalidCPF, '11')).toThrowError('Invalid CPF')
+  })
+
+  test('should create a Order with many items', () => {
+    const order = new Order('518.858.724-61', '1')
+
+    order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100, '1'), 1)
+    order.addItem(new Item('Categoria do item 2', 'Descrição do item 2', 200, '2'), 2)
+    order.addItem(new Item('Categoria do item 3', 'Descrição do item 3', 300, '3'), 3)
+
+    expect(order.orderItems).toBeDefined()
   })
 })
