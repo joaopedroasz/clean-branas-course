@@ -10,9 +10,19 @@ const makeSut = (
 }
 
 describe('Order Item entity', () => {
-  test('should create a order item', () => {
-    const orderItem = makeSut('12', 2, 100, '11')
+  let orderItem: OrderItem
 
+  beforeEach(() => {
+    orderItem = makeSut('12', 2, 100, '11')
+  })
+
+  test('should create a order item', () => {
     expect(orderItem).toBeDefined()
+  })
+
+  test('should calculate total price', () => {
+    const totalPrice = orderItem.getTotalPrice()
+
+    expect(totalPrice).toBe(200)
   })
 })

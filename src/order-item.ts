@@ -10,4 +10,8 @@ export class OrderItem {
     this.quantity = quantity
     this.price = price
   }
+
+  public getTotalPrice (): number {
+    return this.price * this.quantity
+  }
 }
