@@ -1,6 +1,7 @@
 import { Order } from '@/order'
 import { Item } from '@/item'
 import { Coupon } from '@/coupon'
+import { InvalidEmptyID } from '@/errors/empty-properties/InvalidEmptyID'
 
 const makeSut = (
   cpf: string,
@@ -35,7 +36,9 @@ describe('Order entity', () => {
   })
 
   test('should throw a error when add an item without id', () => {
-    expect(() => order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100), 1)).toThrowError('invalid empty id')
+    const itemWithoutID = new Item('Categoria do item 1', 'Descrição do item 1', 100)
+
+    expect(() => order.addItem(itemWithoutID, 1)).toThrowError(new InvalidEmptyID())
   })
 
   test('should calculate total price of an Order after add some items', () => {

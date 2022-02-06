@@ -2,6 +2,7 @@ import { CPF } from '@/cpf'
 import { Coupon } from '@/coupon'
 import { Item } from '@/item'
 import { OrderItem } from '@/order-item'
+import { InvalidEmptyID } from './errors/empty-properties/InvalidEmptyID'
 
 export class Order {
   public id?: string
@@ -23,7 +24,7 @@ export class Order {
   }
 
   public addItem (item: Item, quantity: number): void {
-    if (!item.id) throw new Error('invalid empty id')
+    if (!item.id) throw new InvalidEmptyID()
 
     this.orderItems.push(new OrderItem(item.id, quantity, item.price))
   }
