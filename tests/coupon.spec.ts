@@ -9,7 +9,11 @@ describe('Coupon entity', () => {
   let coupon: Coupon
 
   beforeEach(() => {
-    coupon = makeSut('Código do cupom 1', 10, new Date(), '1')
+    const currentDateDummy = new Date()
+    const tomorrowDateDummy = new Date(currentDateDummy)
+    tomorrowDateDummy.setDate(currentDateDummy.getDate() + 1)
+
+    coupon = makeSut('Código do cupom 1', 10, new Date(tomorrowDateDummy), '1')
   })
 
   test('should create a coupon', () => {
