@@ -1,3 +1,5 @@
+import { InvalidCPFerror } from '@/errors/InvalidCPF'
+
 export class CPF {
   public value: string
   private readonly CPF_VALID_LENGTH = 11
@@ -5,7 +7,7 @@ export class CPF {
   private readonly FACTOR_SECOND_VERIFIER_DIGIT = 11
 
   constructor (value: string) {
-    if (!this.isValid(value)) throw new Error('Invalid CPF')
+    if (!this.isValid(value)) throw new InvalidCPFerror(value)
     this.value = value
   }
 

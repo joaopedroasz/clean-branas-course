@@ -1,4 +1,5 @@
 import { CPF } from '@/cpf'
+import { InvalidCPFerror } from '@/errors/InvalidCPF'
 
 const makeSut = (cpf: string): CPF => {
   return new CPF(cpf)
@@ -14,22 +15,28 @@ describe('CPF entity', () => {
   test('should throw an Error when CPF is invalid', () => {
     const invalidCPF = '289.246.570-00'
 
-    expect(() => makeSut(invalidCPF)).toThrowError('Invalid CPF')
+    expect(() => makeSut(invalidCPF)).toThrowError(new InvalidCPFerror(invalidCPF))
   })
 
   test('should throw an Error when CPF has all equal numbers', () => {
-    expect(() => makeSut('111.111.111-11')).toThrowError('Invalid CPF')
+    const CPFwithAllEqualNumbers = '111.111.111-11'
+
+    expect(() => makeSut(CPFwithAllEqualNumbers)).toThrowError(new InvalidCPFerror(CPFwithAllEqualNumbers))
   })
 
   test('should throw an Error when CPF is smaller than allowed', () => {
-    expect(() => makeSut('111.111.1')).toThrowError('Invalid CPF')
+    const smallCPF = '111.111.1'
+
+    expect(() => makeSut(smallCPF)).toThrowError(new InvalidCPFerror(smallCPF))
   })
 
   test('should throw an Error when CPF is bigger than allowed', () => {
-    expect(() => makeSut('343.454.775-89543')).toThrowError('Invalid CPF')
+    const bigCPF = '343.454.775-89543'
+
+    expect(() => makeSut(bigCPF)).toThrowError(new InvalidCPFerror(bigCPF))
   })
 
   test('should throw an Error when CPF is empty', () => {
-    expect(() => makeSut('')).toThrowError('Invalid CPF')
+    expect(() => makeSut('')).toThrowError(new InvalidCPFerror(''))
   })
 })
