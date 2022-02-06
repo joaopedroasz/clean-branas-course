@@ -2,11 +2,26 @@ export class Coupon {
   public readonly id?: string
   public readonly code: string
   public readonly percentage: number
+  public readonly expiresIn?: Date
 
-  constructor (code: string, percentage: number, id?: string) {
+  constructor (code: string, percentage: number, expiresIn?: Date, id?: string) {
+    this.validateExpirationDate(expiresIn)
     this.id = id
     this.code = code
     this.percentage = percentage
+    this.expiresIn = expiresIn
+  }
+
+  private validateExpirationDate (date?: Date): void {
+    if (this.isExpired(date)) throw new Error('Cannot create an expired Coupon')
+  }
+
+  private isExpired (date?: Date): boolean {
+    if (!date) return false
+
+    const currentDate = new Date()
+
+    return date.getTime() < currentDate.getTime()
   }
 
   public calculateValueWithDiscount (value: number): number {
