@@ -1,7 +1,7 @@
 import { Order } from '@/order'
 import { Item } from '@/item'
 import { Coupon } from '@/coupon'
-import { InvalidEmptyID } from '@/errors/empty-properties/InvalidEmptyID'
+import { InvalidEmptyID } from '@/errors'
 
 const makeSut = (
   cpf: string,

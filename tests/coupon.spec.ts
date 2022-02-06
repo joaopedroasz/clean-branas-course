@@ -1,5 +1,5 @@
 import { Coupon } from '@/coupon'
-import { ExpiredCouponError } from '@/errors/ExpiredCoupon'
+import { ExpiredCouponError } from '@/errors'
 
 const makeSut = (code: string, percentage: number, expiresIn?: Date, id?: string): Coupon => {
   return new Coupon(code, percentage, expiresIn, id)
@@ -24,6 +24,7 @@ describe('Coupon entity', () => {
 
   test('should throw a Error when expired', () => {
     const expiredDate = new Date('02/05/2022')
+
     expect(() => makeSut('Código do cupom expirado', 10, expiredDate, '1')).toThrowError(new ExpiredCouponError(expiredDate))
   })
 })

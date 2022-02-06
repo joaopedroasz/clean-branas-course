@@ -1,5 +1,5 @@
 import { CPF } from '@/cpf'
-import { InvalidCPFerror } from '@/errors/InvalidCPF'
+import { InvalidCPFerror } from '@/errors'
 
 const makeSut = (cpf: string): CPF => {
   return new CPF(cpf)
