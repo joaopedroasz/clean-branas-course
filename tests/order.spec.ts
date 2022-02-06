@@ -55,7 +55,7 @@ describe('Order entity', () => {
   test('should calculate total price with Coupon Discount', () => {
     order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100, '1'), 1)
     order.addItem(new Item('Categoria do item 2', 'Descrição do item 2', 200, '2'), 2)
-    order.addCoupon(new Coupon('Código do cupom 1', 25, '1'))
+    order.addCoupon(new Coupon('Código do cupom 1', 25))
 
     const totalPrice = order.getTotalPrice()
 
