@@ -1,3 +1,5 @@
+import { ExpiredCouponError } from '@/errors/ExpiredCoupon'
+
 export class Coupon {
   public readonly id?: string
   public readonly code: string
@@ -13,7 +15,7 @@ export class Coupon {
   }
 
   private validateExpirationDate (date?: Date): void {
-    if (this.isExpired(date)) throw new Error('Cannot create an expired Coupon')
+    if (this.isExpired(date)) throw new ExpiredCouponError(date)
   }
 
   private isExpired (date?: Date): boolean {
