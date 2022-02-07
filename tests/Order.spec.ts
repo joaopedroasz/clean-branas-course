@@ -1,6 +1,6 @@
-import { Order } from '@/order'
-import { Item } from '@/item'
-import { Coupon } from '@/coupon'
+import { Order } from '@/Order'
+import { Item } from '@/Item'
+import { Coupon } from '@/Coupon'
 import { InvalidEmptyID } from '@/errors'
 
 const makeSut = (

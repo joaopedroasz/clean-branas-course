@@ -1,7 +1,7 @@
-import { CPF } from '@/cpf'
-import { Coupon } from '@/coupon'
-import { Item } from '@/item'
-import { OrderItem } from '@/order-item'
+import { CPF } from '@/CPF'
+import { Coupon } from '@/Coupon'
+import { Item } from '@/Item'
+import { OrderItem } from '@/OrderItem'
 import { InvalidEmptyID } from './errors'
 
 export class Order {

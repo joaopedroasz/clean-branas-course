@@ -1,4 +1,4 @@
-import { OrderItem } from '@/order-item'
+import { OrderItem } from '@/OrderItem'
 
 const makeSut = (
   itemId: string,

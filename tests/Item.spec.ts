@@ -1,4 +1,4 @@
-import { Item } from '@/item'
+import { Item } from '@/Item'
 
 const makeSut = (category: string, description: string, price: number, id?: string): Item => {
   return new Item(category, description, price, id)
