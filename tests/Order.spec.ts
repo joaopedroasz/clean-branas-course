@@ -1,7 +1,7 @@
 import { Order } from '@/Order'
 import { Item } from '@/Item'
 import { Coupon } from '@/Coupon'
-import { InvalidEmptyID } from '@/errors'
+import { ExpiredCouponError, InvalidEmptyID } from '@/errors'
 
 const makeSut = (
   cpf: string,
@@ -63,5 +63,11 @@ describe('Order entity', () => {
     const totalPrice = order.getTotalPrice()
 
     expect(totalPrice).toBe(375)
+  })
+
+  test('should not add a expired Coupon', () => {
+    const expiredDate = new Date('02/06/2022')
+
+    expect(() => order.addCoupon(new Coupon('Código do cupom 1', 25, expiredDate))).toThrowError(new ExpiredCouponError(expiredDate))
   })
 })
