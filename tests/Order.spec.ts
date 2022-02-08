@@ -28,22 +28,22 @@ describe('Order entity', () => {
   })
 
   test('should create a Order with many items', () => {
-    order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100, '1'), 1)
-    order.addItem(new Item('Categoria do item 2', 'Descrição do item 2', 200, '2'), 2)
-    order.addItem(new Item('Categoria do item 3', 'Descrição do item 3', 300, '3'), 3)
+    order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100, 10, 10, 10, 10, '1'), 1)
+    order.addItem(new Item('Categoria do item 2', 'Descrição do item 2', 200, 20, 20, 20, 20, '2'), 2)
+    order.addItem(new Item('Categoria do item 3', 'Descrição do item 3', 300, 30, 30, 30, 30, '3'), 3)
 
     expect(order.orderItems).toBeDefined()
   })
 
   test('should throw a error when add an item without id', () => {
-    const itemWithoutID = new Item('Categoria do item 1', 'Descrição do item 1', 100)
+    const itemWithoutID = new Item('Categoria do item 1', 'Descrição do item 1', 100, 10, 10, 10, 10)
 
     expect(() => order.addItem(itemWithoutID, 1)).toThrowError(new InvalidEmptyID())
   })
 
   test('should calculate total price of an Order after add some items', () => {
-    order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100, '1'), 1)
-    order.addItem(new Item('Categoria do item 2', 'Descrição do item 2', 200, '2'), 2)
+    order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100, 10, 10, 10, 10, '1'), 1)
+    order.addItem(new Item('Categoria do item 2', 'Descrição do item 2', 200, 20, 20, 20, 20, '2'), 2)
     const totalPrice = order.getTotalPrice()
 
     expect(totalPrice).toBe(500)
@@ -56,8 +56,8 @@ describe('Order entity', () => {
   })
 
   test('should calculate total price with Coupon Discount', () => {
-    order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100, '1'), 1)
-    order.addItem(new Item('Categoria do item 2', 'Descrição do item 2', 200, '2'), 2)
+    order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100, 10, 10, 10, 10, '1'), 1)
+    order.addItem(new Item('Categoria do item 2', 'Descrição do item 2', 200, 20, 20, 20, 20, '2'), 2)
     order.addCoupon(new Coupon('Código do cupom 1', 25))
 
     const totalPrice = order.getTotalPrice()
