@@ -33,6 +33,6 @@ describe('Item entity', () => {
   test('should calculate density', () => {
     const volume = item.calculateDensity()
 
-    expect(volume).toBe(0.001)
+    expect(volume).toBe(1_000)
   })
 })

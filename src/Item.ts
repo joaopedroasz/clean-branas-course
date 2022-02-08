@@ -35,6 +35,6 @@ export class Item {
   }
 
   public calculateDensity (): number {
-    return this.calculateVolume() / this.weight
+    return this.weight / this.calculateVolume()
   }
 }
