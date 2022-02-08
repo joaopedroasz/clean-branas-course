@@ -7,8 +7,12 @@ export class CPF {
   private readonly FACTOR_SECOND_VERIFIER_DIGIT = 11
 
   constructor (value: string) {
-    if (!this.isValid(value)) throw new InvalidCPFerror(value)
+    this.validateCPF(value)
     this.value = value
+  }
+
+  private validateCPF (value: string): void {
+    if (!this.isValid(value)) throw new InvalidCPFerror(value)
   }
 
   private isValid (rawCpf: string): boolean {
