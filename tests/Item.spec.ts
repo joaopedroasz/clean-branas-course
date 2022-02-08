@@ -29,4 +29,10 @@ describe('Item entity', () => {
 
     expect(volume).toBe(0.005)
   })
+
+  test('should calculate density', () => {
+    const volume = item.calculateDensity()
+
+    expect(volume).toBe(0.001)
+  })
 })
