@@ -8,6 +8,8 @@ export class Item {
   public readonly depth: number
   public readonly weight: number
 
+  private readonly CONVERT_TO_CUBIC_METERS_FACTOR = 1_000_000
+
   constructor (
     category: string,
     description: string,
@@ -29,6 +31,6 @@ export class Item {
   }
 
   public calculateVolume (): number {
-    return (this.height * this.width * this.depth) / 1_000_000
+    return (this.height * this.width * this.depth) / this.CONVERT_TO_CUBIC_METERS_FACTOR
   }
 }
