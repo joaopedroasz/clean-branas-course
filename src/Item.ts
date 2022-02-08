@@ -33,4 +33,8 @@ export class Item {
   public calculateVolume (): number {
     return (this.height * this.width * this.depth) / this.CONVERT_TO_CUBIC_METERS_FACTOR
   }
+
+  public calculateDensity (): number {
+    return this.calculateVolume() / this.weight
+  }
 }
