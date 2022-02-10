@@ -21,4 +21,11 @@ describe('Freight entity', () => {
 
     expect(freightPrice).toBe(400)
   })
+
+  test('should calculate a minimum value for freight', () => {
+    const freight = makeSut(new Item('Categoria do Item 2', 'Descrição do Item 2', 30, 10, 10, 10, 0.9))
+    const freightPrice = freight.calculate()
+
+    expect(freightPrice).toBe(10)
+  })
 })
