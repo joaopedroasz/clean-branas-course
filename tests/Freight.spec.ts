@@ -28,4 +28,15 @@ describe('Freight entity', () => {
 
     expect(freightPrice).toBe(10)
   })
+
+  test('should calculate freight from many items', () => {
+    const items = [
+      new Item('Categoria do Item 1', 'Descrição do Item 1', 100, 200, 100, 50, 40),
+      new Item('Categoria do Item 2', 'Descrição do Item 2', 30, 10, 10, 10, 0.9)
+    ]
+    const freight = makeSut(items)
+    const freightPrice = freight.calculate()
+
+    expect(freightPrice).toBe(409)
+  })
 })
