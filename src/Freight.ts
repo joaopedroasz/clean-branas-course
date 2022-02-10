@@ -10,7 +10,8 @@ export class Freight {
   }
 
   public calculate (): number {
-    return this.DISTANCE * this.item.calculateVolume() * this.convertDensity()
+    const calculatedFreight = this.DISTANCE * this.item.calculateVolume() * this.convertDensity()
+    return calculatedFreight < 10 ? 10 : calculatedFreight
   }
 
   private convertDensity (): number {
