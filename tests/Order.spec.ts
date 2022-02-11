@@ -70,4 +70,13 @@ describe('Order entity', () => {
 
     expect(() => order.addCoupon(new Coupon('Código do cupom 1', 25, expiredDate))).toThrowError(new ExpiredCouponError(expiredDate))
   })
+
+  test('should calculate freight', () => {
+    order.addItem(new Item('Categoria do Item 1', 'Descrição do Item 1', 100, 200, 100, 50, 40, '1'), 1)
+    order.addItem(new Item('Categoria do Item 2', 'Descrição do Item 2', 30, 10, 10, 10, 0.9, '2'), 2)
+
+    const freight = order.getFreight()
+
+    expect(freight).toBe(410)
+  })
 })
