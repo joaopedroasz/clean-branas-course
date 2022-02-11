@@ -1,20 +1,16 @@
 import { Item } from './Item'
 
 export class Freight {
-  private readonly items: Item[]
+  private readonly item: Item
 
   private readonly DISTANCE = 1000
 
-  constructor (items: Item[]) {
-    this.items = items
+  constructor (item: Item) {
+    this.item = item
   }
 
   public calculate (): number {
-    let calculatedFreight = 0
-
-    for (const item of this.items) {
-      calculatedFreight += this.DISTANCE * item.calculateVolume() * this.convertDensity(item)
-    }
+    const calculatedFreight = this.DISTANCE * this.item.calculateVolume() * this.convertDensity(this.item)
 
     return calculatedFreight < 10 ? 10 : calculatedFreight
   }
