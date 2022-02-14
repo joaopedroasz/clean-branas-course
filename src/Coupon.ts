@@ -6,22 +6,26 @@ export class Coupon {
   public readonly percentage: number
   public readonly expiresIn?: Date
 
-  constructor (code: string, percentage: number, expiresIn?: Date, id?: string) {
-    this.validateExpirationDate(expiresIn)
+  constructor (
+    code: string,
+    percentage: number,
+    currentDate = new Date(),
+    expiresIn?: Date,
+    id?: string
+  ) {
+    this.validateExpirationDate(currentDate, expiresIn)
     this.id = id
     this.code = code
     this.percentage = percentage
     this.expiresIn = expiresIn
   }
 
-  private validateExpirationDate (date?: Date): void {
-    if (this.isExpired(date)) throw new ExpiredCouponError(date)
+  private validateExpirationDate (currentDate: Date, date?: Date): void {
+    if (this.isExpired(currentDate, date)) throw new ExpiredCouponError(date)
   }
 
-  private isExpired (date?: Date): boolean {
+  private isExpired (currentDate: Date, date?: Date): boolean {
     if (!date) return false
-
-    const currentDate = new Date()
 
     return date.getTime() < currentDate.getTime()
   }

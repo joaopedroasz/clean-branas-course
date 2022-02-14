@@ -1,19 +1,18 @@
 import { Coupon } from '@/Coupon'
 import { ExpiredCouponError } from '@/errors'
 
-const makeSut = (code: string, percentage: number, expiresIn?: Date, id?: string): Coupon => {
-  return new Coupon(code, percentage, expiresIn, id)
+const makeSut = (code: string, percentage: number, currentDate = new Date(), expiresIn?: Date, id?: string): Coupon => {
+  return new Coupon(code, percentage, currentDate, expiresIn, id)
 }
 
 describe('Coupon entity', () => {
   let coupon: Coupon
+  const currentDate = new Date('02/13/2022')
+  const expiredDate = new Date('02/05/2022')
+  const validDate = new Date('02/14/2022')
 
   beforeEach(() => {
-    const currentDateDummy = new Date()
-    const tomorrowDateDummy = new Date(currentDateDummy)
-    tomorrowDateDummy.setDate(currentDateDummy.getDate() + 1)
-
-    coupon = makeSut('Código do cupom 1', 10, new Date(tomorrowDateDummy), '1')
+    coupon = makeSut('Código do cupom 1', 10, currentDate, validDate, '1')
   })
 
   test('should create a coupon', () => {
@@ -27,8 +26,6 @@ describe('Coupon entity', () => {
   })
 
   test('should throw a Error when expired', () => {
-    const expiredDate = new Date('02/05/2022')
-
-    expect(() => makeSut('Código do cupom expirado', 10, expiredDate, '1')).toThrowError(new ExpiredCouponError(expiredDate))
+    expect(() => makeSut('Código do cupom expirado', 10, currentDate, expiredDate, '1')).toThrowError(new ExpiredCouponError(expiredDate))
   })
 })

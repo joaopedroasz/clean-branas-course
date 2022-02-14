@@ -66,9 +66,10 @@ describe('Order entity', () => {
   })
 
   test('should not add a expired Coupon', () => {
+    const currentDate = new Date('02/13/2022')
     const expiredDate = new Date('02/06/2022')
 
-    expect(() => order.addCoupon(new Coupon('Código do cupom 1', 25, expiredDate))).toThrowError(new ExpiredCouponError(expiredDate))
+    expect(() => order.addCoupon(new Coupon('Código do cupom 1', 25, currentDate, expiredDate))).toThrowError(new ExpiredCouponError(expiredDate))
   })
 
   test('should calculate freight', () => {
