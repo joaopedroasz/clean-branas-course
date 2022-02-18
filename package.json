@@ -25,6 +25,7 @@
     "test": "jest",
     "test:staged": "jest --passWithNoTests",
     "prepare": "husky install",
-    "build": "tsc --p tsconfig.build.json"
+    "build": "tsc --p tsconfig.build.json",
+    "update-dependencies": "yarn upgrade-interactive --latest"
   }
 }
