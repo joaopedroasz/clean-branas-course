@@ -1,5 +1,5 @@
-import { Coupon } from '@/Coupon'
-import { ExpiredCouponError } from '@/domain/errors'
+import { Coupon } from '@/domain/entities'
+import { ExpiredCouponError } from '@/domain/entities/errors'
 
 const makeSut = (code: string, percentage: number, currentDate = new Date(), expiresIn?: Date, id?: string): Coupon => {
   return new Coupon(code, percentage, currentDate, expiresIn, id)

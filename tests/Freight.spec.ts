@@ -1,5 +1,4 @@
-import { Freight } from '@/Freight'
-import { Item } from '@/Item'
+import { Freight, Item } from '@/domain/entities'
 
 const makeSut = (item: Item): Freight => {
   return new Freight(item)

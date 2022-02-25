@@ -1,4 +1,4 @@
-import { OrderItem } from '@/OrderItem'
+import { OrderItem } from '@/domain/entities'
 
 const makeSut = (
   itemId: string,
