@@ -2,7 +2,7 @@ import { CPF } from '@/CPF'
 import { Coupon } from '@/Coupon'
 import { Item } from '@/Item'
 import { OrderItem } from '@/OrderItem'
-import { InvalidEmptyID } from './errors'
+import { InvalidEmptyID } from './domain/errors'
 import { Freight } from './Freight'
 
 export class Order {

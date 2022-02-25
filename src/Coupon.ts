@@ -1,4 +1,4 @@
-import { ExpiredCouponError } from '@/errors'
+import { ExpiredCouponError } from '@/domain/errors'
 
 export class Coupon {
   public readonly id?: string

@@ -1,7 +1,7 @@
 import { Order } from '@/Order'
 import { Item } from '@/Item'
 import { Coupon } from '@/Coupon'
-import { ExpiredCouponError, InvalidEmptyID } from '@/errors'
+import { ExpiredCouponError, InvalidEmptyID } from '@/domain/errors'
 
 const makeSut = (
   cpf: string,

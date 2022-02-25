@@ -1,4 +1,4 @@
-import { InvalidCPFerror } from '@/errors'
+import { InvalidCPFerror } from '@/domain/errors'
 
 export class CPF {
   public value: string
