@@ -1,8 +1,16 @@
-import { Coupon } from '@/domain/entities'
+import { Coupon, CouponProps } from '@/domain/entities'
 import { ExpiredCouponError } from '@/domain/entities/errors'
 
-const makeSut = (code: string, percentage: number, currentDate = new Date(), expiresIn?: Date, id?: string): Coupon => {
-  return new Coupon(code, percentage, currentDate, expiresIn, id)
+const makeSut = (
+  {
+    id,
+    code,
+    percentage,
+    currentDate = new Date(),
+    expiresIn
+  }: CouponProps
+): Coupon => {
+  return new Coupon({ id, code, percentage, currentDate, expiresIn })
 }
 
 describe('Coupon entity', () => {
@@ -12,7 +20,13 @@ describe('Coupon entity', () => {
   const validDate = new Date('02/14/2022')
 
   beforeEach(() => {
-    coupon = makeSut('Código do cupom 1', 10, currentDate, validDate, '1')
+    coupon = makeSut({
+      id: '1',
+      code: 'Código do cupom 1',
+      percentage: 10,
+      currentDate,
+      expiresIn: validDate
+    })
   })
 
   test('should create a coupon', () => {
@@ -26,6 +40,14 @@ describe('Coupon entity', () => {
   })
 
   test('should throw a Error when expired', () => {
-    expect(() => makeSut('Código do cupom expirado', 10, currentDate, expiredDate, '1')).toThrowError(new ExpiredCouponError(expiredDate))
+    const createExpiredCoupon = (): Coupon => makeSut({
+      id: '1',
+      code: 'Código do cupom expirado',
+      percentage: 10,
+      currentDate,
+      expiresIn: expiredDate
+    })
+
+    expect(createExpiredCoupon).toThrowError(new ExpiredCouponError(expiredDate))
   })
 })

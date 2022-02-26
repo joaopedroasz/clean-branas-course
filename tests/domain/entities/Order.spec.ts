@@ -56,7 +56,10 @@ describe('Order entity', () => {
   test('should calculate total price with Coupon Discount', () => {
     order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100, 10, 10, 10, 10, '1'), 1)
     order.addItem(new Item('Categoria do item 2', 'Descrição do item 2', 200, 20, 20, 20, 20, '2'), 2)
-    order.addCoupon(new Coupon('Código do cupom 1', 25))
+    order.addCoupon(new Coupon({
+      code: 'Código do cupom 1',
+      percentage: 25
+    }))
 
     const totalPrice = order.getTotalPrice()
 
@@ -67,7 +70,16 @@ describe('Order entity', () => {
     const currentDate = new Date('02/13/2022')
     const expiredDate = new Date('02/06/2022')
 
-    expect(() => order.addCoupon(new Coupon('Código do cupom 1', 25, currentDate, expiredDate))).toThrowError(new ExpiredCouponError(expiredDate))
+    const addExpiredCoupon = (): void => order.addCoupon(
+      new Coupon({
+        code: 'Código do cupom 1',
+        percentage: 25,
+        currentDate,
+        expiresIn: expiredDate
+      })
+    )
+
+    expect(addExpiredCoupon).toThrowError(new ExpiredCouponError(expiredDate))
   })
 
   test('should calculate freight', () => {

@@ -1,5 +1,13 @@
 import { ExpiredCouponError } from './errors'
 
+export type CouponProps = {
+  id?: string
+  code: string
+  percentage: number
+  currentDate?: Date
+  expiresIn?: Date
+}
+
 export class Coupon {
   public readonly id?: string
   public readonly code: string
@@ -7,11 +15,13 @@ export class Coupon {
   public readonly expiresIn?: Date
 
   constructor (
-    code: string,
-    percentage: number,
-    currentDate = new Date(),
-    expiresIn?: Date,
-    id?: string
+    {
+      id,
+      code,
+      percentage,
+      currentDate = new Date(),
+      expiresIn
+    }: CouponProps
   ) {
     this.validateExpirationDate(currentDate, expiresIn)
     this.id = id
