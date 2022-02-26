@@ -1,19 +1,22 @@
 import { PlaceOrder } from '@/application/use-cases'
 import { PlaceOrderInput } from '@/application/DTO/PlaceOrder'
-import { ItemRepository } from '@/domain/repositories'
-import { ItemRepositoryStub } from '@/tests/stub/repositories'
+import { ItemRepository, OrderRepository } from '@/domain/repositories'
+import { ItemRepositoryStub, OrderRepositoryStub } from '@/tests/stub/repositories'
 
 type makeSutTypes = {
   placeOrder: PlaceOrder
   itemRepository: ItemRepository
+  orderRepository: OrderRepository
 }
 
 const makeSut = (): makeSutTypes => {
   const itemRepository = new ItemRepositoryStub()
-  const placeOrder = new PlaceOrder(itemRepository)
+  const orderRepository = new OrderRepositoryStub()
+  const placeOrder = new PlaceOrder(itemRepository, orderRepository)
   return {
     placeOrder,
-    itemRepository
+    itemRepository,
+    orderRepository
   }
 }
 
@@ -54,6 +57,13 @@ describe('Place Order use case', () => {
     const { placeOrder } = makeSut()
     const { total } = await placeOrder.execute(placeOrderInput)
 
-    expect(total).toBe(300)
+    expect(total).toBe(600)
+  })
+
+  test('should return created order ID', async () => {
+    const { placeOrder } = makeSut()
+    const { createdOrderId } = await placeOrder.execute(placeOrderInput)
+
+    expect(createdOrderId).toBe('1')
   })
 })
