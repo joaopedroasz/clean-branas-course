@@ -4,6 +4,9 @@
   "main": "index.js",
   "author": "João Pedro <joao.pedroasz00@gmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": "16.x"
+  },
   "devDependencies": {
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.21",
