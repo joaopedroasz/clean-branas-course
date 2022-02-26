@@ -1,5 +1,5 @@
 type OrderItemInput = {
-  idItem: number
+  idItem: string
   quantity: number
 }
 
