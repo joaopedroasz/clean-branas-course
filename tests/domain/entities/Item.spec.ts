@@ -1,4 +1,4 @@
-import { Item } from '@/Item'
+import { Item } from '@/domain/entities'
 
 const makeSut = (
   category: string,

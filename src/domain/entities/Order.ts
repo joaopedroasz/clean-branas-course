@@ -1,9 +1,5 @@
-import { CPF } from '@/CPF'
-import { Coupon } from '@/Coupon'
-import { Item } from '@/Item'
-import { OrderItem } from '@/OrderItem'
 import { InvalidEmptyID } from './errors'
-import { Freight } from './Freight'
+import { Freight, OrderItem, Item, Coupon, CPF } from '@/domain/entities'
 
 export class Order {
   public id?: string
