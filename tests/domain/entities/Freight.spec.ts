@@ -6,9 +6,19 @@ const makeSut = (item: Item): Freight => {
 
 describe('Freight entity', () => {
   let freight: Freight
+  const itemFake = new Item({
+    id: '1',
+    category: 'Categoria do item 1',
+    description: 'Descrição do item 1',
+    price: 100,
+    heightInCM: 200,
+    widthInCM: 100,
+    depthInCM: 50,
+    weightInCM: 50
+  })
 
   beforeEach(() => {
-    freight = makeSut(new Item('Categoria do Item 1', 'Descrição do Item 1', 100, 200, 100, 50, 40))
+    freight = makeSut(itemFake)
   })
 
   test('should be create a freight', () => {
@@ -18,11 +28,18 @@ describe('Freight entity', () => {
   test('should calculate freight', () => {
     const freightPrice = freight.calculate()
 
-    expect(freightPrice).toBe(400)
+    expect(freightPrice).toBe(500)
   })
 
   test('should calculate a minimum value for freight', () => {
-    const freight = makeSut(new Item('Categoria do Item 2', 'Descrição do Item 2', 30, 10, 10, 10, 0.9))
+    const item = new Item({
+      ...itemFake,
+      heightInCM: 10,
+      widthInCM: 10,
+      depthInCM: 10,
+      weightInCM: 0.9
+    })
+    const freight = makeSut(item)
     const freightPrice = freight.calculate()
 
     expect(freightPrice).toBe(10)

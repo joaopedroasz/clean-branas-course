@@ -1,23 +1,43 @@
-import { Item } from '@/domain/entities'
+import { Item, ItemProps } from '@/domain/entities'
 
 const makeSut = (
-  category: string,
-  description: string,
-  price: number,
-  height: number,
-  width: number,
-  depth: number,
-  weight: number,
-  id?: string
+  {
+    id,
+    category,
+    description,
+    price,
+    heightInCM,
+    widthInCM,
+    depthInCM,
+    weightInCM
+  }: ItemProps
 ): Item => {
-  return new Item(category, description, price, height, width, depth, weight, id)
+  return new Item({
+    id,
+    category,
+    description,
+    price,
+    heightInCM,
+    widthInCM,
+    depthInCM,
+    weightInCM
+  })
 }
 
 describe('Item entity', () => {
   let item: Item
 
   beforeEach(() => {
-    item = makeSut('Categoria do item 1', 'Descrição do item 1', 20, 50, 10, 10, 5, '1')
+    item = makeSut({
+      id: '1',
+      category: 'Categoria do item 1',
+      description: 'Descrição do item 1',
+      price: 20,
+      heightInCM: 50,
+      widthInCM: 10,
+      depthInCM: 10,
+      weightInCM: 5
+    })
   })
 
   test('should create a item', () => {

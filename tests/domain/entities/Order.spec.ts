@@ -10,6 +10,36 @@ const makeSut = (
 
 describe('Order entity', () => {
   let order: Order
+  const itemFake1 = new Item({
+    id: '1',
+    category: 'Categoria do item 1',
+    description: 'Descrição do item 1',
+    price: 100,
+    heightInCM: 10,
+    widthInCM: 10,
+    depthInCM: 10,
+    weightInCM: 10
+  })
+  const itemFake2 = new Item({
+    id: '2',
+    category: 'Categoria do item 2',
+    description: 'Descrição do item 2',
+    price: 200,
+    heightInCM: 20,
+    widthInCM: 20,
+    depthInCM: 20,
+    weightInCM: 20
+  })
+  const itemFake3 = new Item({
+    id: '3',
+    category: 'Categoria do item 3',
+    description: 'Descrição do item 3',
+    price: 300,
+    heightInCM: 30,
+    widthInCM: 30,
+    depthInCM: 30,
+    weightInCM: 30
+  })
 
   beforeEach(() => {
     order = makeSut('518.858.724-61', '123')
@@ -26,22 +56,30 @@ describe('Order entity', () => {
   })
 
   test('should create a Order with many items', () => {
-    order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100, 10, 10, 10, 10, '1'), 1)
-    order.addItem(new Item('Categoria do item 2', 'Descrição do item 2', 200, 20, 20, 20, 20, '2'), 2)
-    order.addItem(new Item('Categoria do item 3', 'Descrição do item 3', 300, 30, 30, 30, 30, '3'), 3)
+    order.addItem(itemFake1, 1)
+    order.addItem(itemFake2, 2)
+    order.addItem(itemFake3, 3)
 
     expect(order.orderItems).toBeDefined()
   })
 
   test('should throw a error when add an item without id', () => {
-    const itemWithoutID = new Item('Categoria do item 1', 'Descrição do item 1', 100, 10, 10, 10, 10)
+    const itemWithoutID = new Item({
+      category: 'Categoria do item 1',
+      description: 'Descrição do item 1',
+      price: 100,
+      heightInCM: 10,
+      widthInCM: 10,
+      depthInCM: 10,
+      weightInCM: 10
+    })
 
     expect(() => order.addItem(itemWithoutID, 1)).toThrowError(new InvalidEmptyID())
   })
 
   test('should calculate total price of an Order after add some items', () => {
-    order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100, 10, 10, 10, 10, '1'), 1)
-    order.addItem(new Item('Categoria do item 2', 'Descrição do item 2', 200, 20, 20, 20, 20, '2'), 2)
+    order.addItem(itemFake1, 1)
+    order.addItem(itemFake2, 2)
     const totalPrice = order.getTotalPrice()
 
     expect(totalPrice).toBe(500)
@@ -54,8 +92,8 @@ describe('Order entity', () => {
   })
 
   test('should calculate total price with Coupon Discount', () => {
-    order.addItem(new Item('Categoria do item 1', 'Descrição do item 1', 100, 10, 10, 10, 10, '1'), 1)
-    order.addItem(new Item('Categoria do item 2', 'Descrição do item 2', 200, 20, 20, 20, 20, '2'), 2)
+    order.addItem(itemFake1, 1)
+    order.addItem(itemFake2, 2)
     order.addCoupon(new Coupon({
       code: 'Código do cupom 1',
       percentage: 25
@@ -83,11 +121,11 @@ describe('Order entity', () => {
   })
 
   test('should calculate freight', () => {
-    order.addItem(new Item('Categoria do Item 1', 'Descrição do Item 1', 100, 200, 100, 50, 40, '1'), 1)
-    order.addItem(new Item('Categoria do Item 2', 'Descrição do Item 2', 30, 10, 10, 10, 0.9, '2'), 2)
+    order.addItem(itemFake1, 1)
+    order.addItem(itemFake2, 2)
 
     const freight = order.getFreight()
 
-    expect(freight).toBe(410)
+    expect(freight).toBe(300)
   })
 })
