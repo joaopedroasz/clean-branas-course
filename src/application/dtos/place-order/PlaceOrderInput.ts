@@ -1,7 +1,4 @@
-type OrderItemInput = {
-  idItem: string
-  quantity: number
-}
+import { OrderItemInput } from './types'
 
 export class PlaceOrderInput {
   public readonly CPF: string
