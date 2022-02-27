@@ -1,12 +1,5 @@
 import { ExpiredCouponError } from './errors'
-
-export type CouponProps = {
-  id?: string
-  code: string
-  percentage: number
-  currentDate?: Date
-  expiresIn?: Date
-}
+import { CouponProperties } from './types'
 
 export class Coupon {
   public readonly id?: string
@@ -21,7 +14,7 @@ export class Coupon {
       percentage,
       currentDate = new Date(),
       expiresIn
-    }: CouponProps
+    }: CouponProperties
   ) {
     this.validateExpirationDate(currentDate, expiresIn)
     this.id = id
