@@ -1,4 +1,4 @@
-import { Item, ItemProps } from '@/domain/entities'
+import { Item, ItemProperties } from '@/domain/entities'
 
 const makeSut = (
   {
@@ -10,7 +10,7 @@ const makeSut = (
     widthInCM,
     depthInCM,
     weightInCM
-  }: ItemProps
+  }: ItemProperties
 ): Item => {
   return new Item({
     id,

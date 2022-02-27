@@ -1,13 +1,4 @@
-export type ItemProps = {
-  id?: string
-  category: string
-  description: string
-  price: number
-  heightInCM: number
-  widthInCM: number
-  depthInCM: number
-  weightInCM: number
-}
+import { ItemProperties } from './types'
 
 export class Item {
   public readonly id?: string
@@ -31,7 +22,7 @@ export class Item {
       widthInCM,
       depthInCM,
       weightInCM
-    }: ItemProps
+    }: ItemProperties
   ) {
     this.id = id
     this.category = category
