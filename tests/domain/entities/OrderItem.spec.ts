@@ -1,19 +1,31 @@
-import { OrderItem } from '@/domain/entities'
+import { OrderItem, OrderItemProperties } from '@/domain/entities'
 
 const makeSut = (
-  itemId: string,
-  quantity: number,
-  price: number,
-  id?: string
+  {
+    id,
+    itemId,
+    quantity,
+    price
+  }: OrderItemProperties
 ): OrderItem => {
-  return new OrderItem(itemId, quantity, price, id)
+  return new OrderItem({
+    id,
+    itemId,
+    quantity,
+    price
+  })
 }
 
 describe('Order Item entity', () => {
   let orderItem: OrderItem
 
   beforeEach(() => {
-    orderItem = makeSut('12', 2, 100, '11')
+    orderItem = makeSut({
+      id: '1',
+      itemId: '2',
+      price: 100,
+      quantity: 2
+    })
   })
 
   test('should create a order item', () => {

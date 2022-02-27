@@ -29,7 +29,13 @@ export class Order {
   public addItem (item: Item, quantity: number): void {
     if (!item.id) throw new InvalidEmptyID()
 
-    this.orderItems.push(new OrderItem(item.id, quantity, item.price))
+    const orderItem = new OrderItem({
+      itemId: item.id,
+      price: item.price,
+      quantity
+    })
+
+    this.orderItems.push(orderItem)
     this.calculateFreight(item)
   }
 
