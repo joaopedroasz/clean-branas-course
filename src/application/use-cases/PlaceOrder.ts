@@ -13,7 +13,7 @@ export class PlaceOrder implements PlaceOrderUseCase {
   }
 
   public async execute (input: PlaceOrderInput): Promise<PlaceOrderOutput> {
-    const order = new Order(input.CPF)
+    const order = new Order({ cpf: input.CPF })
     for (const orderItem of input.orderItems) {
       const item = await this.itemRepository.getById(orderItem.idItem)
       order.addItem(item, orderItem.quantity)

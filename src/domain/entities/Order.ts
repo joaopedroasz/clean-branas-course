@@ -1,5 +1,6 @@
-import { InvalidEmptyID } from './errors'
 import { Freight, OrderItem, Item, Coupon, CPF } from '@/domain/entities'
+import { OrderProperties } from './types'
+import { InvalidEmptyID } from './errors'
 
 export class Order {
   public id?: string
@@ -9,8 +10,10 @@ export class Order {
   private freight: number
 
   constructor (
-    cpf: string,
-    id?: string
+    {
+      id,
+      cpf
+    }: OrderProperties
   ) {
     this.id = id
     this.orderItems = []
@@ -18,12 +21,29 @@ export class Order {
     this.freight = 0
   }
 
-  private isItemsEmpty (): boolean {
-    return !this.orderItems || this.orderItems.length === 0
-  }
-
   public getFreight (): number {
     return this.freight
+  }
+
+  public addCoupon (coupon: Coupon): void {
+    this.coupon = coupon
+  }
+
+  public getTotalPrice (): number {
+    if (this.isItemsEmpty()) return 0
+
+    let totalPrice = 0
+    for (const orderItem of this.orderItems) {
+      totalPrice += orderItem.getTotalPrice()
+    }
+
+    if (!this.coupon) return totalPrice
+
+    return this.coupon.calculateValueWithDiscount(totalPrice)
+  }
+
+  private isItemsEmpty (): boolean {
+    return !this.orderItems || this.orderItems.length === 0
   }
 
   public addItem (item: Item, quantity: number): void {
@@ -43,22 +63,5 @@ export class Order {
     const freight = new Freight(item)
 
     this.freight += freight.calculate()
-  }
-
-  public addCoupon (coupon: Coupon): void {
-    this.coupon = coupon
-  }
-
-  public getTotalPrice (): number {
-    if (this.isItemsEmpty()) return 0
-
-    let totalPrice = 0
-    for (const orderItem of this.orderItems) {
-      totalPrice += orderItem.getTotalPrice()
-    }
-
-    if (!this.coupon) return totalPrice
-
-    return this.coupon.calculateValueWithDiscount(totalPrice)
   }
 }

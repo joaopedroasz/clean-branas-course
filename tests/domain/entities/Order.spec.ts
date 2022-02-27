@@ -1,11 +1,12 @@
-import { Order, Item, Coupon } from '@/domain/entities'
+import { Order, Item, Coupon, OrderProperties } from '@/domain/entities'
 import { ExpiredCouponError, InvalidEmptyID } from '@/domain/entities/errors'
 
 const makeSut = (
-  cpf: string,
-  id?: string
+  {
+    id, cpf
+  }: OrderProperties
 ): Order => {
-  return new Order(cpf, id)
+  return new Order({ id, cpf })
 }
 
 describe('Order entity', () => {
@@ -42,7 +43,7 @@ describe('Order entity', () => {
   })
 
   beforeEach(() => {
-    order = makeSut('518.858.724-61', '123')
+    order = makeSut({ id: '123', cpf: '518.858.724-61' })
   })
 
   test('should create a order', () => {
@@ -51,8 +52,9 @@ describe('Order entity', () => {
 
   test('should not create a Order when CPF is invalid', () => {
     const invalidCPF = '222.222.222-22'
+    const orderWithInvalidCPF = (): Order => makeSut({ id: '1', cpf: invalidCPF })
 
-    expect(() => makeSut(invalidCPF, '11')).toThrowError('Invalid CPF')
+    expect(orderWithInvalidCPF).toThrowError('Invalid CPF')
   })
 
   test('should create a Order with many items', () => {
