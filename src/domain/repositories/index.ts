@@ -1,2 +1,2 @@
-export * from './ItemRepository'
-export * from './OrderRepository'
+export * from './Item'
+export * from './Order'
