@@ -1,5 +1,5 @@
 import { PlaceOrder } from '@/application/use-cases'
-import { PlaceOrderInput } from '@/application/DTO/PlaceOrder'
+import { PlaceOrderInput } from '@/application/dtos/place-order'
 import { ItemRepository, OrderRepository } from '@/domain/repositories'
 import { ItemRepositoryStub, OrderRepositoryStub } from '@/tests/stub/repositories'
 
