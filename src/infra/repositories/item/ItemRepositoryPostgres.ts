@@ -1,17 +1,31 @@
 import { Item } from '@/domain/entities'
 import { ItemRepository } from '@/domain/repositories'
+import { DatabaseConnection } from '@/infra/database'
+import { ItemTable } from '@/infra/models'
 
 export class ItemRepositoryPostgres implements ItemRepository {
+  private readonly databaseConnection: DatabaseConnection
+
+  constructor (databaseConnection: DatabaseConnection) {
+    this.databaseConnection = databaseConnection
+  }
+
   public async getById (id: string): Promise<Item> {
-    return new Item({
-      id,
-      category: 'Categoria do Item',
-      description: 'Descrição do Item',
-      price: 100,
-      heightInCM: 10,
-      widthInCM: 10,
-      depthInCM: 20,
-      weightInCM: 10
+    const [itemData] = await this.databaseConnection.query<string[], ItemTable[]>(
+      'SELECT * FROM itens where id = $1',
+      [id]
+    )
+    const item = new Item({
+      id: itemData.id,
+      category: itemData.category,
+      description: itemData.description,
+      price: itemData.price,
+      heightInCM: itemData.height,
+      widthInCM: itemData.width,
+      depthInCM: itemData.depth,
+      weightInCM: itemData.weight
     })
+
+    return item
   }
 }
