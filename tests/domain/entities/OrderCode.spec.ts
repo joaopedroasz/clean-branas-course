@@ -14,4 +14,12 @@ describe('Order Code entity', () => {
   test('should create a Order Code', () => {
     expect(orderCode).toBeDefined()
   })
+
+  test('should generate a code', () => {
+    orderCode.generate()
+    const code = orderCode.getCode()
+
+    expect(code).toBeDefined()
+    expect(code.length).toBe(12)
+  })
 })
