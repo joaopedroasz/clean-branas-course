@@ -17,5 +17,5 @@ export default {
     '@/tests/(.*)': '<rootDir>/tests/$1',
     '@/(.*)': '<rootDir>/src/$1'
   },
-  testMatch: ['**/*.spec.ts']
+  testMatch: ['**/*.spec.ts', '**/*.test.ts']
 }
