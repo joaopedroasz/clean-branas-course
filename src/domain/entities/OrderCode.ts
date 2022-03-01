@@ -23,10 +23,22 @@ export class OrderCode {
   }
 
   private get8DigitHash (): number {
-    return Math.ceil(this.generate8DigitsNumber())
+    let hash: number
+
+    do {
+      hash = Math.ceil(this.generate8DigitsNumber())
+    } while (!this.isHashWithCorrectLength(hash))
+
+    return hash
   }
 
   private generate8DigitsNumber (): number {
     return Math.random() * this.CONVERT_TO_8_DIGITS_NUMBER_FACTOR
+  }
+
+  private isHashWithCorrectLength (hash: number): boolean {
+    const hashLength = hash.toString().length
+
+    return hashLength === 8
   }
 }
