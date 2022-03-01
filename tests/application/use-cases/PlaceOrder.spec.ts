@@ -74,4 +74,15 @@ describe('Place Order use case', () => {
     expect(orderCode).toBeDefined()
     expect(orderCode.length).toBe(12)
   })
+
+  test('should call itemRepository with the correct parameters', async () => {
+    const { placeOrder, itemRepository } = makeSut()
+    const itemRepositorySpy = jest.spyOn(itemRepository, 'getById')
+    await placeOrder.execute(placeOrderInput)
+
+    expect(itemRepositorySpy).toBeCalledTimes(3)
+    expect(itemRepositorySpy).toBeCalledWith('1')
+    expect(itemRepositorySpy).toBeCalledWith('2')
+    expect(itemRepositorySpy).toBeCalledWith('3')
+  })
 })
