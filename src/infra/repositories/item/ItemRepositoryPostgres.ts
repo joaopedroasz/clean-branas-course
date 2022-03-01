@@ -1,7 +1,9 @@
 import { Item } from '@/domain/entities'
 import { ItemRepository } from '@/domain/repositories'
-import { DatabaseConnection } from '@/infra/database'
+
 import { ItemTable } from '@/infra/models'
+import { DatabaseConnection } from '@/infra/database'
+import { ItemNotFoundError } from '@/infra/errors'
 
 export class ItemRepositoryPostgres implements ItemRepository {
   private readonly databaseConnection: DatabaseConnection
@@ -15,6 +17,9 @@ export class ItemRepositoryPostgres implements ItemRepository {
       'SELECT * FROM itens where id = $1',
       [id]
     )
+
+    if (!itemData) throw new ItemNotFoundError(id)
+
     const item = new Item({
       id: itemData.id,
       category: itemData.category,
