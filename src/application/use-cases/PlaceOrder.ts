@@ -23,12 +23,11 @@ export class PlaceOrder implements PlaceOrderUseCase {
     orderCodeEntity.generate()
     const orderCode = orderCodeEntity.getCode()
 
-    const { createdOrderId } = await this.orderRepository.save({ order, orderCode })
+    const { orderCode: code } = await this.orderRepository.save({ order, orderCode })
 
     return {
       total: order.getTotalPrice(),
-      createdOrderId,
-      orderCode
+      orderCode: code
     }
   }
 }

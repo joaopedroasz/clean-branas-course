@@ -1,10 +1,9 @@
-import { Order } from '@/domain/entities'
-import { OrderRepository, SaveResponse } from '@/domain/repositories'
+import { OrderRepository, SaveOrderInput, SaveOrderOutput } from '@/domain/repositories'
 
 export class OrderRepositoryStub implements OrderRepository {
-  public async save (order: Order): Promise<SaveResponse> {
+  public async save (input: SaveOrderInput): Promise<SaveOrderOutput> {
     return {
-      createdOrderId: '1'
+      orderCode: '202212345678'
     }
   }
 }

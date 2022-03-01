@@ -60,13 +60,6 @@ describe('Place Order use case', () => {
     expect(total).toBe(600)
   })
 
-  test('should return created order ID', async () => {
-    const { placeOrder } = makeSut()
-    const { createdOrderId } = await placeOrder.execute(placeOrderInput)
-
-    expect(createdOrderId).toBe('1')
-  })
-
   test('should return a code to placed order', async () => {
     const { placeOrder } = makeSut()
     const { orderCode } = await placeOrder.execute(placeOrderInput)
