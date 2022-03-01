@@ -3,12 +3,12 @@ import { randomUUID } from 'crypto'
 import { Item } from '@/domain/entities'
 
 import { ItemRepositoryPostgres } from '@/infra/repositories'
-import { DatabaseConnectionAdapter } from '@/infra/database'
+import { DatabaseConnectionAdapter, DatabaseConnection } from '@/infra/database'
 import { ItemNotFoundError } from '@/infra/errors'
 
 type makeSutType = {
   itemRepository: ItemRepositoryPostgres
-  databaseConnection: DatabaseConnectionAdapter
+  databaseConnection: DatabaseConnection
 }
 
 const makeSut = (): makeSutType => {
