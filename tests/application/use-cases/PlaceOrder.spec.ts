@@ -66,4 +66,12 @@ describe('Place Order use case', () => {
 
     expect(createdOrderId).toBe('1')
   })
+
+  test('should return a code to placed order', async () => {
+    const { placeOrder } = makeSut()
+    const { orderCode } = await placeOrder.execute(placeOrderInput)
+
+    expect(orderCode).toBeDefined()
+    expect(orderCode.length).toBe(12)
+  })
 })
