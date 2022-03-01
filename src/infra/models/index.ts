@@ -1,3 +1,2 @@
-export * from './types'
-export * from './ItemTable'
-export * from './OrderTable'
+export * from './item'
+export * from './order'
