@@ -23,7 +23,7 @@ export class OrderCode {
   }
 
   private get8DigitHash (): number {
-    return Math.floor(this.generate8DigitsNumber())
+    return Math.ceil(this.generate8DigitsNumber())
   }
 
   private generate8DigitsNumber (): number {
