@@ -1,6 +1,5 @@
-import { Order } from '../../entities'
-import { SaveResponse } from './types/saveResponse'
+import { SaveOrderInput, SaveOrderOutput } from './types'
 
 export interface OrderRepository {
-  save: (order: Order) => Promise<SaveResponse>
+  save: (input: SaveOrderInput) => Promise<SaveOrderOutput>
 }
