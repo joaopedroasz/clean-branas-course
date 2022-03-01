@@ -1,7 +1,10 @@
 import { randomUUID } from 'crypto'
 
+import { Item } from '@/domain/entities'
+
 import { ItemRepositoryPostgres } from '@/infra/repositories'
 import { DatabaseConnectionAdapter } from '@/infra/database'
+import { ItemNotFoundError } from '@/infra/errors'
 
 type makeSutType = {
   itemRepository: ItemRepositoryPostgres
@@ -75,5 +78,15 @@ describe('Postgres Item Repository', () => {
         id: itemId
       }
     )
+  })
+
+  test('should throw a error when Item is not found', async () => {
+    const invalidId = randomUUID()
+
+    const invalidFunction = async (): Promise<Item> => await itemRepository.getById(invalidId)
+
+    await expect(
+      invalidFunction
+    ).rejects.toThrowError(new ItemNotFoundError(invalidId))
   })
 })
