@@ -1,13 +1,15 @@
 import { Freight, OrderItem, Item, Coupon, CPF } from '@/domain/entities'
 import { OrderProperties } from './types'
 import { InvalidEmptyID } from './errors'
+import { OrderCode } from './OrderCode'
 
 export class Order {
-  public id?: string
+  public readonly id?: string
   public orderItems: OrderItem[]
-  public cpf: CPF
+  public readonly cpf: CPF
   public coupon?: Coupon
   private freight: number
+  public readonly orderCode: string
 
   constructor (
     {
@@ -19,6 +21,13 @@ export class Order {
     this.orderItems = []
     this.cpf = new CPF(cpf)
     this.freight = 0
+    this.orderCode = this.generateOrderCode()
+  }
+
+  private generateOrderCode (): string {
+    const orderCode = new OrderCode()
+    orderCode.generate()
+    return orderCode.getCode()
   }
 
   public getFreight (): number {
