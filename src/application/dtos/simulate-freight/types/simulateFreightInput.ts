@@ -1,4 +1,4 @@
 export type SimulateFreightInputProperties = {
-  itemId: number
+  itemId: string
   quantity: number
 }
