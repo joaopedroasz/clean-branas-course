@@ -65,11 +65,11 @@ export class Order {
     })
 
     this.orderItems.push(orderItem)
-    this.calculateFreight(item)
+    this.calculateFreight(item, quantity)
   }
 
-  private calculateFreight (item: Item): void {
-    const freight = new Freight(item)
+  private calculateFreight (item: Item, quantity: number): void {
+    const freight = new Freight({ item, quantity })
 
     this.freight += freight.calculate()
   }

@@ -1,7 +1,12 @@
-import { Freight, Item } from '@/domain/entities'
+import { Freight, Item, FreightProperties } from '@/domain/entities'
 
-const makeSut = (item: Item): Freight => {
-  return new Freight(item)
+const makeSut = (
+  {
+    item,
+    quantity
+  }: FreightProperties
+): Freight => {
+  return new Freight({ item, quantity })
 }
 
 describe('Freight entity', () => {
@@ -18,7 +23,7 @@ describe('Freight entity', () => {
   })
 
   beforeEach(() => {
-    freight = makeSut(itemFake)
+    freight = makeSut({ item: itemFake, quantity: 1 })
   })
 
   test('should be create a freight', () => {
@@ -39,7 +44,7 @@ describe('Freight entity', () => {
       depthInCM: 10,
       weightInCM: 0.9
     })
-    const freight = makeSut(item)
+    const freight = makeSut({ item, quantity: 1 })
     const freightPrice = freight.calculate()
 
     expect(freightPrice).toBe(10)
