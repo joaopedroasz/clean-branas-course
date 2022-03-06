@@ -128,6 +128,6 @@ describe('Order entity', () => {
 
     const freight = order.getFreight()
 
-    expect(freight).toBe(300)
+    expect(freight).toBe(500)
   })
 })
