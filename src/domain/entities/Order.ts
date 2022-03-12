@@ -1,6 +1,6 @@
 import { Freight, OrderItem, Item, Coupon, CPF } from '@/domain/entities'
 import { OrderProperties } from './types'
-import { InvalidEmptyID } from './errors'
+import { InvalidEmptyID } from '../errors'
 import { OrderCode } from './OrderCode'
 
 export class Order {

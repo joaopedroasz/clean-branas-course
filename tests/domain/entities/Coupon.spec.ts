@@ -1,5 +1,5 @@
 import { Coupon, CouponProperties } from '@/domain/entities'
-import { ExpiredCouponError } from '@/domain/entities/errors'
+import { ExpiredCouponError } from '@/domain/errors'
 
 const makeSut = (
   {

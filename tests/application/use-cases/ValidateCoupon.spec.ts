@@ -1,6 +1,6 @@
-import { ValidateCoupon } from '@/application/use-cases'
 import { CouponRepository } from '@/domain/repositories'
-import { CouponNotFoundError } from '@/infra/errors'
+import { CouponNotFoundError } from '@/domain/errors'
+import { ValidateCoupon } from '@/application/use-cases'
 
 import { CouponRepositoryStub } from '@/tests/stub/repositories'
 

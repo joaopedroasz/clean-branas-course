@@ -1,6 +1,7 @@
 import { ItemRepository } from '@/domain/repositories'
 import { SimulateFreight } from '@/application/use-cases'
 import { SimulateFreightInputProperties } from '@/application/dtos/simulate-freight'
+
 import { ItemRepositoryStub } from '@/tests/stub/repositories'
 
 type makeSutTypes = {

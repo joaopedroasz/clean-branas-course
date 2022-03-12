@@ -1,4 +1,4 @@
-import { ExpiredCouponError } from './errors'
+import { ExpiredCouponError } from '../errors'
 import { CouponProperties } from './types'
 
 export class Coupon {

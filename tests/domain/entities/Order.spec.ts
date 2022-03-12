@@ -1,5 +1,5 @@
 import { Order, Item, Coupon, OrderProperties } from '@/domain/entities'
-import { ExpiredCouponError, InvalidEmptyID } from '@/domain/entities/errors'
+import { ExpiredCouponError, InvalidEmptyID } from '@/domain/errors'
 
 const makeSut = (
   {
