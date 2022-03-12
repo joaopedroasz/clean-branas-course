@@ -18,4 +18,13 @@ describe('Validate Coupon use case', () => {
 
     expect(validateCoupon).toBeDefined()
   })
+
+  test('should return true when valid Id is provided', async () => {
+    const validId = '1'
+    const { validateCoupon } = makeSut()
+
+    const isValid = await validateCoupon.execute({ couponId: validId })
+
+    expect(isValid).toBe(true)
+  })
 })
