@@ -27,4 +27,12 @@ describe('Validate Coupon use case', () => {
 
     expect(isValid).toBe(true)
   })
+
+  test('should return false when no Id is provided', async () => {
+    const { validateCoupon } = makeSut()
+
+    const isValid = await validateCoupon.execute({ couponId: '' })
+
+    expect(isValid).toBe(false)
+  })
 })
