@@ -1,7 +1,6 @@
 import { OrderRepository, SaveOrderInput, SaveOrderOutput } from '@/domain/repositories'
 
-import { DatabaseConnection } from '@/infra/database'
-import { OrderTable } from '@/infra/models'
+import { DatabaseConnection, OrderTable } from '@/infra/database'
 
 export class OrderRepositoryPostgres implements OrderRepository {
   private readonly databaseConnection: DatabaseConnection

@@ -1,5 +1,5 @@
 import pgp from 'pg-promise'
-import { DatabaseConnection } from '../contracts'
+import { DatabaseConnection } from '../../contracts'
 
 export class DatabaseConnectionAdapter implements DatabaseConnection {
   private readonly pgPromise: any
