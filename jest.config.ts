@@ -5,7 +5,8 @@ export default {
   clearMocks: true,
   collectCoverage: true,
   collectCoverageFrom: [
-    '<rootDir>/src/**/*.ts'
+    '<rootDir>/src/**/*.ts',
+    '!<rootDir>/src/infra/database/models/**/*.ts'
   ],
   coverageDirectory: 'coverage',
   coverageProvider: 'babel',
