@@ -1,5 +1,7 @@
 import { Coupon } from '@/domain/entities'
+import { CouponNotFoundError } from '@/domain/errors'
 import { CouponRepository } from '@/domain/repositories'
+
 import { DatabaseConnection, CouponTable } from '@/infra/database'
 
 export class CouponRepositoryPostgres implements CouponRepository {
@@ -14,6 +16,8 @@ export class CouponRepositoryPostgres implements CouponRepository {
       'SELECT * FROM coupons where id = $1',
       [id]
     )
+
+    if (!couponFromDatabase) throw new CouponNotFoundError(id)
 
     const {
       id: couponId,
