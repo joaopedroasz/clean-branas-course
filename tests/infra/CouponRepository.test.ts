@@ -1,7 +1,9 @@
 import { randomUUID } from 'crypto'
 
+import { Coupon } from '@/domain/entities'
 import { CouponRepository } from '@/domain/repositories'
 import { CouponRepositoryPostgres, DatabaseConnectionAdapter, DatabaseConnection } from '@/infra/database'
+import { CouponNotFoundError } from '@/domain/errors'
 
 type makeSutTypes = {
   databaseConnection: DatabaseConnection
@@ -63,5 +65,14 @@ describe('Coupon postgres repository', () => {
         id: couponId
       }
     )
+  })
+
+  test('should throw an error when Coupon is not found', async () => {
+    const invalidId = randomUUID()
+
+    const invalidQuery = async (): Promise<Coupon> => await couponRepository.getById(invalidId)
+
+    await expect(invalidQuery)
+      .rejects.toThrowError(new CouponNotFoundError(invalidId))
   })
 })
