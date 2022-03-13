@@ -50,4 +50,10 @@ describe('Coupon entity', () => {
 
     expect(createExpiredCoupon).toThrowError(new ExpiredCouponError(expiredDate))
   })
+
+  test('should return true when validate using default current date', () => {
+    const isExpired = coupon.isExpired()
+
+    expect(isExpired).toBe(true)
+  })
 })
