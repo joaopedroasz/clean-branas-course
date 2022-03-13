@@ -30,7 +30,7 @@ describe('Validate Coupon use case', () => {
     const validId = '1'
     const { validateCoupon } = makeSut()
 
-    const isValid = await validateCoupon.execute({ couponId: validId })
+    const isValid = await validateCoupon.execute({ couponId: validId, currentDate: new Date('03/13/2022') })
 
     expect(isValid).toBe(true)
   })
@@ -43,7 +43,7 @@ describe('Validate Coupon use case', () => {
     expect(isValid).toBe(false)
   })
 
-  test('should return false when invalid Id is provided', async () => {
+  test('should return false when Coupon Repository does not find coupon', async () => {
     const invalidId = 'invalid_id'
     const { validateCoupon, couponRepository } = makeSut()
 

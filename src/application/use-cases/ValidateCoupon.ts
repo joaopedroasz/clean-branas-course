@@ -9,13 +9,13 @@ export class ValidateCoupon implements ValidateCoupon {
   }
 
   public async execute (input: ValidateCouponInput): Promise<boolean> {
-    const { couponId } = input
+    const { couponId, currentDate } = input
     try {
       if (!couponId) return false
 
       const coupon = await this.couponRepository.getById(couponId)
 
-      const isCouponValid = !coupon.isExpired()
+      const isCouponValid = !coupon.isExpired(currentDate)
 
       return isCouponValid
     } catch (error) {

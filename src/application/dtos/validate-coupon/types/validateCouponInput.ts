@@ -1,3 +1,4 @@
 export type ValidateCouponInputProperties = {
-  couponId?: string
+  couponId: string
+  currentDate?: Date
 }
