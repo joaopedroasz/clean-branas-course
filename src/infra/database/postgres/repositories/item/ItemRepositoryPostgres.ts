@@ -1,9 +1,8 @@
 import { Item } from '@/domain/entities'
 import { ItemRepository } from '@/domain/repositories'
+import { ItemNotFoundError } from '@/domain/errors'
 
-import { ItemTable } from '@/infra/models'
-import { DatabaseConnection } from '@/infra/database'
-import { ItemNotFoundError } from '@/infra/errors'
+import { DatabaseConnection, ItemTable } from '@/infra/database'
 
 export class ItemRepositoryPostgres implements ItemRepository {
   private readonly databaseConnection: DatabaseConnection

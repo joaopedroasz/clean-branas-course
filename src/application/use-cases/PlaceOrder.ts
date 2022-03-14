@@ -1,4 +1,4 @@
-import { Order, OrderCode } from '@/domain/entities'
+import { Order } from '@/domain/entities'
 import { ItemRepository, OrderRepository } from '@/domain/repositories'
 import { PlaceOrderUseCase } from '../contracts/use-cases'
 import { PlaceOrderInput, PlaceOrderOutput } from '../dtos/place-order'
@@ -19,9 +19,7 @@ export class PlaceOrder implements PlaceOrderUseCase {
       order.addItem(item, orderItem.quantity)
     }
 
-    const orderCodeEntity = new OrderCode()
-    orderCodeEntity.generate()
-    const orderCode = orderCodeEntity.getCode()
+    const orderCode = order.orderCode
 
     const { orderCode: code } = await this.orderRepository.save({ order, orderCode })
 

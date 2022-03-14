@@ -1,10 +1,9 @@
 import { randomUUID } from 'crypto'
 
 import { Item } from '@/domain/entities'
+import { ItemNotFoundError } from '@/domain/errors'
 
-import { ItemRepositoryPostgres } from '@/infra/repositories'
-import { DatabaseConnectionAdapter, DatabaseConnection } from '@/infra/database'
-import { ItemNotFoundError } from '@/infra/errors'
+import { DatabaseConnectionAdapter, DatabaseConnection, ItemRepositoryPostgres } from '@/infra/database'
 
 type makeSutType = {
   itemRepository: ItemRepositoryPostgres

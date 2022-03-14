@@ -15,6 +15,8 @@ Nesse projeto, alguns princípios foram levados em consideração:
 - Test Driven Development;
 - YAGNI (You aren't gonna need it);
 - DRY (Don't repeat yourself);
+- Código fortemente tipado (nada de *any* por aqui rapazes :no_entry_sign:);
+- Desenvolvimento orientado ao domínio da aplicação;
 
 ### Tecnologias utilizadas:
 

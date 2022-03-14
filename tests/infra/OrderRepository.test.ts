@@ -1,7 +1,6 @@
 import { Order, OrderCode } from '@/domain/entities'
 import { OrderRepository } from '@/domain/repositories'
-import { DatabaseConnection, DatabaseConnectionAdapter } from '@/infra/database'
-import { OrderRepositoryPostgres } from '@/infra/repositories'
+import { DatabaseConnection, DatabaseConnectionAdapter, OrderRepositoryPostgres } from '@/infra/database'
 
 type makeSutTypes = {
   orderRepository: OrderRepository

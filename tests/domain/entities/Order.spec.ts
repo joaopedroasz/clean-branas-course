@@ -1,5 +1,5 @@
 import { Order, Item, Coupon, OrderProperties } from '@/domain/entities'
-import { ExpiredCouponError, InvalidEmptyID } from '@/domain/entities/errors'
+import { ExpiredCouponError, InvalidEmptyID } from '@/domain/errors'
 
 const makeSut = (
   {
@@ -128,6 +128,6 @@ describe('Order entity', () => {
 
     const freight = order.getFreight()
 
-    expect(freight).toBe(300)
+    expect(freight).toBe(500)
   })
 })

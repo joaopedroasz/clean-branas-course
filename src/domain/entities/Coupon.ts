@@ -1,4 +1,4 @@
-import { ExpiredCouponError } from './errors'
+import { ExpiredCouponError } from '../errors'
 import { CouponProperties } from './types'
 
 export class Coupon {
@@ -16,21 +16,21 @@ export class Coupon {
       expiresIn
     }: CouponProperties
   ) {
-    this.validateExpirationDate(currentDate, expiresIn)
+    this.expiresIn = expiresIn
+    this.validateExpirationDate(currentDate)
     this.id = id
     this.code = code
     this.percentage = percentage
-    this.expiresIn = expiresIn
   }
 
-  private validateExpirationDate (currentDate: Date, date?: Date): void {
-    if (this.isExpired(currentDate, date)) throw new ExpiredCouponError(date)
+  private validateExpirationDate (currentDate: Date): void {
+    if (this.isExpired(currentDate)) throw new ExpiredCouponError(this.expiresIn)
   }
 
-  private isExpired (currentDate: Date, date?: Date): boolean {
-    if (!date) return false
+  public isExpired (currentDate = new Date()): boolean {
+    if (!this.expiresIn) return false
 
-    return date.getTime() < currentDate.getTime()
+    return this.expiresIn.getTime() < currentDate.getTime()
   }
 
   public calculateValueWithDiscount (value: number): number {

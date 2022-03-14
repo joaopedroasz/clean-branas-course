@@ -1,5 +1,5 @@
 import { Coupon, CouponProperties } from '@/domain/entities'
-import { ExpiredCouponError } from '@/domain/entities/errors'
+import { ExpiredCouponError } from '@/domain/errors'
 
 const makeSut = (
   {
@@ -49,5 +49,11 @@ describe('Coupon entity', () => {
     })
 
     expect(createExpiredCoupon).toThrowError(new ExpiredCouponError(expiredDate))
+  })
+
+  test('should return true when validate using default current date', () => {
+    const isExpired = coupon.isExpired()
+
+    expect(isExpired).toBe(true)
   })
 })

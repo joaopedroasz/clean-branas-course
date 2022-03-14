@@ -1,18 +1,28 @@
 import { Item } from './Item'
+import { FreightProperties } from './types'
 
 export class Freight {
   private readonly item: Item
+  private readonly quantity: number
 
   private readonly DISTANCE = 1000
 
-  constructor (item: Item) {
+  constructor (
+    {
+      item,
+      quantity
+    }: FreightProperties
+  ) {
     this.item = item
+    this.quantity = quantity
   }
 
   public calculate (): number {
-    const calculatedFreight = this.DISTANCE * this.item.calculateVolume() * this.convertDensity(this.item)
+    const freightForOneItem = this.DISTANCE * this.item.calculateVolume() * this.convertDensity(this.item)
 
-    return calculatedFreight < 10 ? 10 : calculatedFreight
+    const totalFreight = freightForOneItem * this.quantity
+
+    return totalFreight < 10 ? 10 : totalFreight
   }
 
   private convertDensity (item: Item): number {
