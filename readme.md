@@ -17,6 +17,9 @@ Nesse projeto, alguns princípios foram levados em consideração:
 - DRY (Don't repeat yourself);
 - Código fortemente tipado (nada de *any* por aqui rapazes :no_entry_sign:);
 - Desenvolvimento orientado ao domínio da aplicação;
+- Padrões para projetos utilizando DDD:
+  - Serviços de Domínio (Domain Services);
+  - Serviços de Aplicação (Application Services);
 
 ### Tecnologias utilizadas:
 
@@ -29,6 +32,10 @@ Tecnologias utilizadas no projeto:
 ### Documentações:
 
 Algumas documentações para o código produzido nesse projeto podem ser encontrados na pasta [docs](./docs/)
+
+### Próximos passos:
+
+É possível achar algumas das próximas *features* planejadas para o projeto clicando [aqui](./docs/to-do.md)
 
 ---
 
