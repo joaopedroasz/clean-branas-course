@@ -1,6 +1,6 @@
 # Modificações e próximas atividades do sistema:
 
-- [] Alterar todos os nomes, no código e no banco de dados, de *itens* para *items*;
+- [x] Alterar todos os nomes, no código e no banco de dados, de *itens* para *items*;
 
 - [] Adicionar sufixo "Error" nas classes de erro que não tem;
 

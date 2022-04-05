@@ -30,7 +30,7 @@ describe('Postgres Item Repository', () => {
     const itemId = randomUUID()
     await databaseConnection.query<object, null>(
       `
-        INSERT INTO itens (
+        INSERT INTO items (
           id,
           category,
           description,
@@ -70,7 +70,7 @@ describe('Postgres Item Repository', () => {
 
     await databaseConnection.query<object, null>(
       `
-        DELETE FROM itens
+        DELETE FROM items
         WHERE id = $<id>
       `,
       {
