@@ -1,4 +1,4 @@
-export class InvalidEmptyProperty extends Error {
+export class InvalidEmptyPropertyError extends Error {
   constructor (propertyName: string) {
     super(`Invalid empty ${propertyName} property`)
   }

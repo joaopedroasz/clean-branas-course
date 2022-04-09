@@ -1,5 +1,5 @@
 import { Order, Item, Coupon, OrderProperties } from '@/domain/entities'
-import { ExpiredCouponError, InvalidEmptyID } from '@/domain/errors'
+import { ExpiredCouponError, InvalidCPFerror, InvalidEmptyIdError } from '@/domain/errors'
 
 const makeSut = (
   {
@@ -54,7 +54,7 @@ describe('Order entity', () => {
     const invalidCPF = '222.222.222-22'
     const orderWithInvalidCPF = (): Order => makeSut({ id: '1', cpf: invalidCPF })
 
-    expect(orderWithInvalidCPF).toThrowError('Invalid CPF')
+    expect(orderWithInvalidCPF).toThrowError(new InvalidCPFerror(invalidCPF))
   })
 
   test('should create a Order with many items', () => {
@@ -76,7 +76,7 @@ describe('Order entity', () => {
       weightInCM: 10
     })
 
-    expect(() => order.addItem(itemWithoutID, 1)).toThrowError(new InvalidEmptyID())
+    expect(() => order.addItem(itemWithoutID, 1)).toThrowError(new InvalidEmptyIdError())
   })
 
   test('should calculate total price of an Order after add some items', () => {

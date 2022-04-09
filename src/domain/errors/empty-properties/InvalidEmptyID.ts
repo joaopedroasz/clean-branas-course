@@ -1,6 +1,6 @@
-import { InvalidEmptyProperty } from './InvalidEmptyProperty'
+import { InvalidEmptyPropertyError } from './InvalidEmptyProperty'
 
-export class InvalidEmptyID extends InvalidEmptyProperty {
+export class InvalidEmptyIdError extends InvalidEmptyPropertyError {
   constructor () {
     super('id')
   }

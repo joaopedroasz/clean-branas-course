@@ -1,6 +1,6 @@
-import { EntityNotFount } from './EntityNotFound'
+import { EntityNotFountError } from './EntityNotFound'
 
-export class ItemNotFoundError extends EntityNotFount {
+export class ItemNotFoundError extends EntityNotFountError {
   constructor (id: string) {
     super('Item', id)
   }

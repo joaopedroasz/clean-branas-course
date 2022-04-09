@@ -1,6 +1,6 @@
 import { Freight, OrderItem, Item, Coupon, CPF } from '@/domain/entities'
 import { OrderProperties } from './types'
-import { InvalidEmptyID } from '../errors'
+import { InvalidEmptyIdError } from '../errors'
 import { OrderCode } from './OrderCode'
 
 export class Order {
@@ -56,7 +56,7 @@ export class Order {
   }
 
   public addItem (item: Item, quantity: number): void {
-    if (!item.id) throw new InvalidEmptyID()
+    if (!item.id) throw new InvalidEmptyIdError()
 
     const orderItem = new OrderItem({
       itemId: item.id,

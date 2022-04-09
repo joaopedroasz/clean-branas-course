@@ -2,7 +2,7 @@
 
 - [x] Alterar todos os nomes, no código e no banco de dados, de *itens* para *items*;
 
-- [] Adicionar sufixo "Error" nas classes de erro que não tem;
+- [x] Adicionar sufixo "Error" nas classes de erro que não tem;
 
 - [] Rever a estrutura da entidade *OrderCode*:
   - Receber dados via construtor (*data* e *sequence*);
