@@ -22,7 +22,7 @@
     - [x] Adicionar campo na criação de *orders* em *OrderRepository*;
   - [x] Privar propriedades como CPF, coupon, etc.
   - [x] Na implementação *OrderRepositoryPostgres* retirar as referências as propriedades de **CPF** e **Coupon**;
-  - [] Retirar referência de *Freight* essa entidade;
+  - [x] Retirar referência de *Freight* essa entidade;
     - Vamos receber o frete de fora, **não é responsabilidade de _Order_ calcular o frete**;
     - Alterar mudanças nos testes;
   - [] Tornar o campo *order code* no banco de dados como **único**;

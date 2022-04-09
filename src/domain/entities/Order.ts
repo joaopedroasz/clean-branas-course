@@ -1,4 +1,4 @@
-import { Freight, OrderItem, Item, Coupon, CPF, OrderCode } from '@/domain/entities'
+import { OrderItem, Item, Coupon, CPF, OrderCode } from '@/domain/entities'
 import { OrderProperties } from './types'
 import { InvalidEmptyIdError } from '../errors'
 
@@ -8,21 +8,22 @@ export class Order {
   private readonly cpf: CPF
   private readonly issueDate: Date
   private coupon?: Coupon
-  private freight: number
+  private readonly freight: number
   private readonly orderCode: string
 
   constructor (
     {
       id,
       cpf,
-      issueDate = new Date()
+      issueDate = new Date(),
+      freight = 0
     }: OrderProperties
   ) {
     this.id = id
     this.orderItems = []
     this.cpf = new CPF(cpf)
     this.issueDate = issueDate
-    this.freight = 0
+    this.freight = freight
     this.orderCode = this.generateOrderCode()
   }
 
@@ -86,12 +87,5 @@ export class Order {
     })
 
     this.orderItems.push(orderItem)
-    this.calculateFreight(item, quantity)
-  }
-
-  private calculateFreight (item: Item, quantity: number): void {
-    const freight = new Freight({ item, quantity })
-
-    this.freight += freight.calculate()
   }
 }

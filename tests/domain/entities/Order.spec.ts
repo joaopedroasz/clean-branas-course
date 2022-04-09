@@ -41,6 +41,11 @@ describe('Order entity', () => {
     depthInCM: 30,
     weightInCM: 30
   })
+  const couponFake = new Coupon({
+    id: '1',
+    code: 'Código do cupom 1',
+    percentage: 25
+  })
 
   beforeEach(() => {
     const validCPF = '518.858.724-61'
@@ -98,10 +103,7 @@ describe('Order entity', () => {
   test('should calculate total price with Coupon Discount', () => {
     order.addItem(itemFake1, 1)
     order.addItem(itemFake2, 2)
-    order.addCoupon(new Coupon({
-      code: 'Código do cupom 1',
-      percentage: 25
-    }))
+    order.addCoupon(couponFake)
 
     const totalPrice = order.getTotalPrice()
 
@@ -122,14 +124,5 @@ describe('Order entity', () => {
     )
 
     expect(addExpiredCoupon).toThrowError(new ExpiredCouponError(expiredDate))
-  })
-
-  test('should calculate freight', () => {
-    order.addItem(itemFake1, 1)
-    order.addItem(itemFake2, 2)
-
-    const freight = order.getFreight()
-
-    expect(freight).toBe(500)
   })
 })
