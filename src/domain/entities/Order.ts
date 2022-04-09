@@ -3,13 +3,13 @@ import { OrderProperties } from './types'
 import { InvalidEmptyIdError } from '../errors'
 
 export class Order {
-  public readonly id?: string
-  public orderItems: OrderItem[]
-  public readonly cpf: CPF
-  public issueDate: Date
-  public coupon?: Coupon
+  private readonly id?: string
+  private readonly orderItems: OrderItem[]
+  private readonly cpf: CPF
+  private readonly issueDate: Date
+  private coupon?: Coupon
   private freight: number
-  public readonly orderCode: string
+  private readonly orderCode: string
 
   constructor (
     {
@@ -31,8 +31,28 @@ export class Order {
     return orderCode.getCode()
   }
 
+  public getOrderItems (): OrderItem[] {
+    return this.orderItems
+  }
+
+  public getCPF (): string {
+    return this.cpf.value
+  }
+
+  public getIssueDate (): Date {
+    return this.issueDate
+  }
+
+  public getCouponId (): string | undefined {
+    return this.coupon?.id
+  }
+
   public getFreight (): number {
     return this.freight
+  }
+
+  public getOrderCode (): string {
+    return this.orderCode
   }
 
   public addCoupon (coupon: Coupon): void {

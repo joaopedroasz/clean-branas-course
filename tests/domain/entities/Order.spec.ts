@@ -64,7 +64,7 @@ describe('Order entity', () => {
     order.addItem(itemFake2, 2)
     order.addItem(itemFake3, 3)
 
-    expect(order.orderItems).toBeDefined()
+    expect(order.getOrderItems()).toBeDefined()
   })
 
   test('should throw a error when add an item without id', () => {

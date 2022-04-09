@@ -19,8 +19,9 @@
   - [x] Adicionar campo *issue_date* -> Banco de dados e entidade;
     - [x] Injetar esse campo na instanciação de *order code* (implementação e testes);
     - [x] Adicionar no modelo de banco de dados em **src/infra/database/models/order/OrderTable**;
-  - [] Privar propriedades como CPF, coupon, etc.
-  - [] Na implementação *OrderRepositoryPostgres* retirar as referências as propriedades de **CPF** e **Coupon**;
+    - [x] Adicionar campo na criação de *orders* em *OrderRepository*;
+  - [x] Privar propriedades como CPF, coupon, etc.
+  - [x] Na implementação *OrderRepositoryPostgres* retirar as referências as propriedades de **CPF** e **Coupon**;
   - [] Retirar referência de *Freight* essa entidade;
     - Vamos receber o frete de fora, **não é responsabilidade de _Order_ calcular o frete**;
     - Alterar mudanças nos testes;

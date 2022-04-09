@@ -19,6 +19,7 @@ export class OrderRepositoryPostgres implements OrderRepository {
       `
         INSERT INTO orders (
           buyer_cpf,
+          issue_date,
           price,
           coupon_id,
           freight_value,
@@ -26,6 +27,7 @@ export class OrderRepositoryPostgres implements OrderRepository {
         )
         VALUES (
           $<cpf>,
+          $<issue_date>,
           $<price>,
           $<couponId>,
           $<freightValue>,
@@ -33,9 +35,10 @@ export class OrderRepositoryPostgres implements OrderRepository {
         );
       `,
       {
-        cpf: order.cpf.value,
+        cpf: order.getCPF(),
+        issue_date: order.getIssueDate(),
         price: order.getTotalPrice(),
-        couponId: order.coupon?.id,
+        couponId: order.getCouponId(),
         freightValue: order.getFreight(),
         orderCode
       }

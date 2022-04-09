@@ -19,7 +19,7 @@ export class PlaceOrder implements PlaceOrderUseCase {
       order.addItem(item, orderItem.quantity)
     }
 
-    const orderCode = order.orderCode
+    const orderCode = order.getOrderCode()
 
     const { orderCode: code } = await this.orderRepository.save({ order, orderCode })
 
