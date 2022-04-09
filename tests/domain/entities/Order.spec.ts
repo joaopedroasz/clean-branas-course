@@ -125,4 +125,10 @@ describe('Order entity', () => {
 
     expect(addExpiredCoupon).toThrowError(new ExpiredCouponError(expiredDate))
   })
+
+  test('should return undefined when get coupon id before add a coupon', () => {
+    const undefinedCouponId = order.getCouponId()
+
+    expect(undefinedCouponId).toBeUndefined()
+  })
 })
