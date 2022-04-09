@@ -4,23 +4,26 @@
 
 - [x] Adicionar sufixo "Error" nas classes de erro que não tem;
 
-- [] Rever a estrutura da entidade *OrderCode*:
-  - Receber dados via construtor (*data* e *sequence*);
-  - Criar esse código na instanciação da classe;
+- [x] Rever a estrutura da entidade *OrderCode*:
+  - [x] Receber dados via construtor (*data* e *sequence*);
+  - [x] Criar esse código na instanciação da classe;
+  - [x] Criar uma constante para sinalizar o tamanho correto de um *order code*;
 
-- [] Rever relações das entidades *Order* e *OrderCode*:
+- [x] Rever relações das entidades *Order* e *OrderCode*:
   - Ter uma propriedade dentro de *Order* que faz referência ao *order code*;
   - Setar essa propriedade na instanciação da entidade *Order*;
 
-- [] Adicionar coluna *price* na tabela *OrderItem* -> Banco de dados;
+- [x] Adicionar coluna *price* na tabela *OrderItem* -> Banco de dados;
 
 - [] Rever estrutura da entidade *Order*;
   - [] Adicionar campo *issue_date* -> Banco de dados e entidade;
+    - Injetar esse campo na instanciação de *order code* (implementação e testes);
   - [] Privar propriedades como CPF, coupon, etc.
   - [] Na implementação *OrderRepositoryPostgres* retirar as referências as propriedades de **CPF** e **Coupon**;
   - [] Retirar referência de *Freight* essa entidade;
     - Vamos receber o frete de fora, **não é responsabilidade de _Order_ calcular o frete**;
     - Alterar mudanças nos testes;
+  - [] Tornar o campo *order code* no banco de dados como **único**;
 
 - [] Rever estrutura da entidade *Freight*:
   - Ter uma propriedade, privada, para receber o calculo do frete;

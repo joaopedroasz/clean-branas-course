@@ -1,7 +1,6 @@
-import { Freight, OrderItem, Item, Coupon, CPF } from '@/domain/entities'
+import { Freight, OrderItem, Item, Coupon, CPF, OrderCode } from '@/domain/entities'
 import { OrderProperties } from './types'
 import { InvalidEmptyIdError } from '../errors'
-import { OrderCode } from './OrderCode'
 
 export class Order {
   public readonly id?: string
@@ -25,8 +24,7 @@ export class Order {
   }
 
   private generateOrderCode (): string {
-    const orderCode = new OrderCode()
-    orderCode.generate()
+    const orderCode = new OrderCode({})
     return orderCode.getCode()
   }
 

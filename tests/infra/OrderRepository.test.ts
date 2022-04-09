@@ -22,8 +22,7 @@ describe('Order Repository', () => {
 
   test('should save a order in database', async () => {
     const order = new Order({ cpf: '728.261.520-92' })
-    const orderCodeEntity = new OrderCode()
-    orderCodeEntity.generate()
+    const orderCodeEntity = new OrderCode({})
     const orderCode = orderCodeEntity.getCode()
 
     const { orderCode: code } = await orderRepository.save({ order, orderCode })

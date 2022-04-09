@@ -1,24 +1,29 @@
+import { OrderCodeProperties } from './types'
+
 export class OrderCode {
-  private code: string
+  private readonly code: string
 
   private readonly CONVERT_TO_8_DIGITS_NUMBER_FACTOR = 100_000_000
+  private readonly ORDER_CODE_CORRECT_LENGTH = 8
 
-  constructor () {
-    this.code = ''
+  constructor ({
+    currentDate = new Date()
+  }: OrderCodeProperties) {
+    this.code = this.generateCode(currentDate)
   }
 
   public getCode (): string {
     return this.code
   }
 
-  public generate (): void {
-    const currentYear = this.getCurrentYear().toString()
+  private generateCode (currentDate: Date): string {
+    const currentYear = this.getCurrentYear(currentDate).toString()
     const hash = this.get8DigitHash().toString()
 
-    this.code = currentYear + hash
+    return currentYear + hash
   }
 
-  private getCurrentYear (currentDate = new Date()): number {
+  private getCurrentYear (currentDate: Date): number {
     return currentDate.getFullYear()
   }
 
@@ -27,7 +32,7 @@ export class OrderCode {
 
     do {
       hash = Math.ceil(this.generate8DigitsNumber())
-    } while (!this.isHashWithCorrectLength(hash))
+    } while (this.hashIsNotWithCorrectLength(hash))
 
     return hash
   }
@@ -36,9 +41,9 @@ export class OrderCode {
     return Math.random() * this.CONVERT_TO_8_DIGITS_NUMBER_FACTOR
   }
 
-  private isHashWithCorrectLength (hash: number): boolean {
+  private hashIsNotWithCorrectLength (hash: number): boolean {
     const hashLength = hash.toString().length
 
-    return hashLength === 8
+    return hashLength !== this.ORDER_CODE_CORRECT_LENGTH
   }
 }
