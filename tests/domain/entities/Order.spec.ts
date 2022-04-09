@@ -3,10 +3,10 @@ import { ExpiredCouponError, InvalidCPFerror, InvalidEmptyIdError } from '@/doma
 
 const makeSut = (
   {
-    id, cpf
+    id, cpf, issueDate
   }: OrderProperties
 ): Order => {
-  return new Order({ id, cpf })
+  return new Order({ id, cpf, issueDate })
 }
 
 describe('Order entity', () => {
@@ -43,7 +43,9 @@ describe('Order entity', () => {
   })
 
   beforeEach(() => {
-    order = makeSut({ id: '123', cpf: '518.858.724-61' })
+    const validCPF = '518.858.724-61'
+    const issueDate = new Date('04/09/2022')
+    order = makeSut({ id: '123', cpf: validCPF, issueDate })
   })
 
   test('should create a order', () => {

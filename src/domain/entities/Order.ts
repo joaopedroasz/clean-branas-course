@@ -6,6 +6,7 @@ export class Order {
   public readonly id?: string
   public orderItems: OrderItem[]
   public readonly cpf: CPF
+  public issueDate: Date
   public coupon?: Coupon
   private freight: number
   public readonly orderCode: string
@@ -13,18 +14,20 @@ export class Order {
   constructor (
     {
       id,
-      cpf
+      cpf,
+      issueDate = new Date()
     }: OrderProperties
   ) {
     this.id = id
     this.orderItems = []
     this.cpf = new CPF(cpf)
+    this.issueDate = issueDate
     this.freight = 0
     this.orderCode = this.generateOrderCode()
   }
 
   private generateOrderCode (): string {
-    const orderCode = new OrderCode({})
+    const orderCode = new OrderCode({ currentDate: this.issueDate })
     return orderCode.getCode()
   }
 

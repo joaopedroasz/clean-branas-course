@@ -16,8 +16,9 @@
 - [x] Adicionar coluna *price* na tabela *OrderItem* -> Banco de dados;
 
 - [] Rever estrutura da entidade *Order*;
-  - [] Adicionar campo *issue_date* -> Banco de dados e entidade;
-    - Injetar esse campo na instanciação de *order code* (implementação e testes);
+  - [x] Adicionar campo *issue_date* -> Banco de dados e entidade;
+    - [x] Injetar esse campo na instanciação de *order code* (implementação e testes);
+    - [x] Adicionar no modelo de banco de dados em **src/infra/database/models/order/OrderTable**;
   - [] Privar propriedades como CPF, coupon, etc.
   - [] Na implementação *OrderRepositoryPostgres* retirar as referências as propriedades de **CPF** e **Coupon**;
   - [] Retirar referência de *Freight* essa entidade;
