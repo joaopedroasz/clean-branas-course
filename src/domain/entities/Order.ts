@@ -57,6 +57,8 @@ export class Order {
   }
 
   public addCoupon (coupon: Coupon): void {
+    if (!coupon.id) throw new InvalidEmptyIdError()
+
     this.coupon = coupon
   }
 
