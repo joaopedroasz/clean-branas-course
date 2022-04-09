@@ -131,4 +131,11 @@ describe('Order entity', () => {
 
     expect(undefinedCouponId).toBeUndefined()
   })
+
+  test('should returna a valid coupon id after add a coupon', () => {
+    order.addCoupon(couponFake)
+    const couponId = order.getCouponId()
+
+    expect(couponId).toBe('1')
+  })
 })
