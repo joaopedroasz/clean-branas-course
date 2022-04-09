@@ -110,7 +110,7 @@ describe('Order entity', () => {
     expect(totalPrice).toBe(375)
   })
 
-  test('should not add a expired Coupon', () => {
+  test('should not add an expired Coupon', () => {
     const currentDate = new Date('02/13/2022')
     const expiredDate = new Date('02/06/2022')
 
@@ -124,6 +124,14 @@ describe('Order entity', () => {
     )
 
     expect(addExpiredCoupon).toThrowError(new ExpiredCouponError(expiredDate))
+  })
+
+  test('should throw an error when add a coupon without id', () => {
+    const couponWithoutId = new Coupon({ code: 'code', percentage: 10 })
+
+    const addAnInvalidCoupon = (): void => order.addCoupon(couponWithoutId)
+
+    expect(addAnInvalidCoupon).toThrowError(new InvalidEmptyIdError())
   })
 
   test('should return undefined when get coupon id before add a coupon', () => {
