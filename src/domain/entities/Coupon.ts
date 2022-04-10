@@ -2,10 +2,10 @@ import { ExpiredCouponError } from '../errors'
 import { CouponProperties } from './types'
 
 export class Coupon {
-  public readonly id?: string
-  public readonly code: string
-  public readonly percentage: number
-  public readonly expiresIn?: Date
+  private readonly id?: string
+  private readonly code: string
+  private readonly percentage: number
+  private readonly expiresIn?: Date
 
   constructor (
     {
@@ -35,6 +35,10 @@ export class Coupon {
 
   public isValid (currentDate = new Date()): boolean {
     return !this.isExpired(currentDate)
+  }
+
+  public getId (): string | undefined {
+    return this.id
   }
 
   public calculateValueWithDiscount (value: number): number {

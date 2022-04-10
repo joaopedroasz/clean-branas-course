@@ -2,8 +2,9 @@ import { randomUUID } from 'crypto'
 
 import { Coupon } from '@/domain/entities'
 import { CouponRepository } from '@/domain/repositories'
-import { CouponRepositoryPostgres, DatabaseConnectionAdapter, DatabaseConnection } from '@/infra/database'
 import { CouponNotFoundError } from '@/domain/errors'
+
+import { CouponRepositoryPostgres, DatabaseConnectionAdapter, DatabaseConnection } from '@/infra/database'
 
 type makeSutTypes = {
   databaseConnection: DatabaseConnection
@@ -53,8 +54,8 @@ describe('Coupon postgres repository', () => {
 
     const coupon = await couponRepository.getById(couponId)
 
-    expect(coupon.id).toBeDefined()
-    expect(coupon.id).toBe(couponId)
+    expect(coupon.getId()).toBeDefined()
+    expect(coupon.getId()).toBe(couponId)
 
     await databaseConnection.query<object, null>(
       `

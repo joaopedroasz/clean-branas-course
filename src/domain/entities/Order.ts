@@ -45,7 +45,7 @@ export class Order {
   }
 
   public getCouponId (): string | undefined {
-    return this.coupon?.id
+    return this.coupon?.getId()
   }
 
   public getFreight (): number {
@@ -57,7 +57,7 @@ export class Order {
   }
 
   public addCoupon (coupon: Coupon): void {
-    if (!coupon.id) throw new InvalidEmptyIdError()
+    if (!coupon.getId()) throw new InvalidEmptyIdError()
 
     this.coupon = coupon
   }
