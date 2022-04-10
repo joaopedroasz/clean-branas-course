@@ -12,10 +12,6 @@ export class OrderCode {
     this.code = this.generateCode(currentDate)
   }
 
-  public getCode (): string {
-    return this.code
-  }
-
   private generateCode (currentDate: Date): string {
     const currentYear = this.getCurrentYear(currentDate).toString()
     const hash = this.get8DigitHash().toString()
@@ -45,5 +41,9 @@ export class OrderCode {
     const hashLength = hash.toString().length
 
     return hashLength !== this.ORDER_CODE_CORRECT_LENGTH
+  }
+
+  public getCode (): string {
+    return this.code
   }
 }
