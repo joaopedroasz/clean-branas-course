@@ -1,4 +1,5 @@
-import { Freight, Item, FreightProperties } from '@/domain/entities'
+import { Item } from '@/domain/entities'
+import { Freight, FreightProperties } from '@/domain/services'
 
 const makeSut = (
   {

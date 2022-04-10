@@ -1,4 +1,4 @@
-import { Freight } from '@/domain/entities'
+import { Freight } from '@/domain/services'
 import { ItemRepository } from '@/domain/repositories'
 import { SimulateFreightUseCase } from '../contracts/use-cases/SimulateFreight'
 import { SimulateFreightInput, SimulateFreightOutput } from '../dtos/simulate-freight'

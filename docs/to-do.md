@@ -27,13 +27,13 @@
     - Alterar mudanças nos testes;
   - [x] Tornar o campo *order code* no banco de dados como **único**;
 
-- [] Rever estrutura da entidade *Freight*:
+- [x] Rever estrutura da entidade *Freight*:
   - [x] Ter uma propriedade, privada, para receber o calculo do frete;
   - [x] O cálculo ser realizado na instanciação da classe;
   - [x] Ter um método para expor a propriedade calculada;
-  - [] Transformar essa **entidade** em um *Domain Service*:
-    - [] Criar uma camada *Services* dentro da pasta *Domain* para guardar esses serviços;
-    - [] Esse serviço será orquestrado pelo **Case de Uso**;
+  - [x] Transformar essa **entidade** em um *Domain Service*:
+    - [x] Criar uma camada *Services* dentro da pasta *Domain* para guardar esses serviços;
+    - [x] Esse serviço será orquestrado pelo **Case de Uso**;
 
 - [] Rever comportamento *isExpired()* da entidade *Coupon*:
   - Não seria mais semântico ter uma **propriedade** ou algum **método**, *isValid* por exemplo, que seria chamado através da própria entidade *Coupon*, exibindo **se** aquele cupom á valido.

@@ -1,4 +1,4 @@
-import { Item } from './Item'
+import { Item } from '../entities'
 import { FreightProperties } from './types'
 
 export class Freight {

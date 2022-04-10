@@ -1,6 +1,5 @@
 export * from './Coupon'
 export * from './CPF'
-export * from './Freight'
 export * from './Item'
 export * from './Order'
 export * from './OrderItem'
