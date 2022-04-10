@@ -1,5 +1,7 @@
 import { OrderRepository, SaveOrderInput, SaveOrderOutput } from '@/domain/repositories'
+
 import { DatabaseConnection } from '@/infra/database'
+
 import { SaveOrderQueryInput, SaveOrderQueryOutput } from './types'
 
 export class OrderRepositoryPostgres implements OrderRepository {
@@ -14,7 +16,7 @@ export class OrderRepositoryPostgres implements OrderRepository {
       order
     }: SaveOrderInput
   ): Promise<SaveOrderOutput> {
-    const createdOrder = await this.databaseConnection.query<
+    const [createdOrder] = await this.databaseConnection.query<
     SaveOrderQueryInput, SaveOrderQueryOutput[]
     >(
       `
@@ -46,7 +48,7 @@ export class OrderRepositoryPostgres implements OrderRepository {
       }
     )
 
-    const [{ id, code }] = createdOrder
+    const { id, code } = createdOrder
 
     return {
       createdOrderId: id,

@@ -45,18 +45,17 @@
   - [x] Mudar o **teste** para que o repositório receba apenas o **pedido** como parâmetro;
   - [x] Alterar *interface* para receber apenas **order** e retornar *void* ou entidade criada;
 
+- [x] Criar tipos específicos para os parâmetros das funções de *query* nos repositórios:
+  - No *OrderRepositoryPostgres*, por exemplo, não receber um *object* como tipo dos parâmetros, mas um objeto definido;
+
 - [] Rever estrutura do caso de uso *Place Order*:
   - [] Adicionar possibilidade de mandar um cupom no caso de uso *Place Order*;
   - [] No caso de uso *Place Order*, também salvar no banco de dados os registros de *Order Items*, que estarão dentro da entidade *Order*, só o *Order ID* que teremos que receber de fora;
-
-- [] Criar tipos específicos para os parâmetros das funções de *query* nos repositórios:
-  - No *OrderRepositoryPostgres*, por exemplo, não receber um *object* como tipo dos parâmetros, mas um objeto definido;
 
 - Testes:
   - [] Testar, nos casos de uso, exceções que podem ser lançadas pelos repositórios ou por outras dependências;
   - [] Criar testes de **integração** dos **casos de uso**, adicionando as dependências reais e analisando retornos do banco de dados;
   - [] Testar o caso de salvar um pedido **sem** cupom;
-
 
 - Próximos passos:
   - Casos de uso:
