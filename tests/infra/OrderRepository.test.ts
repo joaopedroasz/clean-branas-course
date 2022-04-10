@@ -1,4 +1,4 @@
-import { Order, OrderCode } from '@/domain/entities'
+import { Order } from '@/domain/entities'
 import { OrderRepository } from '@/domain/repositories'
 import { DatabaseConnection, DatabaseConnectionAdapter, OrderRepositoryPostgres } from '@/infra/database'
 
@@ -22,20 +22,19 @@ describe('Order Repository', () => {
 
   test('should save a order in database', async () => {
     const order = new Order({ cpf: '728.261.520-92' })
-    const orderCodeEntity = new OrderCode({})
-    const orderCode = orderCodeEntity.getCode()
 
-    const { orderCode: code } = await orderRepository.save({ order, orderCode })
+    const { createdOrderId, createdOrderCode } = await orderRepository.save({ order })
 
-    expect(code).toBeDefined()
+    expect(createdOrderId).toBeDefined()
+    expect(createdOrderCode).toBeDefined()
 
     await databaseConnection.query<object, null>(
       `
         DELETE FROM orders
-        WHERE code = $<code>
+        WHERE id = $<id>
       `,
       {
-        code
+        id: createdOrderId
       }
     )
   })

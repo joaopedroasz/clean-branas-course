@@ -1,6 +1,6 @@
 import { OrderRepository, SaveOrderInput, SaveOrderOutput } from '@/domain/repositories'
-
-import { DatabaseConnection, OrderTable } from '@/infra/database'
+import { DatabaseConnection } from '@/infra/database'
+import { SaveOrderQueryInput, SaveOrderQueryOutput } from './types'
 
 export class OrderRepositoryPostgres implements OrderRepository {
   private readonly databaseConnection: DatabaseConnection
@@ -11,11 +11,12 @@ export class OrderRepositoryPostgres implements OrderRepository {
 
   public async save (
     {
-      order,
-      orderCode
+      order
     }: SaveOrderInput
   ): Promise<SaveOrderOutput> {
-    await this.databaseConnection.query<object, OrderTable>(
+    const createdOrder = await this.databaseConnection.query<
+    SaveOrderQueryInput, SaveOrderQueryOutput[]
+    >(
       `
         INSERT INTO orders (
           buyer_cpf,
@@ -32,7 +33,8 @@ export class OrderRepositoryPostgres implements OrderRepository {
           $<couponId>,
           $<freightValue>,
           $<orderCode>
-        );
+        )
+        RETURNING id, code;
       `,
       {
         cpf: order.getCPF(),
@@ -40,12 +42,15 @@ export class OrderRepositoryPostgres implements OrderRepository {
         price: order.getTotalPrice(),
         couponId: order.getCouponId(),
         freightValue: order.getFreight(),
-        orderCode
+        orderCode: order.getOrderCode()
       }
     )
 
+    const [{ id, code }] = createdOrder
+
     return {
-      orderCode
+      createdOrderId: id,
+      createdOrderCode: code
     }
   }
 }

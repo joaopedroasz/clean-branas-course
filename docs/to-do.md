@@ -38,16 +38,16 @@
 - [x] Rever comportamento *isExpired()* da entidade *Coupon*:
   - Não seria mais semântico ter uma **propriedade** ou algum **método**, *isValid* por exemplo, que seria chamado através da própria entidade *Coupon*, exibindo **se** aquele cupom á valido.
 
-- [] Rever retorno do *Order Repository save method*. **Um método de salvar deve retornar um código?**:
+- [x] Mudar os nomes das pastas em **src/domain/repositories** para padrão dos nomes;
+
+- [x] Rever retorno do *Order Repository save method*. **Um método de salvar deve retornar um código?**:
   - Questionamento: Esse método deverá retornar *void* ou a entidade que foi **criada**?;
-  - Mudar o **teste** para que o repositório receba apenas o **pedido** como parâmetro;
-  - Alterar *interface* para receber apenas **order** e retornar *void* ou entidade criada;
+  - [x] Mudar o **teste** para que o repositório receba apenas o **pedido** como parâmetro;
+  - [x] Alterar *interface* para receber apenas **order** e retornar *void* ou entidade criada;
 
 - [] Rever estrutura do caso de uso *Place Order*:
   - [] Adicionar possibilidade de mandar um cupom no caso de uso *Place Order*;
   - [] No caso de uso *Place Order*, também salvar no banco de dados os registros de *Order Items*, que estarão dentro da entidade *Order*, só o *Order ID* que teremos que receber de fora;
-
-- [] Mudar os nomes das pastas em **src/domain/repositories** para padrão dos nomes;
 
 - [] Criar tipos específicos para os parâmetros das funções de *query* nos repositórios:
   - No *OrderRepositoryPostgres*, por exemplo, não receber um *object* como tipo dos parâmetros, mas um objeto definido;
