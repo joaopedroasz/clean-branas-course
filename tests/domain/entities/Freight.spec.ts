@@ -31,7 +31,7 @@ describe('Freight entity', () => {
   })
 
   test('should calculate freight', () => {
-    const freightPrice = freight.calculate()
+    const freightPrice = freight.getValue()
 
     expect(freightPrice).toBe(500)
   })
@@ -45,7 +45,7 @@ describe('Freight entity', () => {
       weightInCM: 0.9
     })
     const freight = makeSut({ item, quantity: 1 })
-    const freightPrice = freight.calculate()
+    const freightPrice = freight.getValue()
 
     expect(freightPrice).toBe(10)
   })

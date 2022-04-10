@@ -19,7 +19,7 @@ export class SimulateFreight implements SimulateFreightUseCase {
         item,
         quantity: simulateFreightInput.quantity
       })
-      totalValue += freight.calculate()
+      totalValue += freight.getValue()
     }
 
     return {

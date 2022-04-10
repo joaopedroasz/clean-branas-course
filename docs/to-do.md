@@ -15,7 +15,7 @@
 
 - [x] Adicionar coluna *price* na tabela *OrderItem* -> Banco de dados;
 
-- [] Rever estrutura da entidade *Order*;
+- [x] Rever estrutura da entidade *Order*;
   - [x] Adicionar campo *issue_date* -> Banco de dados e entidade;
     - [x] Injetar esse campo na instanciação de *order code* (implementação e testes);
     - [x] Adicionar no modelo de banco de dados em **src/infra/database/models/order/OrderTable**;
@@ -25,15 +25,15 @@
   - [x] Retirar referência de *Freight* essa entidade;
     - Vamos receber o frete de fora, **não é responsabilidade de _Order_ calcular o frete**;
     - Alterar mudanças nos testes;
-  - [] Tornar o campo *order code* no banco de dados como **único**;
+  - [x] Tornar o campo *order code* no banco de dados como **único**;
 
 - [] Rever estrutura da entidade *Freight*:
-  - Ter uma propriedade, privada, para receber o calculo do frete;
-  - O cálculo ser realizado na instanciação da classe;
-  - Ter um método para expor a propriedade calculada;
-  - Transformar essa **entidade** em um *Domain Service*:
-    - Criar uma camada *Services* dentro da pasta *Domain* para guardar esses serviços;
-    - Esse serviço será orquestrado pelo **Case de Uso**;
+  - [x] Ter uma propriedade, privada, para receber o calculo do frete;
+  - [x] O cálculo ser realizado na instanciação da classe;
+  - [x] Ter um método para expor a propriedade calculada;
+  - [] Transformar essa **entidade** em um *Domain Service*:
+    - [] Criar uma camada *Services* dentro da pasta *Domain* para guardar esses serviços;
+    - [] Esse serviço será orquestrado pelo **Case de Uso**;
 
 - [] Rever comportamento *isExpired()* da entidade *Coupon*:
   - Não seria mais semântico ter uma **propriedade** ou algum **método**, *isValid* por exemplo, que seria chamado através da própria entidade *Coupon*, exibindo **se** aquele cupom á valido.
