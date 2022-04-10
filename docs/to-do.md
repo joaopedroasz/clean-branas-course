@@ -35,7 +35,7 @@
     - [x] Criar uma camada *Services* dentro da pasta *Domain* para guardar esses serviços;
     - [x] Esse serviço será orquestrado pelo **Case de Uso**;
 
-- [] Rever comportamento *isExpired()* da entidade *Coupon*:
+- [x] Rever comportamento *isExpired()* da entidade *Coupon*:
   - Não seria mais semântico ter uma **propriedade** ou algum **método**, *isValid* por exemplo, que seria chamado através da própria entidade *Coupon*, exibindo **se** aquele cupom á valido.
 
 - [] Rever retorno do *Order Repository save method*. **Um método de salvar deve retornar um código?**:

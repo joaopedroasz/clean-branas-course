@@ -15,7 +15,7 @@ export class ValidateCoupon implements ValidateCoupon {
 
       const coupon = await this.couponRepository.getById(couponId)
 
-      const isCouponValid = !coupon.isExpired(currentDate)
+      const isCouponValid = coupon.isValid(currentDate)
 
       return isCouponValid
     } catch (error) {

@@ -116,6 +116,7 @@ describe('Order entity', () => {
 
     const addExpiredCoupon = (): void => order.addCoupon(
       new Coupon({
+        id: 'valid_id',
         code: 'Código do cupom 1',
         percentage: 25,
         currentDate,

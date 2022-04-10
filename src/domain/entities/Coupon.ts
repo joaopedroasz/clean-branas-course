@@ -27,10 +27,14 @@ export class Coupon {
     if (this.isExpired(currentDate)) throw new ExpiredCouponError(this.expiresIn)
   }
 
-  public isExpired (currentDate = new Date()): boolean {
+  private isExpired (currentDate: Date): boolean {
     if (!this.expiresIn) return false
 
     return this.expiresIn.getTime() < currentDate.getTime()
+  }
+
+  public isValid (currentDate = new Date()): boolean {
+    return !this.isExpired(currentDate)
   }
 
   public calculateValueWithDiscount (value: number): number {
