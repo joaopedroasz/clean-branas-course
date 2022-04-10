@@ -37,7 +37,7 @@ export class Order {
   }
 
   public getCPF (): string {
-    return this.cpf.value
+    return this.cpf.getValue()
   }
 
   public getIssueDate (): Date {

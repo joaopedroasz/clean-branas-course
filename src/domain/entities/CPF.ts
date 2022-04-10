@@ -1,7 +1,7 @@
 import { InvalidCPFerror } from '../errors'
 
 export class CPF {
-  public value: string
+  private readonly value: string
   private readonly CPF_VALID_LENGTH = 11
   private readonly FACTOR_FIRST_VERIFIER_DIGIT = 10
   private readonly FACTOR_SECOND_VERIFIER_DIGIT = 11
@@ -57,5 +57,9 @@ export class CPF {
 
   private getVerifierDigits (cpf: string): string {
     return cpf.substring(cpf.length - 2, cpf.length)
+  }
+
+  public getValue (): string {
+    return this.value
   }
 }
