@@ -66,7 +66,7 @@ describe('Postgres Item Repository', () => {
     const item = await itemRepository.getById(itemId)
 
     expect(item).toBeDefined()
-    expect(item.id).toBe(itemId)
+    expect(item.getId()).toBe(itemId)
 
     await databaseConnection.query<object, null>(
       `

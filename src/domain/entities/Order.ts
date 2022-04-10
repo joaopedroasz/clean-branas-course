@@ -80,11 +80,11 @@ export class Order {
   }
 
   public addItem (item: Item, quantity: number): void {
-    if (!item.id) throw new InvalidEmptyIdError()
+    if (!item.getId()) throw new InvalidEmptyIdError()
 
     const orderItem = new OrderItem({
-      itemId: item.id,
-      price: item.price,
+      itemId: item.getId(),
+      price: item.getPrice(),
       quantity
     })
 

@@ -39,7 +39,10 @@ describe('Freight entity', () => {
 
   test('should calculate a minimum value for freight', () => {
     const item = new Item({
-      ...itemFake,
+      id: '1',
+      category: 'Categoria do item 1',
+      description: 'Descrição do item 1',
+      price: 100,
       heightInCM: 10,
       widthInCM: 10,
       depthInCM: 10,
