@@ -1,10 +1,10 @@
 import { OrderItemProperties } from './types'
 
 export class OrderItem {
-  public readonly itemId: string
-  public readonly quantity: number
-  public readonly price: number
-  public readonly id?: string
+  private readonly itemId: string
+  private readonly quantity: number
+  private readonly price: number
+  private readonly id?: string
 
   constructor (
     {
