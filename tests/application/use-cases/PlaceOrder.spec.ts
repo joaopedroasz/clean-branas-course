@@ -1,23 +1,27 @@
-import { ItemRepository, OrderRepository } from '@/domain/repositories'
+import { CouponRepository, ItemRepository, OrderRepository } from '@/domain/repositories'
+
 import { PlaceOrder } from '@/application/use-cases'
 import { PlaceOrderInput } from '@/application/dtos/place-order'
 
-import { ItemRepositoryStub, OrderRepositoryStub } from '@/tests/stub/repositories'
+import { CouponRepositoryStub, ItemRepositoryStub, OrderRepositoryStub } from '@/tests/stub/repositories'
 
 type makeSutTypes = {
   placeOrder: PlaceOrder
   itemRepository: ItemRepository
   orderRepository: OrderRepository
+  couponRepository: CouponRepository
 }
 
 const makeSut = (): makeSutTypes => {
   const itemRepository = new ItemRepositoryStub()
   const orderRepository = new OrderRepositoryStub()
-  const placeOrder = new PlaceOrder(itemRepository, orderRepository)
+  const couponRepository = new CouponRepositoryStub()
+  const placeOrder = new PlaceOrder(itemRepository, orderRepository, couponRepository)
   return {
     placeOrder,
     itemRepository,
-    orderRepository
+    orderRepository,
+    couponRepository
   }
 }
 
@@ -59,6 +63,14 @@ describe('Place Order use case', () => {
     const { total } = await placeOrder.execute(placeOrderInput)
 
     expect(total).toBe(600)
+  })
+
+  test('should return total price with discount when give a coupon', async () => {
+    const { placeOrder } = makeSut()
+
+    const { total } = await placeOrder.execute({ ...placeOrderInput, couponId: '1' })
+
+    expect(total).toBe(540)
   })
 
   test('should return a code to placed order', async () => {
