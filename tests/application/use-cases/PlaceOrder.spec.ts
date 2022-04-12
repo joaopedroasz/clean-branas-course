@@ -1,7 +1,7 @@
 import { CouponRepository, ItemRepository, OrderRepository } from '@/domain/repositories'
 
 import { PlaceOrder } from '@/application/use-cases'
-import { PlaceOrderInput } from '@/application/dtos/place-order'
+import { PlaceOrderInput } from '@/application/dtos'
 
 import { CouponRepositoryStub, ItemRepositoryStub, OrderRepositoryStub } from '@/tests/stub/repositories'
 

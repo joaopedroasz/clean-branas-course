@@ -1,4 +1,4 @@
 import { UseCase } from './UseCase'
-import { ValidateCouponInput } from '@/application/dtos/validate-coupon'
+import { ValidateCouponInput } from '@/application/dtos'
 
 export interface ValidateCouponUseCase extends UseCase<ValidateCouponInput, boolean> {}

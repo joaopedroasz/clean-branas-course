@@ -1,7 +1,7 @@
 import { Order } from '@/domain/entities'
 import { CouponRepository, ItemRepository, OrderRepository } from '@/domain/repositories'
 import { PlaceOrderUseCase } from '../contracts/use-cases'
-import { PlaceOrderInput, PlaceOrderOutput } from '../dtos/place-order'
+import { PlaceOrderInput, PlaceOrderOutput } from '../dtos'
 
 export class PlaceOrder implements PlaceOrderUseCase {
   private readonly itemRepository: ItemRepository

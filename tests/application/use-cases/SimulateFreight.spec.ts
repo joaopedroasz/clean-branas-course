@@ -1,6 +1,6 @@
 import { ItemRepository } from '@/domain/repositories'
 import { SimulateFreight } from '@/application/use-cases'
-import { SimulateFreightInputProperties } from '@/application/dtos/simulate-freight'
+import { SimulateFreightInputProperties } from '@/application/dtos'
 
 import { ItemRepositoryStub } from '@/tests/stub/repositories'
 

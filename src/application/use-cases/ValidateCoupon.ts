@@ -1,5 +1,5 @@
 import { CouponRepository } from '@/domain/repositories'
-import { ValidateCouponInput } from '../dtos/validate-coupon'
+import { ValidateCouponInput } from '../dtos'
 
 export class ValidateCoupon implements ValidateCoupon {
   private readonly couponRepository: CouponRepository
