@@ -1,5 +1,6 @@
 import { Order } from '@/domain/entities'
 import { CouponRepository, ItemRepository, OrderRepository } from '@/domain/repositories'
+import { OrderItemRepository } from '@/domain/repositories/order-item'
 import { PlaceOrderUseCase } from '../contracts/use-cases'
 import { PlaceOrderInput, PlaceOrderOutput } from '../dtos'
 
@@ -7,11 +8,18 @@ export class PlaceOrder implements PlaceOrderUseCase {
   private readonly itemRepository: ItemRepository
   private readonly orderRepository: OrderRepository
   private readonly couponRepository: CouponRepository
+  private readonly orderItemRepository: OrderItemRepository
 
-  constructor (itemRepository: ItemRepository, orderRepository: OrderRepository, couponRepository: CouponRepository) {
+  constructor (
+    itemRepository: ItemRepository,
+    orderRepository: OrderRepository,
+    couponRepository: CouponRepository,
+    orderItemRepository: OrderItemRepository
+  ) {
     this.itemRepository = itemRepository
     this.orderRepository = orderRepository
     this.couponRepository = couponRepository
+    this.orderItemRepository = orderItemRepository
   }
 
   public async execute (input: PlaceOrderInput): Promise<PlaceOrderOutput> {
@@ -27,6 +35,13 @@ export class PlaceOrder implements PlaceOrderUseCase {
     }
 
     const { createdOrderId, createdOrderCode } = await this.orderRepository.save({ order })
+
+    for (const orderItemInput of order.getOrderItems()) {
+      await this.orderItemRepository.save({
+        orderId: createdOrderId,
+        orderItem: orderItemInput
+      })
+    }
 
     return {
       total: order.getTotalPrice(),

@@ -1,27 +1,30 @@
-import { CouponRepository, ItemRepository, OrderRepository } from '@/domain/repositories'
+import { CouponRepository, ItemRepository, OrderRepository, OrderItemRepository } from '@/domain/repositories'
 
 import { PlaceOrder } from '@/application/use-cases'
 import { PlaceOrderInput } from '@/application/dtos'
 
-import { CouponRepositoryStub, ItemRepositoryStub, OrderRepositoryStub } from '@/tests/stub/repositories'
+import { CouponRepositoryStub, ItemRepositoryStub, OrderRepositoryStub, OrderItemRepositoryStub } from '@/tests/stub/repositories'
 
 type makeSutTypes = {
   placeOrder: PlaceOrder
   itemRepository: ItemRepository
   orderRepository: OrderRepository
   couponRepository: CouponRepository
+  orderItemRepository: OrderItemRepository
 }
 
 const makeSut = (): makeSutTypes => {
   const itemRepository = new ItemRepositoryStub()
   const orderRepository = new OrderRepositoryStub()
   const couponRepository = new CouponRepositoryStub()
-  const placeOrder = new PlaceOrder(itemRepository, orderRepository, couponRepository)
+  const orderItemRepository = new OrderItemRepositoryStub()
+  const placeOrder = new PlaceOrder(itemRepository, orderRepository, couponRepository, orderItemRepository)
   return {
     placeOrder,
     itemRepository,
     orderRepository,
-    couponRepository
+    couponRepository,
+    orderItemRepository
   }
 }
 

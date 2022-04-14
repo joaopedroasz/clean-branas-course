@@ -49,8 +49,8 @@
   - No *OrderRepositoryPostgres*, por exemplo, não receber um *object* como tipo dos parâmetros, mas um objeto definido;
 
 - [] Rever estrutura do caso de uso *Place Order*:
-  - [] Adicionar possibilidade de mandar um cupom no caso de uso *Place Order*;
-  - [] No caso de uso *Place Order*, também salvar no banco de dados os registros de *Order Items*, que estarão dentro da entidade *Order*, só o *Order ID* que teremos que receber de fora;
+  - [x] Adicionar possibilidade de mandar um cupom no caso de uso *Place Order*;
+  - [x] No caso de uso *Place Order*, também salvar no banco de dados os registros de *Order Items*, que estarão dentro da entidade *Order*, só o *Order ID* que teremos que receber de fora;
 
 - Testes:
   - [] Testar, nos casos de uso, exceções que podem ser lançadas pelos repositórios ou por outras dependências;
