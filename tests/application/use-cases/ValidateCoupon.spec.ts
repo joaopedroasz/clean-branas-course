@@ -3,6 +3,7 @@ import { CouponNotFoundError } from '@/domain/errors'
 import { ValidateCoupon } from '@/application/use-cases'
 
 import { CouponRepositoryStub } from '@/tests/stub/repositories'
+import { ValidateCouponInput } from '../dtos'
 
 type makeSutTypes = {
   validateCoupon: ValidateCoupon
@@ -20,6 +21,11 @@ const makeSut = (): makeSutTypes => {
 }
 
 describe('Validate Coupon use case', () => {
+  const validateCouponInput: ValidateCouponInput = {
+    couponId: '1',
+    currentDate: new Date('03/13/2022')
+  }
+
   test('should create a validate coupon', () => {
     const { validateCoupon } = makeSut()
 
@@ -27,10 +33,9 @@ describe('Validate Coupon use case', () => {
   })
 
   test('should return true when valid Id is provided', async () => {
-    const validId = '1'
     const { validateCoupon } = makeSut()
 
-    const isValid = await validateCoupon.execute({ couponId: validId, currentDate: new Date('03/13/2022') })
+    const isValid = await validateCoupon.execute(validateCouponInput)
 
     expect(isValid).toBe(true)
   })
@@ -51,8 +56,19 @@ describe('Validate Coupon use case', () => {
       throw new CouponNotFoundError(invalidId)
     })
 
-    const isValid = await validateCoupon.execute({ couponId: invalidId })
+    const isValid = await validateCoupon.execute(validateCouponInput)
 
     expect(isValid).toBe(false)
+  })
+
+  test('should call couponRepository with correct parameters', async () => {
+    const { validateCoupon, couponRepository } = makeSut()
+    const couponRepositorySpy = jest.spyOn(couponRepository, 'getById')
+
+    await validateCoupon.execute(validateCouponInput)
+
+    expect(couponRepositorySpy).toBeCalled()
+    expect(couponRepositorySpy).toBeCalledTimes(1)
+    expect(couponRepositorySpy).toBeCalledWith('1')
   })
 })
