@@ -118,4 +118,12 @@ describe('Place Order use case', () => {
     expect(couponRepositorySpy).toBeCalledTimes(1)
     expect(couponRepositorySpy).toBeCalledWith('1')
   })
+
+  test('should call orderItemRepository with the correct parameters', async () => {
+    const { placeOrder, orderItemRepository } = makeSut()
+    const orderItemRepositorySpy = jest.spyOn(orderItemRepository, 'save')
+    await placeOrder.execute({ ...placeOrderInput, couponId: '1' })
+
+    expect(orderItemRepositorySpy).toBeCalledTimes(3)
+  })
 })

@@ -48,7 +48,7 @@
 - [x] Criar tipos específicos para os parâmetros das funções de *query* nos repositórios:
   - No *OrderRepositoryPostgres*, por exemplo, não receber um *object* como tipo dos parâmetros, mas um objeto definido;
 
-- [] Rever estrutura do caso de uso *Place Order*:
+- [x] Rever estrutura do caso de uso *Place Order*:
   - [x] Adicionar possibilidade de mandar um cupom no caso de uso *Place Order*;
   - [x] No caso de uso *Place Order*, também salvar no banco de dados os registros de *Order Items*, que estarão dentro da entidade *Order*, só o *Order ID* que teremos que receber de fora;
 
