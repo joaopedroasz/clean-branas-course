@@ -20,7 +20,7 @@ const makeSut = (): makeSutTypes => {
 }
 
 describe('Simulate Freight use case', () => {
-  const simulateOrderInput: SimulateFreightInputProperties[] = [
+  const simulateFreightInput: SimulateFreightInputProperties[] = [
     {
       itemId: '1',
       quantity: 1
@@ -30,7 +30,7 @@ describe('Simulate Freight use case', () => {
       quantity: 2
     },
     {
-      itemId: '2',
+      itemId: '3',
       quantity: 3
     }
   ]
@@ -44,8 +44,21 @@ describe('Simulate Freight use case', () => {
   test('should execute simulate freight use case', async () => {
     const { simulateFreight } = makeSut()
 
-    const { totalValue } = await simulateFreight.execute(simulateOrderInput)
+    const { totalValue } = await simulateFreight.execute(simulateFreightInput)
 
     expect(totalValue).toBe(600)
+  })
+
+  test('should call itemRepository with correct parameters', async () => {
+    const { simulateFreight, itemRepository } = makeSut()
+    const itemRepositorySpy = jest.spyOn(itemRepository, 'getById')
+
+    await simulateFreight.execute(simulateFreightInput)
+
+    expect(itemRepositorySpy).toBeCalled()
+    expect(itemRepositorySpy).toBeCalledTimes(3)
+    expect(itemRepositorySpy).toBeCalledWith('1')
+    expect(itemRepositorySpy).toBeCalledWith('2')
+    expect(itemRepositorySpy).toBeCalledWith('3')
   })
 })
