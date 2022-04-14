@@ -1,9 +1,9 @@
 import { CouponRepository } from '@/domain/repositories'
 import { CouponNotFoundError } from '@/domain/errors'
 import { ValidateCoupon } from '@/application/use-cases'
+import { ValidateCouponInput } from '@/application/dtos'
 
 import { CouponRepositoryStub } from '@/tests/stub/repositories'
-import { ValidateCouponInput } from '../dtos'
 
 type makeSutTypes = {
   validateCoupon: ValidateCoupon
