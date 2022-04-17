@@ -20,6 +20,18 @@ export class OrderItem {
     this.price = price
   }
 
+  public getItemId (): string {
+    return this.itemId
+  }
+
+  public getQuantity (): number {
+    return this.quantity
+  }
+
+  public getPrice (): number {
+    return this.price
+  }
+
   public getTotalPrice (): number {
     return this.price * this.quantity
   }
