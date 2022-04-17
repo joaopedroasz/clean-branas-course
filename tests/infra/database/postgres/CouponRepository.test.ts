@@ -5,6 +5,7 @@ import { CouponRepository } from '@/domain/repositories'
 import { CouponNotFoundError } from '@/domain/errors'
 
 import { CouponRepositoryPostgres, DatabaseConnectionAdapter, DatabaseConnection } from '@/infra/database'
+import { createCoupon, deleteCoupon } from './queries'
 
 type makeSutTypes = {
   databaseConnection: DatabaseConnection
@@ -30,42 +31,14 @@ describe('Coupon postgres repository', () => {
 
   test('should get a Coupon', async () => {
     const couponId = randomUUID()
-    await databaseConnection.query<object, null>(
-      `
-        INSERT INTO coupons (
-          id,
-          code,
-          percentage,
-          expire_date
-        ) VALUES (
-          $<id>,
-          $<code>,
-          $<percentage>,
-          $<expire_date>
-        )
-      `,
-      {
-        id: couponId,
-        code: 'random_code',
-        percentage: 10,
-        expire_date: new Date('03/13/2022')
-      }
-    )
+    await createCoupon(databaseConnection, couponId)
 
     const coupon = await couponRepository.getById(couponId)
 
     expect(coupon.getId()).toBeDefined()
     expect(coupon.getId()).toBe(couponId)
 
-    await databaseConnection.query<object, null>(
-      `
-        DELETE FROM coupons
-        WHERE id = $<id>
-      `,
-      {
-        id: couponId
-      }
-    )
+    await deleteCoupon(databaseConnection, couponId)
   })
 
   test('should throw an error when Coupon is not found', async () => {
