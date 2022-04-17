@@ -28,10 +28,6 @@ export class OrderItem {
     return this.quantity
   }
 
-  public getPrice (): number {
-    return this.price
-  }
-
   public getTotalPrice (): number {
     return this.price * this.quantity
   }
