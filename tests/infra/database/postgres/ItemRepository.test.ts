@@ -5,6 +5,8 @@ import { ItemNotFoundError } from '@/domain/errors'
 
 import { DatabaseConnectionAdapter, DatabaseConnection, ItemRepositoryPostgres } from '@/infra/database'
 
+import { createItem, deleteItem } from './queries'
+
 type makeSutType = {
   itemRepository: ItemRepositoryPostgres
   databaseConnection: DatabaseConnection
@@ -28,55 +30,14 @@ describe('Postgres Item Repository', () => {
 
   test('should get an Item', async () => {
     const itemId = randomUUID()
-    await databaseConnection.query<object, null>(
-      `
-        INSERT INTO items (
-          id,
-          category,
-          description,
-          price,
-          height,
-          width,
-          depth,
-          weight
-        )
-        VALUES (
-          $<id>,
-          $<category>,
-          $<description>,
-          $<price>,
-          $<height>,
-          $<width>,
-          $<depth>,
-          $<weight>
-        );
-      `,
-      {
-        id: itemId,
-        category: 'Livros',
-        description: 'Clean Code',
-        price: 100.00,
-        height: 15.00,
-        width: 10,
-        depth: 4.00,
-        weight: 1
-      }
-    )
+    await createItem(databaseConnection, itemId)
 
     const item = await itemRepository.getById(itemId)
 
     expect(item).toBeDefined()
     expect(item.getId()).toBe(itemId)
 
-    await databaseConnection.query<object, null>(
-      `
-        DELETE FROM items
-        WHERE id = $<id>
-      `,
-      {
-        id: itemId
-      }
-    )
+    await deleteItem(databaseConnection, itemId)
   })
 
   test('should throw a error when Item is not found', async () => {
