@@ -13,7 +13,7 @@ export class ItemRepositoryPostgres implements ItemRepository {
 
   public async getById (id: string): Promise<Item> {
     const [itemData] = await this.databaseConnection.query<string[], ItemTable[]>(
-      'SELECT * FROM items where id = $1',
+      'SELECT * FROM items WHERE id = $1',
       [id]
     )
 

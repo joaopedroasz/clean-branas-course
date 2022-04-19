@@ -12,8 +12,8 @@ export class CouponRepositoryPostgres implements CouponRepository {
   }
 
   public async getById (id: string): Promise<Coupon> {
-    const [couponFromDatabase] = await this.databaseConnection.query<string[], CouponTable[]>(
-      'SELECT * FROM coupons where id = $1',
+    const [couponFromDatabase] = await this.databaseConnection.query<object, CouponTable[]>(
+      'SELECT * FROM coupons WHERE id = $1',
       [id]
     )
 

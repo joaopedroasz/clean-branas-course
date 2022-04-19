@@ -5,7 +5,8 @@ import { PlaceOrder } from '@/application/use-cases'
 import { PlaceOrderInput, PlaceOrderOutput } from '@/application/dtos'
 
 import { CouponRepositoryPostgres, DatabaseConnection, DatabaseConnectionAdapter, ItemRepositoryPostgres, OrderItemRepositoryPostgres, OrderRepositoryPostgres } from '@/infra/database'
-import { ItemNotFoundError } from '@/domain/errors'
+import { CouponNotFoundError, ItemNotFoundError } from '@/domain/errors'
+import { Item } from '@/domain/entities'
 
 type makeSutType = {
   placeOrder: PlaceOrderUseCase
@@ -34,7 +35,7 @@ const makeSut = (): makeSutType => {
 }
 
 describe('Place Order use case', () => {
-  const { placeOrder, itemRepository } = makeSut()
+  const { placeOrder, itemRepository, couponRepository } = makeSut()
 
   const placeOrderInput: PlaceOrderInput = {
     CPF: '237.967.084-63',
@@ -51,17 +52,34 @@ describe('Place Order use case', () => {
         idItem: '3',
         quantity: 3
       }
-    ]
+    ],
+    couponId: '1'
   }
 
   test('should throw an error when itemRepository throws an error', async () => {
     const invalidId = 'invalid_id'
+    const itemNotFoundError = new ItemNotFoundError(invalidId)
     jest.spyOn(itemRepository, 'getById').mockImplementationOnce(() => {
-      throw new ItemNotFoundError(invalidId)
+      throw itemNotFoundError
     })
 
     const placeOrderError = async (): Promise<PlaceOrderOutput> => await placeOrder.execute(placeOrderInput)
 
-    await expect(placeOrderError).rejects.toThrowError(new ItemNotFoundError(invalidId))
+    await expect(placeOrderError).rejects.toThrowError(itemNotFoundError)
+  })
+
+  test('should throw an error when couponRepository throws an error', async () => {
+    const invalidId = 'invalid_id'
+    const couponNotFoundError = new CouponNotFoundError(invalidId)
+    jest.spyOn(itemRepository, 'getById').mockImplementation(async () => {
+      return Promise.resolve(new Item({ id: '1', category: '', depthInCM: 0, description: '', heightInCM: 0, price: 0, weightInCM: 0, widthInCM: 0 }))
+    })
+    jest.spyOn(couponRepository, 'getById').mockImplementationOnce(() => {
+      throw couponNotFoundError
+    })
+
+    const placeOrderError = async (): Promise<PlaceOrderOutput> => await placeOrder.execute(placeOrderInput)
+
+    await expect(placeOrderError).rejects.toThrowError(couponNotFoundError)
   })
 })
