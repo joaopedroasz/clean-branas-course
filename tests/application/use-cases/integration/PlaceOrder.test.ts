@@ -1,12 +1,12 @@
 import { CouponRepository, ItemRepository, OrderItemRepository, OrderRepository } from '@/domain/repositories'
+import { Item } from '@/domain/entities'
+import { CouponNotFoundError, ItemNotFoundError } from '@/domain/errors'
 
 import { PlaceOrderUseCase } from '@/application/contracts'
 import { PlaceOrder } from '@/application/use-cases'
 import { PlaceOrderInput, PlaceOrderOutput } from '@/application/dtos'
 
 import { CouponRepositoryPostgres, DatabaseConnection, DatabaseConnectionAdapter, ItemRepositoryPostgres, OrderItemRepositoryPostgres, OrderRepositoryPostgres } from '@/infra/database'
-import { CouponNotFoundError, ItemNotFoundError } from '@/domain/errors'
-import { Item } from '@/domain/entities'
 
 type makeSutType = {
   placeOrder: PlaceOrderUseCase
