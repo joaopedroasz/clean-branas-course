@@ -1,5 +1,6 @@
 import { OrderItemRepository, SaveOrderItemInput, SaveOrderItemOutput } from '@/domain/repositories'
-import { DatabaseConnection } from '@/infra/database/contracts'
+
+import { DatabaseConnection } from '@/infra/database'
 import { SaveOrderItemQueryInput, SaveOrderItemQueryOutput } from './types'
 
 export class OrderItemRepositoryPostgres implements OrderItemRepository {

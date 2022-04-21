@@ -1,6 +1,7 @@
 import { Freight } from '@/domain/services'
 import { ItemRepository } from '@/domain/repositories'
-import { SimulateFreightUseCase } from '../contracts/use-cases/SimulateFreight'
+
+import { SimulateFreightUseCase } from '../contracts'
 import { SimulateFreightInput, SimulateFreightOutput } from '../dtos'
 
 export class SimulateFreight implements SimulateFreightUseCase {

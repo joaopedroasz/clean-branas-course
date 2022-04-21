@@ -1,5 +1,6 @@
 import { CouponRepository } from '@/domain/repositories'
 import { CouponNotFoundError } from '@/domain/errors'
+
 import { ValidateCoupon } from '@/application/use-cases'
 import { ValidateCouponInput } from '@/application/dtos'
 

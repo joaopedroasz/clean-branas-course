@@ -1,6 +1,8 @@
 import { Order } from '@/domain/entities'
 import { OrderRepository } from '@/domain/repositories'
+
 import { DatabaseConnection, DatabaseConnectionAdapter, OrderRepositoryPostgres } from '@/infra/database'
+
 import { deleteOrder } from './queries'
 
 type makeSutTypes = {
