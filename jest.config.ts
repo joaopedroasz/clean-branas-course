@@ -14,6 +14,7 @@ export default {
   transform: {
     '.+\\.ts$': 'ts-jest'
   },
+  preset: 'ts-jest',
   moduleNameMapper: {
     '@/tests/(.*)': '<rootDir>/tests/$1',
     '@/(.*)': '<rootDir>/src/$1'
