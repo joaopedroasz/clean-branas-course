@@ -12,7 +12,7 @@ export default {
   coverageProvider: 'babel',
   testEnvironment: 'node',
   transform: {
-    '.+\\.ts$': 'ts-jest'
+    '^.+\\.tsx?$': 'ts-jest/legacy'
   },
   preset: 'ts-jest',
   moduleNameMapper: {
