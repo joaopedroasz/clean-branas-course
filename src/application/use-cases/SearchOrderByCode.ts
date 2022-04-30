@@ -8,7 +8,7 @@ export class SearchOrderByCode implements SearchOrderByCodeUseCase {
       freightValue: 0,
       issueDate: new Date(),
       items: [],
-      orderCode: '',
+      orderCode: input.orderCode,
       orderId: '',
       couponId: '',
       price: 0
