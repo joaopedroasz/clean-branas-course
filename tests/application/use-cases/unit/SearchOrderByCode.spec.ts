@@ -20,4 +20,16 @@ describe('Search Order By Code use case', () => {
     expect(searchOrderByCode).toBeDefined()
     expect(searchOrderByCode).toHaveProperty('execute')
   })
+
+  test('should search a order by code', async () => {
+    const { searchOrderByCode } = makeSut()
+    const code = 'random_code'
+
+    const order = await searchOrderByCode.execute({
+      orderCode: code
+    })
+
+    expect(order).toHaveProperty('orderCode')
+    expect(order.orderCode).toBe(code)
+  })
 })
