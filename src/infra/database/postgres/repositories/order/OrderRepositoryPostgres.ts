@@ -1,3 +1,4 @@
+import { Order } from '@/domain/entities'
 import { OrderRepository, SaveOrderInput, SaveOrderOutput } from '@/domain/repositories'
 
 import { DatabaseConnection } from '@/infra/database'
@@ -54,5 +55,14 @@ export class OrderRepositoryPostgres implements OrderRepository {
       createdOrderId: id,
       createdOrderCode: code
     }
+  }
+
+  public async getByCode (code: string): Promise<Order> {
+    return new Order({
+      id: '',
+      cpf: '',
+      freight: 0,
+      issueDate: new Date()
+    })
   }
 }
