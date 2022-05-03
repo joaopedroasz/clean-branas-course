@@ -1,9 +1,11 @@
+import { randomUUID } from 'crypto'
+
 import { Order } from '@/domain/entities'
 import { OrderRepository } from '@/domain/repositories'
 
 import { DatabaseConnection, DatabaseConnectionAdapter, OrderRepositoryPostgres } from '@/infra/database'
 
-import { deleteOrder } from './queries'
+import { createOrder, deleteOrder } from './queries'
 
 type makeSutTypes = {
   orderRepository: OrderRepository
@@ -32,5 +34,19 @@ describe('Order Repository', () => {
     expect(createdOrderCode).toBeDefined()
 
     await deleteOrder(databaseConnection, createdOrderId)
+  })
+
+  test('should get a order by code', async () => {
+    const orderId = randomUUID()
+    const orderCode = 'valid_code'
+    await createOrder(databaseConnection, orderId, { code: orderCode })
+
+    const orderByCode = await orderRepository.getByCode(orderCode)
+
+    expect(orderByCode).toBeDefined()
+    expect(orderByCode).toHaveProperty('orderCode')
+    expect(orderByCode.getOrderCode()).toBe(orderCode)
+
+    await deleteOrder(databaseConnection, orderId)
   })
 })
