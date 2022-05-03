@@ -3,4 +3,5 @@ export type OrderProperties = {
   cpf: string
   issueDate?: Date
   freight?: number
+  code?: string
 }

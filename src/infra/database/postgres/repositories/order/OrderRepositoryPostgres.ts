@@ -1,9 +1,9 @@
 import { Order } from '@/domain/entities'
 import { OrderRepository, SaveOrderInput, SaveOrderOutput } from '@/domain/repositories'
 
-import { DatabaseConnection } from '@/infra/database'
+import { DatabaseConnection, OrderTable } from '@/infra/database'
 
-import { SaveOrderQueryInput, SaveOrderQueryOutput } from './types'
+import { GetByCodeQueryInput, SaveOrderQueryInput, SaveOrderQueryOutput } from './types'
 
 export class OrderRepositoryPostgres implements OrderRepository {
   private readonly databaseConnection: DatabaseConnection
@@ -58,11 +58,32 @@ export class OrderRepositoryPostgres implements OrderRepository {
   }
 
   public async getByCode (code: string): Promise<Order> {
+    const [orderFromDataBase] = await this.databaseConnection.query<
+    GetByCodeQueryInput, OrderTable[]
+    >(
+      `
+        SELECT * FROM orders
+        WHERE code = $<code>;
+      `,
+      {
+        code
+      }
+    )
+
+    const {
+      id,
+      buyer_cpf: buyerCPF,
+      code: orderCode,
+      freight_value: freightValue,
+      issue_date: issueDate
+    } = orderFromDataBase
+
     return new Order({
-      id: '',
-      cpf: '',
-      freight: 0,
-      issueDate: new Date()
+      id,
+      cpf: buyerCPF,
+      freight: freightValue,
+      issueDate,
+      code: orderCode
     })
   }
 }

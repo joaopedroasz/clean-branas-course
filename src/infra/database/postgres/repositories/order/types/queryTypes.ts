@@ -11,3 +11,7 @@ export type SaveOrderQueryOutput = {
   id: string
   code: string
 }
+
+export type GetByCodeQueryInput = {
+  code: string
+}

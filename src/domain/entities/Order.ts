@@ -16,7 +16,8 @@ export class Order {
       id,
       cpf,
       issueDate = new Date(),
-      freight = 0
+      freight = 0,
+      code
     }: OrderProperties
   ) {
     this.id = id
@@ -24,7 +25,7 @@ export class Order {
     this.cpf = new CPF(cpf)
     this.issueDate = issueDate
     this.freight = freight
-    this.orderCode = this.generateOrderCode()
+    this.orderCode = code ?? this.generateOrderCode()
   }
 
   private generateOrderCode (): string {
