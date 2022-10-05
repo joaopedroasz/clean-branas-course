@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["node", "vitest/globals"],
     "outDir": "./dist",
     "module": "CommonJS",
     "target": "ES2019",

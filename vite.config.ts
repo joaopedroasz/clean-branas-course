@@ -1,7 +1,7 @@
 import { resolve } from 'path'
-import { defineConfig } from 'vitest/config'
+import { defineConfig, UserConfig } from 'vitest/config'
 
-export default defineConfig({
+export const baseConfig: UserConfig = {
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
@@ -9,9 +9,17 @@ export default defineConfig({
     }
   },
   test: {
+    root: resolve(__dirname, 'tests'),
+    globals: true,
+    include: ['**/*.{spec,test}.ts'],
     coverage: {
       provider: 'c8',
       reporter: ['text', 'html']
-    }
+    },
+    clearMocks: true,
+    mockReset: true,
+    reporters: 'verbose'
   }
-})
+}
+
+export default defineConfig(baseConfig)
