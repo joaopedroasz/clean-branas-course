@@ -9,9 +9,10 @@ export class CPF {
   private readonly SECOND_VERIFICATION_DIGIT_FACTOR = 11
   private readonly MIN_FACTOR = 2
 
-  constructor (
-    private readonly rawCPF: string
-  ) {
+  private readonly rawCPF: string
+
+  constructor (rawCPF: string) {
+    this.rawCPF = rawCPF
     const isValid = this.validate()
     if (!isValid) throw new InvalidCpfError(rawCPF)
   }
