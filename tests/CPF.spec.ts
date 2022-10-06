@@ -22,28 +22,28 @@ describe('CPF', () => {
     expect(sut).toThrowError(new InvalidCpfError(invalidCPF))
   })
 
-  it('should throw a InvalidCpfError no CPF is provided', () => {
+  it('should throw a InvalidCpfError if no CPF is provided', () => {
     const invalidCPF = ''
     const sut = (): CPF => new CPF(invalidCPF)
 
     expect(sut).toThrowError(new InvalidCpfError(invalidCPF))
   })
 
-  it('should throw a InvalidCpfError CPF has less than 11 digits', () => {
+  it('should throw a InvalidCpfError if CPF has less than 11 digits', () => {
     const invalidCPF = '607.109.010-5'
     const sut = (): CPF => new CPF(invalidCPF)
 
     expect(sut).toThrowError(new InvalidCpfError(invalidCPF))
   })
 
-  it('should throw a InvalidCpfError CPF has more than 14 digits', () => {
+  it('should throw a InvalidCpfError if CPF has more than 14 digits', () => {
     const invalidCPF = '607.109.010-555'
     const sut = (): CPF => new CPF(invalidCPF)
 
     expect(sut).toThrowError(new InvalidCpfError(invalidCPF))
   })
 
-  it('should throw a InvalidCpfError all digits are equal', () => {
+  it('should throw a InvalidCpfError if all digits are equal', () => {
     const invalidCPF = '111.111.111-11'
     const sut = (): CPF => new CPF(invalidCPF)
 
