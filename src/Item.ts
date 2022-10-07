@@ -20,7 +20,7 @@ export class Item {
   }
 
   private isValidPrice (): boolean {
-    return this.price >= 0
+    return this.price > 0
   }
 
   public getPrice (): number {
