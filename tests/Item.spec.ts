@@ -1,4 +1,4 @@
-import { Item } from '@/item'
+import { Item } from '@/Item'
 import { InvalidPriceError } from '@/InvalidPrice'
 
 describe('Item', () => {
@@ -10,6 +10,13 @@ describe('Item', () => {
 
   it('should not create an item with invalid price', () => {
     const invalidPrice = -1
+    const sut = (): Item => new Item({ description: 'any_description', price: invalidPrice })
+
+    expect(sut).toThrow(new InvalidPriceError(invalidPrice))
+  })
+
+  it('should not create an item with price equals to zero', () => {
+    const invalidPrice = 0
     const sut = (): Item => new Item({ description: 'any_description', price: invalidPrice })
 
     expect(sut).toThrow(new InvalidPriceError(invalidPrice))
