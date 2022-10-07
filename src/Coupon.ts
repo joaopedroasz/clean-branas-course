@@ -22,4 +22,9 @@ export class Coupon {
   private isValidPercentage (): boolean {
     return this.percentage > 0 && this.percentage <= 100
   }
+
+  public calculatePriceDiscount (price: number): number {
+    const discount = price * (this.percentage / 100)
+    return price - discount
+  }
 }
