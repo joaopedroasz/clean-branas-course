@@ -14,4 +14,10 @@ describe('Item', () => {
 
     expect(sut).toThrow(new InvalidPriceError(invalidPrice))
   })
+
+  it('should return price', () => {
+    const sut = new Item({ description: 'any_description', price: 1 })
+
+    expect(sut.getPrice()).toBe(1)
+  })
 })
