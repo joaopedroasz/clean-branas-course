@@ -46,4 +46,13 @@ describe('Coupon', () => {
 
     expect(coupon).toBeDefined()
   })
+
+  it('should calculate discount', () => {
+    const coupon = new Coupon({
+      code: 'VALE20',
+      percentage: 20
+    })
+
+    expect(coupon.calculatePriceDiscount(100)).toBe(80)
+  })
 })
