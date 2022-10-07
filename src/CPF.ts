@@ -1,8 +1,7 @@
 import { InvalidCpfError } from './InvalidCPF'
 
 export class CPF {
-  private readonly MIN_LENGTH = 11
-  private readonly MAX_LENGTH = 14
+  private readonly VALID_LENGTH = 11
   private readonly FIRST_VERIFICATION_DIGIT_INDEX = 9
   private readonly SECOND_VERIFICATION_DIGIT_INDEX = 11
   private readonly FIRST_VERIFICATION_DIGIT_FACTOR = 10
@@ -18,9 +17,9 @@ export class CPF {
   }
 
   private validate (): boolean {
-    if (!this.rawCPF || !this.hasValidLength(this.rawCPF)) return false
+    if (!this.rawCPF) return false
     const cpf = this.removeNonDigits(this.rawCPF)
-    if (this.allDigitsAreEqual(cpf)) return false
+    if (!this.hasValidLength(cpf) || this.allDigitsAreEqual(cpf)) return false
 
     const verificationDigits = this.getVerificationDigits(cpf)
     const firstVerificationDigit = this.calculateVerificationDigit(cpf, this.FIRST_VERIFICATION_DIGIT_FACTOR)
@@ -31,7 +30,7 @@ export class CPF {
   }
 
   private hasValidLength (rawCPF: string): boolean {
-    return rawCPF.length >= this.MIN_LENGTH || rawCPF.length <= this.MAX_LENGTH
+    return rawCPF.length === this.VALID_LENGTH
   }
 
   private removeNonDigits (rawCPF: string): string {
