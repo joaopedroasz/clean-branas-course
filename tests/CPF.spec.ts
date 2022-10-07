@@ -15,6 +15,13 @@ describe('CPF', () => {
     expect(sut.getCPF()).toBe(validCPF)
   })
 
+  it('should create CPF if valid CPF that ends with 0 is provided', () => {
+    const validCPF = '47308766870'
+    const sut = new CPF(validCPF)
+
+    expect(sut).toBeTruthy()
+  })
+
   it('should throw a InvalidCpfError if invalid CPF provided', () => {
     const invalidCPF = '705.738.222-72'
     const sut = (): CPF => new CPF(invalidCPF)
