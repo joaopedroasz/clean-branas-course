@@ -46,6 +46,8 @@ export class Order {
     for (const orderItem of this.orderItems) {
       totalPrice += orderItem.calculatePrice()
     }
-    return totalPrice
+    if (!this.coupon) return totalPrice
+
+    return this.coupon.calculatePriceDiscount(totalPrice)
   }
 }
