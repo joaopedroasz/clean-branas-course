@@ -40,4 +40,18 @@ describe('Order', () => {
 
     expect(sut.getOrderItems()).toHaveLength(3)
   })
+
+  it('should calculate total price', () => {
+    const validCPF = '705.738.222-71'
+    const sut = new Order({ buyerCPF: validCPF })
+    const item1 = new Item({ description: 'item 1', price: 10 })
+    const item2 = new Item({ description: 'item 2', price: 20 })
+    const item3 = new Item({ description: 'item 3', price: 30 })
+
+    sut.addItem({ item: item1, quantity: 1 })
+    sut.addItem({ item: item2, quantity: 2 })
+    sut.addItem({ item: item3, quantity: 3 })
+
+    expect(sut.getTotalPrice()).toBe(140)
+  })
 })
