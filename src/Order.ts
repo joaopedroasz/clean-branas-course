@@ -29,4 +29,12 @@ export class Order {
   public addItem ({ item, quantity }: AddItemProps): void {
     this.orderItems.push(new OrderItem({ item, quantity }))
   }
+
+  public getTotalPrice (): number {
+    let totalPrice = 0
+    for (const orderItem of this.orderItems) {
+      totalPrice += orderItem.calculatePrice()
+    }
+    return totalPrice
+  }
 }
