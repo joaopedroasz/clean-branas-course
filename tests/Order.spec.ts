@@ -1,6 +1,7 @@
 import { Order } from '@/Order'
 import { InvalidCpfError } from '@/InvalidCPF'
 import { Item } from '@/Item'
+import { Coupon } from '@/Coupon'
 
 describe('Order', () => {
   it('should not create an order with invalid CPF', () => {
@@ -53,5 +54,18 @@ describe('Order', () => {
     sut.addItem({ item: item3, quantity: 3 })
 
     expect(sut.getTotalPrice()).toBe(140)
+  })
+
+  it('should add coupon into order', () => {
+    const validCPF = '705.738.222-71'
+    const sut = new Order({ buyerCPF: validCPF })
+    const item1 = new Item({ description: 'item 1', price: 10 })
+
+    sut.addItem({ item: item1, quantity: 1 })
+
+    const coupon = new Coupon({ code: 'VALE20', percentage: 20 })
+    sut.addCoupon(coupon)
+
+    expect(sut.getCoupon()).toBeDefined()
   })
 })
