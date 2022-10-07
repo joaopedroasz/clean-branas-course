@@ -68,4 +68,20 @@ describe('Order', () => {
 
     expect(sut.getCoupon()).toBeDefined()
   })
+
+  it('should calculate total price with coupon discount', () => {
+    const sut = new Order({ buyerCPF: '705.738.222-71' })
+    const item1 = new Item({ description: 'item 1', price: 10 })
+    const item2 = new Item({ description: 'item 2', price: 20 })
+    const item3 = new Item({ description: 'item 3', price: 30 })
+
+    sut.addItem({ item: item1, quantity: 1 })
+    sut.addItem({ item: item2, quantity: 2 })
+    sut.addItem({ item: item3, quantity: 3 })
+
+    const coupon = new Coupon({ code: 'VALE20', percentage: 20 })
+    sut.addCoupon(coupon)
+
+    expect(sut.getTotalPrice()).toBe(112)
+  })
 })
