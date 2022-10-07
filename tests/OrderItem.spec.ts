@@ -8,4 +8,11 @@ describe('OrderItem', () => {
 
     expect(sut).toBeDefined()
   })
+
+  it('should calculate price of order item', () => {
+    const item = new Item({ description: 'T-Shirt', price: 10 })
+    const sut = new OrderItem({ item, quantity: 2 })
+
+    expect(sut.calculatePrice()).toBe(20)
+  })
 })
