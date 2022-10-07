@@ -22,4 +22,8 @@ export class Item {
   private isValidPrice (): boolean {
     return this.price >= 0
   }
+
+  public getPrice (): number {
+    return this.price
+  }
 }
