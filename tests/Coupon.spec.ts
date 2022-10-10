@@ -1,58 +1,64 @@
-import { Coupon } from '@/Coupon'
+import { Coupon, CouponProps } from '@/Coupon'
 import { InvalidPercentageError } from '@/InvalidPercentage'
 
-describe('Coupon', () => {
-  it('should create a coupon with valid percentage', () => {
-    const coupon = new Coupon({
-      code: 'VALE20',
-      percentage: 20
-    })
+const makeSut = (props?: CouponProps): Coupon => {
+  return new Coupon({
+    code: 'any_code',
+    percentage: 10,
+    ...props
+  })
+}
 
-    expect(coupon).toBeDefined()
+describe('Coupon', () => {
+  let sut: Coupon
+
+  beforeEach(() => {
+    sut = makeSut()
+  })
+
+  it('should create a coupon with valid percentage', () => {
+    const sut = makeSut()
+
+    expect(sut).toBeDefined()
   })
 
   it('should not create a coupon with percentage bigger than 100', () => {
-    const coupon = (): Coupon => new Coupon({
-      code: 'VALE200',
-      percentage: 200
+    const error = (): Coupon => makeSut({
+      percentage: 101,
+      code: 'any_code'
     })
 
-    expect(coupon).toThrowError(new InvalidPercentageError(200))
+    expect(error).toThrowError(new InvalidPercentageError(101))
   })
 
   it('should not create a coupon with percentage less than 0', () => {
-    const coupon = (): Coupon => new Coupon({
-      code: 'VALE-20',
-      percentage: -20
+    const error = (): Coupon => makeSut({
+      percentage: -1,
+      code: 'any_code'
     })
 
-    expect(coupon).toThrowError(new InvalidPercentageError(-20))
+    expect(error).toThrowError(new InvalidPercentageError(-1))
   })
 
   it('should not create a coupon with percentage equal to 0', () => {
-    const coupon = (): Coupon => new Coupon({
-      code: 'VALE0',
-      percentage: 0
+    const error = (): Coupon => makeSut({
+      percentage: 0,
+      code: 'any_code'
     })
 
-    expect(coupon).toThrowError(new InvalidPercentageError(0))
+    expect(error).toThrowError(new InvalidPercentageError(0))
   })
 
   it('should create a coupon with percentage equal to 100', () => {
-    const coupon = new Coupon({
-      code: 'VALE100',
-      percentage: 100
+    const sut = makeSut({
+      percentage: 100,
+      code: 'any_code'
     })
 
-    expect(coupon).toBeDefined()
+    expect(sut).toBeDefined()
   })
 
   it('should calculate discount', () => {
-    const coupon = new Coupon({
-      code: 'VALE20',
-      percentage: 20
-    })
-
-    expect(coupon.calculatePriceDiscount(100)).toBe(80)
+    expect(sut.calculatePriceDiscount(100)).toBe(90)
   })
 })
