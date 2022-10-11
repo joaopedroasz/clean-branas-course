@@ -31,4 +31,11 @@ describe('OrderItem', () => {
 
     expect(errorSut).toThrowError(new Error('Invalid quantity'))
   })
+
+  it('should not create an order item with zero quantity', () => {
+    const invalidQuantity = 0
+    const errorSut = (): OrderItem => makeSut({ item, quantity: invalidQuantity })
+
+    expect(errorSut).toThrowError(new Error('Invalid quantity'))
+  })
 })
