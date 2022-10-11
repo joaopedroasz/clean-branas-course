@@ -35,4 +35,8 @@ describe('Item', () => {
   it('should return price', () => {
     expect(sut.getPrice()).toBe(10)
   })
+
+  it('should return id', () => {
+    expect(sut.getId()).toBe('any_id')
+  })
 })
