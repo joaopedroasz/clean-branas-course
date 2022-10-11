@@ -1,9 +1,10 @@
 import { Order, OrderProps } from '@/Order'
 import { InvalidCpfError } from '@/InvalidCPF'
-import { Item } from '@/Item'
+import { Item, ItemProps } from '@/Item'
 import { Coupon } from '@/Coupon'
 
 const makeSut = (props: OrderProps): Order => new Order(props)
+const makeItem = (props: ItemProps): Item => new Item(props)
 
 describe('Order', () => {
   let sut: Order
@@ -24,7 +25,7 @@ describe('Order', () => {
   })
 
   it('should add OrderItems into Order', () => {
-    const item = new Item({ id: 'any_id', description: 'description', price: 10 })
+    const item = makeItem({ id: 'any_id', description: 'description', price: 10 })
 
     sut.addItem({ item, quantity: 1 })
 
@@ -32,9 +33,9 @@ describe('Order', () => {
   })
 
   it('should create an order with three items', async () => {
-    const item1 = new Item({ id: 'any_id', description: 'item 1', price: 10 })
-    const item3 = new Item({ id: 'any_id', description: 'item 2', price: 10 })
-    const item2 = new Item({ id: 'any_id', description: 'item 3', price: 10 })
+    const item1 = makeItem({ id: 'any_id', description: 'item 1', price: 10 })
+    const item3 = makeItem({ id: 'any_id', description: 'item 2', price: 10 })
+    const item2 = makeItem({ id: 'any_id', description: 'item 3', price: 10 })
 
     sut.addItem({ item: item1, quantity: 1 })
     sut.addItem({ item: item2, quantity: 1 })
@@ -44,9 +45,9 @@ describe('Order', () => {
   })
 
   it('should calculate total price', () => {
-    const item1 = new Item({ id: 'any_id', description: 'item 1', price: 10 })
-    const item2 = new Item({ id: 'any_id', description: 'item 2', price: 20 })
-    const item3 = new Item({ id: 'any_id', description: 'item 3', price: 30 })
+    const item1 = makeItem({ id: 'any_id', description: 'item 1', price: 10 })
+    const item2 = makeItem({ id: 'any_id', description: 'item 2', price: 20 })
+    const item3 = makeItem({ id: 'any_id', description: 'item 3', price: 30 })
 
     sut.addItem({ item: item1, quantity: 1 })
     sut.addItem({ item: item2, quantity: 2 })
@@ -63,9 +64,9 @@ describe('Order', () => {
   })
 
   it('should calculate total price with coupon discount', () => {
-    const item1 = new Item({ id: 'any_id', description: 'item 1', price: 10 })
-    const item2 = new Item({ id: 'any_id', description: 'item 2', price: 20 })
-    const item3 = new Item({ id: 'any_id', description: 'item 3', price: 30 })
+    const item1 = makeItem({ id: 'any_id', description: 'item 1', price: 10 })
+    const item2 = makeItem({ id: 'any_id', description: 'item 2', price: 20 })
+    const item3 = makeItem({ id: 'any_id', description: 'item 3', price: 30 })
 
     sut.addItem({ item: item1, quantity: 1 })
     sut.addItem({ item: item2, quantity: 2 })
