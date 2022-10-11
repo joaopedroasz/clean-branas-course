@@ -24,7 +24,11 @@ export class Coupon {
   }
 
   public calculatePriceDiscount (price: number): number {
-    const discount = price * (this.percentage / 100)
+    const discount = this.getPercentageDiscount(price)
     return price - discount
+  }
+
+  public getPercentageDiscount (price: number): number {
+    return price * (this.percentage / 100)
   }
 }
