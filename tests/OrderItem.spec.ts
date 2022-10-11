@@ -9,6 +9,7 @@ describe('OrderItem', () => {
 
   beforeEach(() => {
     item = new Item({
+      id: 'any_id',
       description: 'any_description',
       price: 10
     })
