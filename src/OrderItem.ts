@@ -15,6 +15,12 @@ export class OrderItem {
   }: OrderItemProps) {
     this.item = item
     this.quantity = quantity
+
+    if (!this.isValidQuantity(quantity)) throw new Error('Invalid quantity')
+  }
+
+  private isValidQuantity (quantity: number): boolean {
+    return quantity > 0
   }
 
   public calculatePrice (): number {
