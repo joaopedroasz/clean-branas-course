@@ -33,9 +33,9 @@ describe('Order', () => {
   })
 
   it('should create an order with three items', async () => {
-    const item1 = makeItem({ id: 'any_id', description: 'item 1', price: 10 })
-    const item3 = makeItem({ id: 'any_id', description: 'item 2', price: 10 })
-    const item2 = makeItem({ id: 'any_id', description: 'item 3', price: 10 })
+    const item1 = makeItem({ id: 'any_id_item1', description: 'item 1', price: 10 })
+    const item3 = makeItem({ id: 'any_id_item3', description: 'item 2', price: 10 })
+    const item2 = makeItem({ id: 'any_id_item2', description: 'item 3', price: 10 })
 
     sut.addItem({ item: item1, quantity: 1 })
     sut.addItem({ item: item2, quantity: 1 })
@@ -45,9 +45,9 @@ describe('Order', () => {
   })
 
   it('should calculate total price', () => {
-    const item1 = makeItem({ id: 'any_id', description: 'item 1', price: 10 })
-    const item2 = makeItem({ id: 'any_id', description: 'item 2', price: 20 })
-    const item3 = makeItem({ id: 'any_id', description: 'item 3', price: 30 })
+    const item1 = makeItem({ id: 'any_id_item1', description: 'item 1', price: 10 })
+    const item2 = makeItem({ id: 'any_id_item2', description: 'item 2', price: 20 })
+    const item3 = makeItem({ id: 'any_id_item3', description: 'item 3', price: 30 })
 
     sut.addItem({ item: item1, quantity: 1 })
     sut.addItem({ item: item2, quantity: 2 })
@@ -64,9 +64,9 @@ describe('Order', () => {
   })
 
   it('should calculate total price with coupon discount', () => {
-    const item1 = makeItem({ id: 'any_id', description: 'item 1', price: 10 })
-    const item2 = makeItem({ id: 'any_id', description: 'item 2', price: 20 })
-    const item3 = makeItem({ id: 'any_id', description: 'item 3', price: 30 })
+    const item1 = makeItem({ id: 'any_id_item1', description: 'item 1', price: 10 })
+    const item2 = makeItem({ id: 'any_id_item2', description: 'item 2', price: 20 })
+    const item3 = makeItem({ id: 'any_id_item3', description: 'item 3', price: 30 })
 
     sut.addItem({ item: item1, quantity: 1 })
     sut.addItem({ item: item2, quantity: 2 })
@@ -76,5 +76,16 @@ describe('Order', () => {
     sut.addCoupon(coupon)
 
     expect(sut.getTotalPrice()).toBe(112)
+  })
+
+  it('should not add same item more than once', () => {
+    const item1 = makeItem({ id: 'any_id_1', description: 'item 1', price: 10 })
+    const item2 = makeItem({ id: 'any_id_2', description: 'item 2', price: 20 })
+
+    sut.addItem({ item: item1, quantity: 1 })
+    sut.addItem({ item: item2, quantity: 2 })
+    const errorAddItem = (): void => sut.addItem({ item: item1, quantity: 4 })
+
+    expect(errorAddItem).toThrowError(new Error('Item already added'))
   })
 })
