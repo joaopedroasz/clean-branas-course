@@ -1,17 +1,16 @@
 import { Item, ItemProps } from '@/Item'
 import { InvalidPriceError } from '@/InvalidPrice'
 
-const makeSut = (props?: ItemProps): Item => new Item({
-  description: 'any_description',
-  price: 10,
-  ...props
-})
+const makeSut = (props: ItemProps): Item => new Item(props)
 
 describe('Item', () => {
   let sut: Item
 
   beforeEach(() => {
-    sut = makeSut()
+    sut = makeSut({
+      description: 'any_description',
+      price: 10
+    })
   })
 
   it('should create an item with description and price', () => {

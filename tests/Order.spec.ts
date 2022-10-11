@@ -3,16 +3,13 @@ import { InvalidCpfError } from '@/InvalidCPF'
 import { Item } from '@/Item'
 import { Coupon } from '@/Coupon'
 
-const makeSut = (props?: OrderProps): Order => new Order({
-  buyerCPF: '607.109.010-54',
-  ...props
-})
+const makeSut = (props: OrderProps): Order => new Order(props)
 
 describe('Order', () => {
   let sut: Order
 
   beforeEach(() => {
-    sut = makeSut()
+    sut = makeSut({ buyerCPF: '607.109.010-54' })
   })
 
   it('should not create an order with invalid CPF', () => {

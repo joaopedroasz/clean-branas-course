@@ -1,24 +1,20 @@
 import { Coupon, CouponProps } from '@/Coupon'
 import { InvalidPercentageError } from '@/InvalidPercentage'
 
-const makeSut = (props?: CouponProps): Coupon => {
-  return new Coupon({
-    code: 'any_code',
-    percentage: 10,
-    ...props
-  })
-}
+const makeSut = (props: CouponProps): Coupon => new Coupon(props)
 
 describe('Coupon', () => {
   let sut: Coupon
 
   beforeEach(() => {
-    sut = makeSut()
+    sut = makeSut({
+      code: 'any_code',
+      percentage: 10
+    })
   })
 
   it('should create a coupon with valid percentage', () => {
-    const sut = makeSut()
-
+    const sut = makeSut({ code: 'any_code', percentage: 10 })
     expect(sut).toBeDefined()
   })
 

@@ -1,9 +1,7 @@
 import { CPF } from '@/CPF'
 import { InvalidCpfError } from '@/InvalidCPF'
 
-const makeSut = (cpf?: string): CPF => {
-  return new CPF(cpf ?? '607.109.010-54')
-}
+const makeSut = (cpf: string): CPF => new CPF(cpf)
 
 describe('CPF', () => {
   let sut: CPF
