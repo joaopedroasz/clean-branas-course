@@ -24,4 +24,11 @@ describe('OrderItem', () => {
 
     expect(sut.calculatePrice()).toBe(20)
   })
+
+  it('should not create an order item with negative quantity', () => {
+    const invalidQuantity = -1
+    const errorSut = (): OrderItem => makeSut({ item, quantity: invalidQuantity })
+
+    expect(errorSut).toThrowError(new Error('Invalid quantity'))
+  })
 })
