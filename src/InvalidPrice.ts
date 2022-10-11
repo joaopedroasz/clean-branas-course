@@ -1,6 +1,11 @@
-export class InvalidPriceError extends Error {
+import { InvalidPropertyError } from './InvalidProperty'
+
+export class InvalidPriceError extends InvalidPropertyError {
   constructor (price: number) {
-    super(`Invalid price: ${price}`)
+    super({
+      propertyName: 'price',
+      value: price
+    })
     this.name = 'InvalidPriceError'
   }
 }

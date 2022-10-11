@@ -1,6 +1,11 @@
-export class InvalidCpfError extends Error {
+import { InvalidPropertyError } from './InvalidProperty'
+
+export class InvalidCpfError extends InvalidPropertyError {
   constructor (CPF: string) {
-    super(`Invalid CPF: ${CPF}`)
-    this.name = 'InvalidCPF'
+    super({
+      propertyName: 'CPF',
+      value: CPF
+    })
+    this.name = 'InvalidCpfError'
   }
 }
