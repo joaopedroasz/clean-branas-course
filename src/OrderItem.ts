@@ -1,3 +1,4 @@
+import { InvalidQuantityError } from './InvalidQuantity'
 import { Item } from './Item'
 
 export type OrderItemProps = {
@@ -16,7 +17,7 @@ export class OrderItem {
     this.item = item
     this.quantity = quantity
 
-    if (!this.isValidQuantity(quantity)) throw new Error('Invalid quantity')
+    if (!this.isValidQuantity(quantity)) throw new InvalidQuantityError(quantity)
   }
 
   private isValidQuantity (quantity: number): boolean {

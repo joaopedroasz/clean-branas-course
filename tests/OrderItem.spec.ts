@@ -1,5 +1,6 @@
 import { OrderItem, OrderItemProps } from '@/OrderItem'
 import { Item } from '@/Item'
+import { InvalidQuantityError } from '@/InvalidQuantity'
 
 const makeSut = (props: OrderItemProps): OrderItem => new OrderItem(props)
 
@@ -30,13 +31,13 @@ describe('OrderItem', () => {
     const invalidQuantity = -1
     const errorSut = (): OrderItem => makeSut({ item, quantity: invalidQuantity })
 
-    expect(errorSut).toThrowError(new Error('Invalid quantity'))
+    expect(errorSut).toThrowError(new InvalidQuantityError(invalidQuantity))
   })
 
   it('should not create an order item with zero quantity', () => {
     const invalidQuantity = 0
     const errorSut = (): OrderItem => makeSut({ item, quantity: invalidQuantity })
 
-    expect(errorSut).toThrowError(new Error('Invalid quantity'))
+    expect(errorSut).toThrowError(new InvalidQuantityError(invalidQuantity))
   })
 })
