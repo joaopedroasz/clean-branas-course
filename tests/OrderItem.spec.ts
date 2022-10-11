@@ -40,4 +40,8 @@ describe('OrderItem', () => {
 
     expect(errorSut).toThrowError(new InvalidQuantityError(invalidQuantity))
   })
+
+  it('should return item', () => {
+    expect(sut.getItem()).toEqual(item)
+  })
 })
