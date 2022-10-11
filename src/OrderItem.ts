@@ -24,6 +24,10 @@ export class OrderItem {
     return quantity > 0
   }
 
+  public getItem (): Item {
+    return this.item
+  }
+
   public calculatePrice (): number {
     return this.item.getPrice() * this.quantity
   }
