@@ -5,7 +5,7 @@ export type InvalidPropertyProps = {
 
 export class InvalidPropertyError extends Error {
   constructor (props: InvalidPropertyProps) {
-    super(`Invalid property: ${props.propertyName} with value: ${props.value}`)
+    super(`Invalid property ${props.propertyName} with value: ${props.value}`)
     this.name = 'InvalidPropertyError'
   }
 }
