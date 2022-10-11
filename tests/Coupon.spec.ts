@@ -57,4 +57,10 @@ describe('Coupon', () => {
   it('should calculate discount', () => {
     expect(sut.calculatePriceDiscount(100)).toBe(90)
   })
+
+  it('should return percentage discount', () => {
+    const percentageDiscount = sut.getPercentageDiscount(350)
+
+    expect(percentageDiscount).toBe(35)
+  })
 })
