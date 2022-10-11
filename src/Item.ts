@@ -27,6 +27,10 @@ export class Item {
     return this.price > 0
   }
 
+  public getId (): string {
+    return this.id
+  }
+
   public getPrice (): number {
     return this.price
   }
