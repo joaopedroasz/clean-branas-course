@@ -1,5 +1,6 @@
 import { Coupon, CouponProps } from '@/Coupon'
 import { InvalidPercentageError } from '@/InvalidPercentage'
+import { ExpiredCouponError } from '@/ExpiredCoupon'
 
 const makeSut = (props: CouponProps): Coupon => new Coupon(props)
 
@@ -74,7 +75,7 @@ describe('Coupon', () => {
       today
     })
 
-    expect(sut).toThrowError(new Error('Coupon is expired'))
+    expect(sut).toThrowError(new ExpiredCouponError(expiredDueDate))
   })
 
   it('should not create a Coupon with dueDate equals today', () => {
@@ -87,6 +88,6 @@ describe('Coupon', () => {
       today
     })
 
-    expect(sut).toThrowError(new Error('Coupon is expired'))
+    expect(sut).toThrowError(new ExpiredCouponError(dueDate))
   })
 })
