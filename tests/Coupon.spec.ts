@@ -63,4 +63,17 @@ describe('Coupon', () => {
 
     expect(percentageDiscount).toBe(35)
   })
+
+  it('should not create a Coupon with expired dueDate', () => {
+    const expiredDueDate = new Date('2022-10-10')
+    const today = new Date('2022-10-11')
+    const sut = (): Coupon => makeSut({
+      code: 'any_code',
+      percentage: 10,
+      dueDate: expiredDueDate,
+      today
+    })
+
+    expect(sut).toThrowError(new Error('Coupon is expired'))
+  })
 })
