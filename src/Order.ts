@@ -1,5 +1,6 @@
 import { Coupon } from './Coupon'
 import { CPF } from './CPF'
+import { ForbiddenAddDuplicatedItemError } from './ForbiddenAddDuplicatedItem'
 import { Item } from './Item'
 import { OrderItem } from './OrderItem'
 
@@ -34,7 +35,7 @@ export class Order {
   }
 
   public addItem ({ item, quantity }: AddItemProps): void {
-    if (this.alreadyHasItem(item)) throw new Error('Item already added')
+    if (this.alreadyHasItem(item)) throw new ForbiddenAddDuplicatedItemError(item.getId())
     this.orderItems.push(new OrderItem({ item, quantity }))
   }
 

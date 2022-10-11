@@ -2,6 +2,7 @@ import { Order, OrderProps } from '@/Order'
 import { InvalidCpfError } from '@/InvalidCPF'
 import { Item, ItemProps } from '@/Item'
 import { Coupon } from '@/Coupon'
+import { ForbiddenAddDuplicatedItemError } from '@/ForbiddenAddDuplicatedItem'
 
 const makeSut = (props: OrderProps): Order => new Order(props)
 const makeItem = (props: ItemProps): Item => new Item(props)
@@ -86,6 +87,6 @@ describe('Order', () => {
     sut.addItem({ item: item2, quantity: 2 })
     const errorAddItem = (): void => sut.addItem({ item: item1, quantity: 4 })
 
-    expect(errorAddItem).toThrowError(new Error('Item already added'))
+    expect(errorAddItem).toThrowError(new ForbiddenAddDuplicatedItemError(item1.getId()))
   })
 })
