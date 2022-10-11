@@ -32,7 +32,7 @@ export class Coupon {
 
   private isExpired (today: Date): boolean {
     if (!this.dueDate) return false
-    return this.dueDate.getTime() < today.getTime()
+    return this.dueDate.getTime() <= today.getTime()
   }
 
   public calculatePriceDiscount (price: number): number {
