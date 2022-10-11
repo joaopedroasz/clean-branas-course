@@ -3,24 +3,36 @@ import { InvalidPercentageError } from './InvalidPercentage'
 export type CouponProps = {
   code: string
   percentage: number
+  dueDate?: Date
+  today?: Date
 }
 
 export class Coupon {
   private readonly code: string
   private readonly percentage: number
+  private readonly dueDate?: Date
 
   constructor ({
     code,
-    percentage
+    percentage,
+    dueDate,
+    today = new Date()
   }: CouponProps) {
     this.code = code
     this.percentage = percentage
+    this.dueDate = dueDate
 
     if (!this.isValidPercentage()) throw new InvalidPercentageError(percentage)
+    if (this.isExpired(today)) throw new Error('Coupon is expired')
   }
 
   private isValidPercentage (): boolean {
     return this.percentage > 0 && this.percentage <= 100
+  }
+
+  private isExpired (today: Date): boolean {
+    if (!this.dueDate) return false
+    return this.dueDate.getTime() < today.getTime()
   }
 
   public calculatePriceDiscount (price: number): number {
