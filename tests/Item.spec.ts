@@ -10,7 +10,11 @@ describe('Item', () => {
     sut = makeSut({
       id: 'any_id',
       description: 'any_description',
-      price: 10
+      price: 10,
+      heightInCm: 10,
+      widthInCm: 10,
+      depthInCm: 10,
+      weightInKg: 10
     })
   })
 
@@ -20,14 +24,30 @@ describe('Item', () => {
 
   it('should not create an item with invalid price', () => {
     const invalidPrice = -1
-    const sut = (): Item => makeSut({ id: 'any_id', description: 'any_description', price: invalidPrice })
+    const sut = (): Item => makeSut({
+      id: 'any_id',
+      description: 'any_description',
+      price: invalidPrice,
+      heightInCm: 10,
+      widthInCm: 10,
+      depthInCm: 10,
+      weightInKg: 10
+    })
 
     expect(sut).toThrow(new InvalidPriceError(invalidPrice))
   })
 
   it('should not create an item with price equals to zero', () => {
     const invalidPrice = 0
-    const sut = (): Item => makeSut({ id: 'any_id', description: 'any_description', price: invalidPrice })
+    const sut = (): Item => makeSut({
+      id: 'any_id',
+      description: 'any_description',
+      price: invalidPrice,
+      heightInCm: 10,
+      widthInCm: 10,
+      depthInCm: 10,
+      weightInKg: 10
+    })
 
     expect(sut).toThrow(new InvalidPriceError(invalidPrice))
   })

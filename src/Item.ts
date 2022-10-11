@@ -4,6 +4,10 @@ export type ItemProps = {
   id: string
   description: string
   price: number
+  heightInCm: number
+  widthInCm: number
+  depthInCm: number
+  weightInKg: number
 }
 
 export class Item {
