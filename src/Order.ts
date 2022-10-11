@@ -34,7 +34,12 @@ export class Order {
   }
 
   public addItem ({ item, quantity }: AddItemProps): void {
+    if (this.alreadyHasItem(item)) throw new Error('Item already added')
     this.orderItems.push(new OrderItem({ item, quantity }))
+  }
+
+  private alreadyHasItem (item: Item): boolean {
+    return this.orderItems.some(orderItem => orderItem.getItem().getId() === item.getId())
   }
 
   public addCoupon (coupon: Coupon): void {
