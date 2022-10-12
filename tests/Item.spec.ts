@@ -85,4 +85,16 @@ describe('Item', () => {
 
     expect(freight).toBe(400)
   })
+
+  it('should return 10 as minimum freight', () => {
+    const weightInKg = 1
+    const heightInCm = 20
+    const widthInCm = 15
+    const depthInCm = 10
+    const sut = makeSut({ weightInKg, heightInCm, widthInCm, depthInCm })
+
+    const freight = sut.calculateFreight()
+
+    expect(freight).toBe(10)
+  })
 })
