@@ -47,20 +47,9 @@ describe('Item', () => {
     expect(sut.getId()).toBe(id)
   })
 
-  const negativeDimensions = [
-    { name: 'heightInCm', value: -1 },
-    { name: 'widthInCm', value: -1 },
-    { name: 'depthInCm', value: -1 }
-  ]
-
-  it.each(negativeDimensions)('should not create an Item with negative $name', ({ name, value }) => {
-    const sut = (): Item => makeSut({ [name]: value })
-
-    expect(sut).toThrowError(new Error('Invalid dimension'))
-  })
-
-  it('should not create an Item with negative weight', () => {
-    const sut = (): Item => makeSut({ weightInKg: -1 })
+  it('should not create an item with negative weight', () => {
+    const invalidWeight = -1
+    const sut = (): Item => makeSut({ weightInKg: invalidWeight })
 
     expect(sut).toThrowError(new Error('Invalid weight'))
   })

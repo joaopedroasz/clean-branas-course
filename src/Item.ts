@@ -1,3 +1,4 @@
+import { Dimensions } from './Dimensions'
 import { InvalidPriceError } from './InvalidPrice'
 
 export type ItemProps = {
@@ -14,10 +15,8 @@ export class Item {
   private readonly id: string
   private readonly description: string
   private readonly price: number
-  private readonly heightInCm: number
-  private readonly widthInCm: number
-  private readonly depthInCm: number
   private readonly weightInKg: number
+  private readonly dimensions: Dimensions
 
   constructor ({
     id,
@@ -31,28 +30,19 @@ export class Item {
     this.id = id
     this.description = description
     this.price = price
-    this.heightInCm = heightInCm
-    this.widthInCm = widthInCm
-    this.depthInCm = depthInCm
     this.weightInKg = weightInKg
+    this.dimensions = new Dimensions({
+      heightInCm,
+      widthInCm,
+      depthInCm
+    })
 
     if (!this.isValidPrice()) throw new InvalidPriceError(price)
-    if (!this.isValidDimensions()) throw new Error('Invalid dimension')
     if (!this.isValidWeight()) throw new Error('Invalid weight')
   }
 
   private isValidPrice (): boolean {
     return this.price > 0
-  }
-
-  private isValidDimensions (): boolean {
-    const dimensions = [
-      this.heightInCm,
-      this.widthInCm,
-      this.depthInCm
-    ]
-
-    return dimensions.every(dimension => dimension > 0)
   }
 
   private isValidWeight (): boolean {
