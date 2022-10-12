@@ -1,20 +1,23 @@
 import { InvalidQuantityError } from './InvalidQuantity'
-import { Item } from './Item'
 
 export type OrderItemProps = {
-  item: Item
+  itemId: string
+  price: number
   quantity: number
 }
 
 export class OrderItem {
-  private readonly item: Item
+  private readonly itemId: string
+  private readonly price: number
   private readonly quantity: number
 
   constructor ({
-    item,
+    itemId,
+    price,
     quantity
   }: OrderItemProps) {
-    this.item = item
+    this.itemId = itemId
+    this.price = price
     this.quantity = quantity
 
     if (!this.isValidQuantity(quantity)) throw new InvalidQuantityError(quantity)
@@ -24,11 +27,11 @@ export class OrderItem {
     return quantity > 0
   }
 
-  public getItem (): Item {
-    return this.item
+  public getItemId (): string {
+    return this.itemId
   }
 
   public calculatePrice (): number {
-    return this.item.getPrice() * this.quantity
+    return this.price * this.quantity
   }
 }

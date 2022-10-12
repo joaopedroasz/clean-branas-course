@@ -1,11 +1,9 @@
 import { Order, OrderProps } from '@/Order'
 import { InvalidCpfError } from '@/InvalidCPF'
-import { Item, ItemProps } from '@/Item'
 import { Coupon } from '@/Coupon'
 import { ForbiddenAddDuplicatedItemError } from '@/ForbiddenAddDuplicatedItem'
 
 const makeSut = (props: OrderProps): Order => new Order(props)
-const makeItem = (props: ItemProps): Item => new Item(props)
 
 describe('Order', () => {
   let sut: Order
@@ -26,33 +24,23 @@ describe('Order', () => {
   })
 
   it('should add OrderItems into Order', () => {
-    const item = makeItem({ id: 'any_id', description: 'description', price: 10 })
-
-    sut.addItem({ item, quantity: 1 })
+    sut.addItem({ itemId: 'any_id', price: 1, quantity: 1 })
 
     expect(sut.getOrderItems()).toHaveLength(1)
   })
 
   it('should create an order with three items', async () => {
-    const item1 = makeItem({ id: 'any_id_item1', description: 'item 1', price: 10 })
-    const item3 = makeItem({ id: 'any_id_item3', description: 'item 2', price: 10 })
-    const item2 = makeItem({ id: 'any_id_item2', description: 'item 3', price: 10 })
-
-    sut.addItem({ item: item1, quantity: 1 })
-    sut.addItem({ item: item2, quantity: 1 })
-    sut.addItem({ item: item3, quantity: 1 })
+    sut.addItem({ itemId: 'any_item_id1', price: 10, quantity: 1 })
+    sut.addItem({ itemId: 'any_item_id2', price: 20, quantity: 2 })
+    sut.addItem({ itemId: 'any_item_id3', price: 30, quantity: 3 })
 
     expect(sut.getOrderItems()).toHaveLength(3)
   })
 
   it('should calculate total price', () => {
-    const item1 = makeItem({ id: 'any_id_item1', description: 'item 1', price: 10 })
-    const item2 = makeItem({ id: 'any_id_item2', description: 'item 2', price: 20 })
-    const item3 = makeItem({ id: 'any_id_item3', description: 'item 3', price: 30 })
-
-    sut.addItem({ item: item1, quantity: 1 })
-    sut.addItem({ item: item2, quantity: 2 })
-    sut.addItem({ item: item3, quantity: 3 })
+    sut.addItem({ itemId: 'any_item_id1', price: 10, quantity: 1 })
+    sut.addItem({ itemId: 'any_item_id2', price: 20, quantity: 2 })
+    sut.addItem({ itemId: 'any_item_id3', price: 30, quantity: 3 })
 
     expect(sut.getTotalPrice()).toBe(140)
   })
@@ -65,13 +53,9 @@ describe('Order', () => {
   })
 
   it('should calculate total price with coupon discount', () => {
-    const item1 = makeItem({ id: 'any_id_item1', description: 'item 1', price: 10 })
-    const item2 = makeItem({ id: 'any_id_item2', description: 'item 2', price: 20 })
-    const item3 = makeItem({ id: 'any_id_item3', description: 'item 3', price: 30 })
-
-    sut.addItem({ item: item1, quantity: 1 })
-    sut.addItem({ item: item2, quantity: 2 })
-    sut.addItem({ item: item3, quantity: 3 })
+    sut.addItem({ itemId: 'any_item_id1', price: 10, quantity: 1 })
+    sut.addItem({ itemId: 'any_item_id2', price: 20, quantity: 2 })
+    sut.addItem({ itemId: 'any_item_id3', price: 30, quantity: 3 })
 
     const coupon = new Coupon({ code: 'VALE20', percentage: 20 })
     sut.addCoupon(coupon)
@@ -80,13 +64,11 @@ describe('Order', () => {
   })
 
   it('should not add same item more than once', () => {
-    const item1 = makeItem({ id: 'any_id_1', description: 'item 1', price: 10 })
-    const item2 = makeItem({ id: 'any_id_2', description: 'item 2', price: 20 })
+    const sameItemId = 'any_item_id'
+    sut.addItem({ itemId: 'any_item_id', price: 10, quantity: 1 })
+    sut.addItem({ itemId: 'any_item_id2', price: 20, quantity: 1 })
+    const errorAddItem = (): void => sut.addItem({ itemId: 'any_item_id', price: 10, quantity: 4 })
 
-    sut.addItem({ item: item1, quantity: 1 })
-    sut.addItem({ item: item2, quantity: 2 })
-    const errorAddItem = (): void => sut.addItem({ item: item1, quantity: 4 })
-
-    expect(errorAddItem).toThrowError(new ForbiddenAddDuplicatedItemError(item1.getId()))
+    expect(errorAddItem).toThrowError(new ForbiddenAddDuplicatedItemError(sameItemId))
   })
 })
