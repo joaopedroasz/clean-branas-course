@@ -57,4 +57,9 @@ export class Item {
   public getPrice (): number {
     return this.price
   }
+
+  public calculateDensity (): number {
+    const density = this.weightInKg / this.dimensions.calculateVolumeInCubicMeter()
+    return Math.round(density)
+  }
 }
