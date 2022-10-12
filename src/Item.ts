@@ -38,6 +38,7 @@ export class Item {
 
     if (!this.isValidPrice()) throw new InvalidPriceError(price)
     if (!this.isValidDimensions()) throw new Error('Invalid dimension')
+    if (!this.isValidWeight()) throw new Error('Invalid weight')
   }
 
   private isValidPrice (): boolean {
@@ -48,11 +49,14 @@ export class Item {
     const dimensions = [
       this.heightInCm,
       this.widthInCm,
-      this.depthInCm,
-      this.weightInKg
+      this.depthInCm
     ]
 
     return dimensions.every(dimension => dimension > 0)
+  }
+
+  private isValidWeight (): boolean {
+    return this.weightInKg > 0
   }
 
   public getId (): string {
