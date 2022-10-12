@@ -7,6 +7,8 @@ export type DimensionsProps = {
 }
 
 export class Dimensions {
+  private readonly CONVERT_TO_CUBIC_METER_FACTOR = 1_000_000
+
   private readonly heightInCm: number
   private readonly widthInCm: number
   private readonly depthInCm: number
@@ -25,7 +27,8 @@ export class Dimensions {
     return value > 0
   }
 
-  public calculateVolume (): number {
-    return this.heightInCm * this.widthInCm * this.depthInCm
+  public calculateVolumeInCubicMeter (): number {
+    const volumeInCubicCm = this.heightInCm * this.widthInCm * this.depthInCm
+    return volumeInCubicCm / this.CONVERT_TO_CUBIC_METER_FACTOR
   }
 }

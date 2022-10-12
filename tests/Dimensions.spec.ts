@@ -42,4 +42,14 @@ describe('Dimensions', () => {
 
     expect(sut).toThrowError(new InvalidDimensionError({ propertyName: name, value }))
   })
+
+  it('should return volume in cubic meter', () => {
+    const sut = makeSut({
+      heightInCm: 20,
+      widthInCm: 15,
+      depthInCm: 10
+    })
+
+    expect(sut.calculateVolumeInCubicMeter()).toBe(0.003)
+  })
 })
