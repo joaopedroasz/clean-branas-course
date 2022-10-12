@@ -24,4 +24,8 @@ export class Dimensions {
   private isValidDimension (value: number): boolean {
     return value > 0
   }
+
+  public calculateVolume (): number {
+    return this.heightInCm * this.widthInCm * this.depthInCm
+  }
 }
