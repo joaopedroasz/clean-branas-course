@@ -61,4 +61,16 @@ describe('Item', () => {
 
     expect(sut).toThrowError(new InvalidWeightError(invalidWeight))
   })
+
+  it('should calculate density', () => {
+    const weightInKg = 1
+    const heightInCm = 20
+    const widthInCm = 15
+    const depthInCm = 10
+    const sut = makeSut({ weightInKg, heightInCm, widthInCm, depthInCm })
+
+    const density = sut.calculateDensity()
+
+    expect(density).toBe(333)
+  })
 })
