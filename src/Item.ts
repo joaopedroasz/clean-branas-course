@@ -68,6 +68,7 @@ export class Item {
 
   public calculateFreight (): number {
     const density = this.calculateDensity() / this.DENSITY_FACTOR
-    return this.FREIGHT_DISTANCE * this.dimensions.calculateVolumeInCubicMeter() * density
+    const freight = this.FREIGHT_DISTANCE * this.dimensions.calculateVolumeInCubicMeter() * density
+    return freight >= 10 ? freight : 10
   }
 }
