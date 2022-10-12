@@ -13,6 +13,9 @@ export type ItemProps = {
 }
 
 export class Item {
+  private readonly FREIGHT_DISTANCE = 1000
+  private readonly DENSITY_FACTOR = 100
+
   private readonly id: string
   private readonly description: string
   private readonly price: number
@@ -61,5 +64,10 @@ export class Item {
   public calculateDensity (): number {
     const density = this.weightInKg / this.dimensions.calculateVolumeInCubicMeter()
     return Math.round(density)
+  }
+
+  public calculateFreight (): number {
+    const density = this.calculateDensity() / this.DENSITY_FACTOR
+    return this.FREIGHT_DISTANCE * this.dimensions.calculateVolumeInCubicMeter() * density
   }
 }
