@@ -1,5 +1,6 @@
 import { Item, ItemProps } from '@/Item'
 import { InvalidPriceError } from '@/InvalidPrice'
+import { InvalidWeightError } from '@/InvalidWeight'
 
 const makeSut = (props?: Partial<ItemProps>): Item => new Item({
   id: 'any_id',
@@ -51,6 +52,6 @@ describe('Item', () => {
     const invalidWeight = -1
     const sut = (): Item => makeSut({ weightInKg: invalidWeight })
 
-    expect(sut).toThrowError(new Error('Invalid weight'))
+    expect(sut).toThrowError(new InvalidWeightError(invalidWeight))
   })
 })

@@ -1,5 +1,6 @@
 import { Dimensions } from './Dimensions'
 import { InvalidPriceError } from './InvalidPrice'
+import { InvalidWeightError } from './InvalidWeight'
 
 export type ItemProps = {
   id: string
@@ -38,7 +39,7 @@ export class Item {
     })
 
     if (!this.isValidPrice()) throw new InvalidPriceError(price)
-    if (!this.isValidWeight()) throw new Error('Invalid weight')
+    if (!this.isValidWeight()) throw new InvalidWeightError(weightInKg)
   }
 
   private isValidPrice (): boolean {
