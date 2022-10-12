@@ -1,7 +1,16 @@
 import { Item, ItemProps } from '@/Item'
 import { InvalidPriceError } from '@/InvalidPrice'
 
-const makeSut = (props: ItemProps): Item => new Item(props)
+const makeSut = (props: Partial<ItemProps>): Item => new Item({
+  id: 'any_id',
+  description: 'any_description',
+  price: 1,
+  depthInCm: 1,
+  heightInCm: 1,
+  weightInKg: 1,
+  widthInCm: 1,
+  ...props
+})
 
 describe('Item', () => {
   let sut: Item
@@ -58,5 +67,18 @@ describe('Item', () => {
 
   it('should return id', () => {
     expect(sut.getId()).toBe('any_id')
+  })
+
+  const negativeDimensions = [
+    { name: 'heightInCm', value: -1 },
+    { name: 'widthInCm', value: -1 },
+    { name: 'depthInCm', value: -1 },
+    { name: 'weightInKg', value: -1 }
+  ]
+
+  it.each(negativeDimensions)('should not create an Item with negative $name', ({ name, value }) => {
+    const sut = (): Item => makeSut({ [name]: value })
+
+    expect(sut).toThrowError(new Error('Invalid dimension'))
   })
 })
