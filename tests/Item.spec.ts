@@ -73,4 +73,16 @@ describe('Item', () => {
 
     expect(density).toBe(333)
   })
+
+  it('should calculate freight', () => {
+    const weightInKg = 40
+    const heightInCm = 200
+    const widthInCm = 100
+    const depthInCm = 50
+    const sut = makeSut({ weightInKg, heightInCm, widthInCm, depthInCm })
+
+    const freight = sut.calculateFreight()
+
+    expect(freight).toBe(400)
+  })
 })
