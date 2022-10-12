@@ -54,4 +54,11 @@ describe('Item', () => {
 
     expect(sut).toThrowError(new InvalidWeightError(invalidWeight))
   })
+
+  it('should not create an item with weight equals to zero', () => {
+    const invalidWeight = 0
+    const sut = (): Item => makeSut({ weightInKg: invalidWeight })
+
+    expect(sut).toThrowError(new InvalidWeightError(invalidWeight))
+  })
 })
