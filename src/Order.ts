@@ -1,6 +1,7 @@
 import { Coupon } from './Coupon'
 import { CPF } from './CPF'
 import { ForbiddenAddDuplicatedItemError } from './ForbiddenAddDuplicatedItem'
+import { FreightCalculator } from './FreightCalculator'
 import { Item } from './Item'
 import { OrderItem } from './OrderItem'
 
@@ -17,6 +18,7 @@ export class Order {
   private readonly buyerCPF: CPF
   private readonly orderItems: OrderItem[]
   private coupon?: Coupon
+  private freight: number
 
   constructor ({
     buyerCPF
@@ -24,6 +26,7 @@ export class Order {
     this.buyerCPF = new CPF(buyerCPF)
     this.orderItems = []
     this.coupon = undefined
+    this.freight = 0
   }
 
   public getOrderItems (): OrderItem[] {
@@ -41,6 +44,7 @@ export class Order {
       price: item.getPrice(),
       quantity
     }))
+    this.freight += new FreightCalculator({ item, quantity }).calculate()
   }
 
   private alreadyHasItem (itemId: string): boolean {
@@ -52,7 +56,7 @@ export class Order {
   }
 
   public getTotalPrice (): number {
-    let totalPrice = 0
+    let totalPrice = this.freight
     for (const orderItem of this.orderItems) {
       totalPrice += orderItem.calculatePrice()
     }
