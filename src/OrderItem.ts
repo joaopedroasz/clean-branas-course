@@ -20,11 +20,11 @@ export class OrderItem {
     this.price = price
     this.quantity = quantity
 
-    if (!this.isValidQuantity(quantity)) throw new InvalidQuantityError(quantity)
+    if (!this.isValidQuantity()) throw new InvalidQuantityError(quantity)
   }
 
-  private isValidQuantity (quantity: number): boolean {
-    return quantity > 0
+  private isValidQuantity (): boolean {
+    return this.quantity > 0
   }
 
   public getItemId (): string {
