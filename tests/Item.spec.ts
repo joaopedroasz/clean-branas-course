@@ -74,27 +74,14 @@ describe('Item', () => {
     expect(density).toBe(333)
   })
 
-  it('should calculate freight', () => {
-    const weightInKg = 40
-    const heightInCm = 200
-    const widthInCm = 100
-    const depthInCm = 50
-    const sut = makeSut({ weightInKg, heightInCm, widthInCm, depthInCm })
-
-    const freight = sut.calculateFreight()
-
-    expect(freight).toBe(400)
-  })
-
-  it('should return 10 as minimum freight', () => {
-    const weightInKg = 1
+  it('should return calculated volume', () => {
     const heightInCm = 20
     const widthInCm = 15
     const depthInCm = 10
-    const sut = makeSut({ weightInKg, heightInCm, widthInCm, depthInCm })
+    const sut = makeSut({ heightInCm, widthInCm, depthInCm })
 
-    const freight = sut.calculateFreight()
+    const volume = sut.calculateVolumeInCubicMeter()
 
-    expect(freight).toBe(10)
+    expect(volume).toBe(0.003)
   })
 })
