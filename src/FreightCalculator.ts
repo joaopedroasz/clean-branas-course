@@ -23,6 +23,7 @@ export class FreightCalculator {
   calculate (): number {
     const density = this.item.calculateDensity() / this.DENSITY_FACTOR
     const freight = this.FREIGHT_DISTANCE * this.item.calculateVolumeInCubicMeter() * density
-    return freight >= 10 ? freight : 10
+    const totalFreight = freight * this.quantity
+    return Math.max(totalFreight, 10)
   }
 }

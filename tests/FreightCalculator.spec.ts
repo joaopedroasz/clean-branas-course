@@ -24,7 +24,7 @@ describe('Freight Calculator', () => {
 
     const freight = sut.calculate()
 
-    expect(freight).toBe(400)
+    expect(freight).toBe(800)
   })
 
   it('should return 10 as minimum freight', () => {
