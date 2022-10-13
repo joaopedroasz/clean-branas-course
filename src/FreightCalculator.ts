@@ -1,3 +1,4 @@
+import { InvalidQuantityError } from './InvalidQuantity'
 import { Item } from './Item'
 
 export type FreightCalculatorProps = {
@@ -18,6 +19,12 @@ export class FreightCalculator {
   }: FreightCalculatorProps) {
     this.item = item
     this.quantity = quantity
+
+    if (!this.isQuantityValid()) throw new InvalidQuantityError(quantity)
+  }
+
+  private isQuantityValid (): boolean {
+    return this.quantity > 0
   }
 
   calculate (): number {
