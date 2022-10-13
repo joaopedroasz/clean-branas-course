@@ -1,6 +1,7 @@
 import { Coupon } from './Coupon'
 import { CPF } from './CPF'
 import { ForbiddenAddDuplicatedItemError } from './ForbiddenAddDuplicatedItem'
+import { Item } from './Item'
 import { OrderItem } from './OrderItem'
 
 export type OrderProps = {
@@ -8,8 +9,7 @@ export type OrderProps = {
 }
 
 export type AddItemProps = {
-  itemId: string
-  price: number
+  item: Item
   quantity: number
 }
 
@@ -34,9 +34,13 @@ export class Order {
     return this.coupon
   }
 
-  public addItem ({ itemId, price, quantity }: AddItemProps): void {
-    if (this.alreadyHasItem(itemId)) throw new ForbiddenAddDuplicatedItemError(itemId)
-    this.orderItems.push(new OrderItem({ itemId, price, quantity }))
+  public addItem ({ item, quantity }: AddItemProps): void {
+    if (this.alreadyHasItem(item.getId())) throw new ForbiddenAddDuplicatedItemError(item.getId())
+    this.orderItems.push(new OrderItem({
+      itemId: item.getId(),
+      price: item.getPrice(),
+      quantity
+    }))
   }
 
   private alreadyHasItem (itemId: string): boolean {
