@@ -1,5 +1,6 @@
 import { Item, ItemProps } from '@/Item'
 import { FreightCalculator, FreightCalculatorProps } from '@/FreightCalculator'
+import { InvalidQuantityError } from '@/InvalidQuantity'
 
 const makeSut = (props: FreightCalculatorProps): FreightCalculator => new FreightCalculator(props)
 const makeItem = (props?: Partial<ItemProps>): Item => new Item({
@@ -38,5 +39,13 @@ describe('Freight Calculator', () => {
     const freight = sut.calculate()
 
     expect(freight).toBe(10)
+  })
+
+  it('should not calculate freight with negative quantity', () => {
+    const item = makeItem()
+    const quantity = -1
+    const sut = (): FreightCalculator => makeSut({ quantity, item })
+
+    expect(sut).toThrowError(new InvalidQuantityError(quantity))
   })
 })
