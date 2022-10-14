@@ -93,4 +93,22 @@ describe('PlaceOrder use case', () => {
 
     expect(result.total).toBe(297)
   })
+
+  it('should call GetItemByIdRepository with correctly', async () => {
+    const input: PlaceOrderInputDTO = {
+      buyerCPF: '607.109.010-54',
+      orderItems: [
+        { itemId: 'any_id', quantity: 1 },
+        { itemId: 'other_id', quantity: 2 }
+      ]
+    }
+    const { sut, getItemByIdRepository } = makeSut()
+    const getItemByIdRepositorySpy = vi.spyOn(getItemByIdRepository, 'getById')
+
+    await sut.execute(input)
+
+    expect(getItemByIdRepositorySpy).toHaveBeenCalledTimes(2)
+    expect(getItemByIdRepositorySpy).toHaveBeenCalledWith('any_id')
+    expect(getItemByIdRepositorySpy).toHaveBeenCalledWith('other_id')
+  })
 })
