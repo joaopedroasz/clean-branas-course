@@ -27,7 +27,7 @@ export class FreightCalculator {
     return this.quantity > 0
   }
 
-  calculate (): number {
+  public calculate (): number {
     const density = this.item.calculateDensity() / this.DENSITY_FACTOR
     const freight = this.FREIGHT_DISTANCE * this.item.calculateVolumeInCubicMeter() * density
     const totalFreight = freight * this.quantity
