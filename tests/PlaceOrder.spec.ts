@@ -111,4 +111,22 @@ describe('PlaceOrder use case', () => {
     expect(getItemByIdRepositorySpy).toHaveBeenCalledWith('any_id')
     expect(getItemByIdRepositorySpy).toHaveBeenCalledWith('other_id')
   })
+
+  it('should call GetCouponByCodeRepository with correctly', async () => {
+    const input: PlaceOrderInputDTO = {
+      buyerCPF: '607.109.010-54',
+      orderItems: [
+        { itemId: 'any_id', quantity: 1 },
+        { itemId: 'other_id', quantity: 2 }
+      ],
+      couponCode: 'any_coupon_with_10_percent_discount'
+    }
+    const { sut, getCouponByCodeRepository } = makeSut()
+    const getCouponByCodeRepositorySpy = vi.spyOn(getCouponByCodeRepository, 'getByCode')
+
+    await sut.execute(input)
+
+    expect(getCouponByCodeRepositorySpy).toHaveBeenCalledTimes(1)
+    expect(getCouponByCodeRepositorySpy).toHaveBeenCalledWith('any_coupon_with_10_percent_discount')
+  })
 })
