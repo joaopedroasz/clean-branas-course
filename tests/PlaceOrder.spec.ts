@@ -94,7 +94,7 @@ describe('PlaceOrder use case', () => {
     expect(result.total).toBe(297)
   })
 
-  it('should call GetItemByIdRepository with correctly', async () => {
+  it('should call GetItemByIdRepository correctly', async () => {
     const input: PlaceOrderInputDTO = {
       buyerCPF: '607.109.010-54',
       orderItems: [
@@ -112,7 +112,7 @@ describe('PlaceOrder use case', () => {
     expect(getItemByIdRepositorySpy).toHaveBeenCalledWith('other_id')
   })
 
-  it('should call GetCouponByCodeRepository with correctly', async () => {
+  it('should call GetCouponByCodeRepository correctly', async () => {
     const input: PlaceOrderInputDTO = {
       buyerCPF: '607.109.010-54',
       orderItems: [
