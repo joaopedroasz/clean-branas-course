@@ -31,6 +31,10 @@ export class Coupon {
     return this.code
   }
 
+  public getPercentage (): number {
+    return this.percentage
+  }
+
   public isExpired (today: Date): boolean {
     if (!this.dueDate) return false
     return this.dueDate.getTime() <= today.getTime()
