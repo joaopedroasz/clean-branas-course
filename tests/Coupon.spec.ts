@@ -151,4 +151,15 @@ describe('Coupon', () => {
 
     expect(sut.getPercentage()).toBe(percentage)
   })
+
+  it('should return dueDate', () => {
+    const dueDate = new Date('2022-10-10')
+    const sut = makeSut({
+      code: 'any_code',
+      percentage: 10,
+      dueDate
+    })
+
+    expect(sut.getDueDate()).toBe(dueDate)
+  })
 })
