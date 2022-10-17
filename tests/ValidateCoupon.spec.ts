@@ -49,4 +49,19 @@ describe('Validate Coupon Use Case', () => {
     expect(getCouponByCodeRepositorySpy).toHaveBeenCalledTimes(1)
     expect(getCouponByCodeRepositorySpy).toHaveBeenCalledWith(couponCode)
   })
+
+  it('should return same coupon loaded by GetCouponByIdRepository', async () => {
+    const { sut, getCouponByCodeRepository } = makeSut()
+    const couponCode = 'any_code'
+    const coupon = makeCoupon({ code: couponCode })
+    vi.spyOn(getCouponByCodeRepository, 'getByCode').mockResolvedValueOnce(coupon)
+
+    const result = await sut.execute({ couponCode })
+
+    expect(result.coupon).toEqual({
+      code: coupon.getCode(),
+      dueDate: coupon.getDueDate(),
+      percentage: coupon.getPercentage()
+    })
+  })
 })
