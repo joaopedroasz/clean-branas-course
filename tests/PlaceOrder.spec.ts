@@ -24,23 +24,13 @@ const makeItem = (props?: Partial<ItemProps>): Item => new Item({
   ...props
 })
 
-const makeGetItemByIdRepository = (): GetItemByIdRepository => {
-  class GetItemByIdRepositoryStub implements GetItemByIdRepository {
-    async getById (id: string): Promise<Item> {
-      return makeItem({ id })
-    }
-  }
-  return new GetItemByIdRepositoryStub()
-}
+const makeGetItemByIdRepository = (): GetItemByIdRepository => ({
+  getById: async (id: string): Promise<Item> => makeItem({ id })
+})
 
-const makeGetCouponByCodeRepository = (): GetCouponByCodeRepository => {
-  class GetCouponByCodeRepositoryStub implements GetCouponByCodeRepository {
-    async getByCode (code: string): Promise<Coupon> {
-      return makeCoupon({ code })
-    }
-  }
-  return new GetCouponByCodeRepositoryStub()
-}
+const makeGetCouponByCodeRepository = (): GetCouponByCodeRepository => ({
+  getByCode: async (code: string): Promise<Coupon> => makeCoupon({ code })
+})
 
 type SutType = {
   sut: PlaceOrder
