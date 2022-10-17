@@ -131,4 +131,14 @@ describe('Coupon', () => {
 
     expect(sut.isExpired(today)).toBe(true)
   })
+
+  it('should return code', () => {
+    const code = 'any_code'
+    const sut = makeSut({
+      code,
+      percentage: 10
+    })
+
+    expect(sut.getCode()).toBe(code)
+  })
 })
