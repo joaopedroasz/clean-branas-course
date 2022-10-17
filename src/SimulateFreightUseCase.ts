@@ -1,3 +1,4 @@
+import { FreightCalculator } from './FreightCalculator'
 import { GetItemByIdRepository } from './GetItemByIdRepository'
 import { SimulateFreight } from './SimulateFreight'
 import { SimulateFreightInputDTO } from './SimulateFreightInput'
@@ -12,14 +13,14 @@ export class SimulateFreightUseCase implements SimulateFreight {
 
   public async execute (input: SimulateFreightInputDTO): Promise<SimulateFreightOutputDTO> {
     const { items } = input
+    let total = 0
 
-    for (const item of items) {
-      const { itemId } = item
-      await this.getItemByIdRepository.getById(itemId)
+    for (const { itemId, quantity } of items) {
+      const item = await this.getItemByIdRepository.getById(itemId)
+
+      total += new FreightCalculator({ item, quantity }).calculate()
     }
 
-    return {
-      total: 10
-    }
+    return { total }
   }
 }
