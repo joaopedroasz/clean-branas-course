@@ -9,8 +9,7 @@ import { GetCouponByCodeRepository } from '@/GetCouponByCodeRepository'
 const makeCoupon = (props?: Partial<CouponProps>): Coupon => new Coupon({
   code: 'any_code',
   percentage: 10,
-  dueDate: new Date('2021-12-31'),
-  today: new Date('2021-01-01')
+  dueDate: new Date('2022-10-10')
 })
 
 const makeItem = (props?: Partial<ItemProps>): Item => new Item({
@@ -81,6 +80,7 @@ describe('PlaceOrder use case', () => {
   it('should return total value with coupon discount if coupon code provided', async () => {
     const input: PlaceOrderInputDTO = {
       buyerCPF: '607.109.010-54',
+      purchaseDate: new Date('2022-10-01'),
       orderItems: [
         { itemId: 'any_id', quantity: 1 },
         { itemId: 'other_id', quantity: 2 }
