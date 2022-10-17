@@ -4,7 +4,6 @@ export type CouponProps = {
   code: string
   percentage: number
   dueDate?: Date
-  today?: Date
 }
 
 export class Coupon {

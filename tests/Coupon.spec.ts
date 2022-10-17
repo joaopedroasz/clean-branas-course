@@ -66,12 +66,10 @@ describe('Coupon', () => {
 
   it('should create a Coupon with expired dueDate', () => {
     const expiredDueDate = new Date('2022-10-10')
-    const today = new Date('2022-10-11')
     const sut = makeSut({
       code: 'any_code',
       percentage: 10,
-      dueDate: expiredDueDate,
-      today
+      dueDate: expiredDueDate
     })
 
     expect(sut).toBeDefined()
@@ -79,12 +77,10 @@ describe('Coupon', () => {
 
   it('should create a Coupon with dueDate equals today', () => {
     const dueDate = new Date('2022-10-10T00:00:00')
-    const today = new Date('2022-10-10T00:00:00')
     const sut = makeSut({
       code: 'any_code',
       percentage: 10,
-      dueDate,
-      today
+      dueDate
     })
 
     expect(sut).toBeDefined()
