@@ -7,6 +7,7 @@ import { OrderItem } from './OrderItem'
 
 export type OrderProps = {
   buyerCPF: string
+  purchaseDate?: Date
 }
 
 export type AddItemProps = {
@@ -17,16 +18,19 @@ export type AddItemProps = {
 export class Order {
   private readonly buyerCPF: CPF
   private readonly orderItems: OrderItem[]
+  private readonly purchaseDate: Date
   private coupon?: Coupon
   private freight: number
 
   constructor ({
-    buyerCPF
+    buyerCPF,
+    purchaseDate = new Date()
   }: OrderProps) {
     this.buyerCPF = new CPF(buyerCPF)
     this.orderItems = []
     this.coupon = undefined
     this.freight = 0
+    this.purchaseDate = purchaseDate
   }
 
   public getOrderItems (): OrderItem[] {
@@ -52,6 +56,7 @@ export class Order {
   }
 
   public addCoupon (coupon: Coupon): void {
+    if (coupon.isExpired(this.purchaseDate)) return
     this.coupon = coupon
   }
 
