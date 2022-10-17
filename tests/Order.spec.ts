@@ -20,7 +20,7 @@ describe('Order', () => {
   let sut: Order
 
   beforeEach(() => {
-    sut = makeSut({ buyerCPF: '607.109.010-54' })
+    sut = makeSut({ buyerCPF: '607.109.010-54', purchaseDate: new Date('2022-10-17') })
   })
 
   it('should not create an order with invalid CPF', () => {
@@ -104,5 +104,12 @@ describe('Order', () => {
     sut.addItem({ item: cable, quantity: 3 })
 
     expect(sut.getTotalPrice()).toBe(6350)
+  })
+
+  it('should not apply a expired coupon', () => {
+    const coupon = new Coupon({ code: 'VALE20', percentage: 20, dueDate: new Date('2022-10-01') })
+    sut.addCoupon(coupon)
+
+    expect(sut.getCoupon()).toBeUndefined()
   })
 })
