@@ -123,4 +123,16 @@ describe('Coupon', () => {
 
     expect(sut.isExpired(today)).toBe(false)
   })
+
+  it('should return true if today equals due date', () => {
+    const dueDate = new Date('2022-10-10T00:00:00')
+    const today = new Date('2022-10-10T00:00:00')
+    const sut = makeSut({
+      code: 'any_code',
+      percentage: 10,
+      dueDate
+    })
+
+    expect(sut.isExpired(today)).toBe(true)
+  })
 })
