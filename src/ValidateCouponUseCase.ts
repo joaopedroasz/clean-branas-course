@@ -11,15 +11,16 @@ export class ValidateCouponUseCase implements ValidateCoupon {
   }
 
   public async execute (input: ValidateCouponInputDTO): Promise<ValidateCouponOutputDTO> {
-    await this.getCouponByIdRepository.getByCode(input.couponCode)
+    const { couponCode, date } = input
+    const coupon = await this.getCouponByIdRepository.getByCode(couponCode)
+    const isValid = coupon.isExpired(date)
 
     return {
-      isValid: true,
+      isValid,
       coupon: {
-        id: 'any_coupon_id',
-        code: input.couponCode,
-        dueDate: new Date(),
-        percentage: 10
+        code: coupon.getCode(),
+        dueDate: coupon.getDueDate(),
+        percentage: coupon.getPercentage()
       }
     }
   }
