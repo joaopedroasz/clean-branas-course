@@ -141,4 +141,14 @@ describe('Coupon', () => {
 
     expect(sut.getCode()).toBe(code)
   })
+
+  it('should return percentage', () => {
+    const percentage = 10
+    const sut = makeSut({
+      code: 'any_code',
+      percentage
+    })
+
+    expect(sut.getPercentage()).toBe(percentage)
+  })
 })
