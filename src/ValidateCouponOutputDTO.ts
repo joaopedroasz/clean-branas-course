@@ -1,7 +1,6 @@
 type CouponOutput = {
-  id: string
   code: string
-  dueDate: Date
+  dueDate?: Date
   percentage: number
 }
 
