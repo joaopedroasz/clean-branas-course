@@ -1,4 +1,3 @@
-import { ExpiredCouponError } from './ExpiredCoupon'
 import { InvalidPercentageError } from './InvalidPercentage'
 
 export type CouponProps = {
@@ -16,15 +15,13 @@ export class Coupon {
   constructor ({
     code,
     percentage,
-    dueDate,
-    today = new Date()
+    dueDate
   }: CouponProps) {
     this.code = code
     this.percentage = percentage
     this.dueDate = dueDate
 
     if (!this.isValidPercentage()) throw new InvalidPercentageError(percentage)
-    if (this.isExpired(today) && this.dueDate) throw new ExpiredCouponError(this.dueDate)
   }
 
   private isValidPercentage (): boolean {
