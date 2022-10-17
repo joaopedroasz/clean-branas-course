@@ -11,6 +11,11 @@ describe('Coupon', () => {
       code: 'any_code',
       percentage: 10
     })
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it('should create a coupon with valid percentage', () => {
@@ -161,5 +166,17 @@ describe('Coupon', () => {
     })
 
     expect(sut.getDueDate()).toBe(dueDate)
+  })
+
+  it('should use current date if no date is provided', () => {
+    const today = new Date('2022-10-09')
+    vi.setSystemTime(today)
+    const sut = makeSut({
+      code: 'any_code',
+      percentage: 10,
+      dueDate: new Date('2022-10-10')
+    })
+
+    expect(sut.isExpired()).toBe(false)
   })
 })
