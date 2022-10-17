@@ -39,7 +39,7 @@ export class Coupon {
     return this.dueDate
   }
 
-  public isExpired (today: Date): boolean {
+  public isExpired (today = new Date()): boolean {
     if (!this.dueDate) return false
     return this.dueDate.getTime() <= today.getTime()
   }
