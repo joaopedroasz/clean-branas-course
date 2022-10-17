@@ -4,7 +4,12 @@ import { Coupon } from '@/Coupon'
 import { ForbiddenAddDuplicatedItemError } from '@/ForbiddenAddDuplicatedItem'
 import { Item, ItemProps } from '@/Item'
 
-const makeSut = (props: OrderProps): Order => new Order(props)
+const makeSut = (props?: Partial<OrderProps>): Order => new Order({
+  buyerCPF: '607.109.010-54',
+  purchaseDate: new Date('2022-10-17'),
+  ...props
+})
+
 const makeItem = (props?: Partial<ItemProps>): Item => new Item({
   id: 'any_id',
   description: 'any_description',
@@ -20,7 +25,7 @@ describe('Order', () => {
   let sut: Order
 
   beforeEach(() => {
-    sut = makeSut({ buyerCPF: '607.109.010-54', purchaseDate: new Date('2022-10-17') })
+    sut = makeSut()
   })
 
   it('should not create an order with invalid CPF', () => {
@@ -31,6 +36,9 @@ describe('Order', () => {
   })
 
   it('should create an order with valid CPF', () => {
+    const validCPF = '858.620.912-03'
+    const sut = makeSut({ buyerCPF: validCPF })
+
     expect(sut).toBeDefined()
   })
 

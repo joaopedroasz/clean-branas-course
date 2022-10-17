@@ -9,7 +9,8 @@ import { GetCouponByCodeRepository } from '@/GetCouponByCodeRepository'
 const makeCoupon = (props?: Partial<CouponProps>): Coupon => new Coupon({
   code: 'any_code',
   percentage: 10,
-  dueDate: new Date('2022-10-10')
+  dueDate: new Date('2022-10-10'),
+  ...props
 })
 
 const makeItem = (props?: Partial<ItemProps>): Item => new Item({
