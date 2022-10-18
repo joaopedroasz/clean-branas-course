@@ -1,5 +1,5 @@
 import { Coupon, CouponProps, Item, ItemProps, Order } from '@/domain/entities'
-import { SaveOrderRepository } from '@/domain/repositories/Order'
+import { CountOrdersRepository, SaveOrderRepository } from '@/domain/repositories/Order'
 import { GetCouponByCodeRepository } from '@/domain/repositories/Coupon'
 import { GetItemByIdRepository } from '@/domain/repositories/Item'
 import { PlaceOrder } from '@/application/contracts'
@@ -43,27 +43,35 @@ const makeSaveOrderRepository = (): SaveOrderRepository => ({
   save: async (order: Order): Promise<Order> => makeOrder()
 })
 
+const makeCountOrdersRepository = (): CountOrdersRepository => ({
+  count: async (): Promise<number> => 1
+})
+
 type SutType = {
   sut: PlaceOrder
   getItemByIdRepository: GetItemByIdRepository
   getCouponByCodeRepository: GetCouponByCodeRepository
   saveOrderRepository: SaveOrderRepository
+  countOrdersRepository: CountOrdersRepository
 }
 
 const makeSut = (): SutType => {
   const getItemByIdRepository = makeGetItemByIdRepository()
   const getCouponByCodeRepository = makeGetCouponByCodeRepository()
   const saveOrderRepository = makeSaveOrderRepository()
+  const countOrdersRepository = makeCountOrdersRepository()
   const sut = new PlaceOrderUseCase(
     getItemByIdRepository,
     getCouponByCodeRepository,
-    saveOrderRepository
+    saveOrderRepository,
+    countOrdersRepository
   )
   return {
     sut,
     getItemByIdRepository,
     getCouponByCodeRepository,
-    saveOrderRepository
+    saveOrderRepository,
+    countOrdersRepository
   }
 }
 
@@ -153,5 +161,19 @@ describe('PlaceOrder use case', () => {
       purchaseDate: new Date('2022-10-01'),
       sequence: 1
     }))
+  })
+
+  it('should call CountOrdersRepository correctly', async () => {
+    const { sut, countOrdersRepository } = makeSut()
+    const countOrdersRepositorySpy = vi.spyOn(countOrdersRepository, 'count')
+    const input: PlaceOrderInputDTO = {
+      buyerCPF: '607.109.010-54',
+      orderItems: [],
+      purchaseDate: new Date('2022-10-01')
+    }
+
+    await sut.execute(input)
+
+    expect(countOrdersRepositorySpy).toHaveBeenCalledTimes(1)
   })
 })
