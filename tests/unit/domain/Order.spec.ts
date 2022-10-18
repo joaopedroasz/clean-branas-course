@@ -137,4 +137,11 @@ describe('Order', () => {
 
     expect(sut.getCPF()).toBe(cpf)
   })
+
+  it('should return purchase date', () => {
+    const purchaseDate = new Date('2022-10-18')
+    const sut = makeSut({ purchaseDate })
+
+    expect(sut.getPurchaseDate()).toBe(purchaseDate)
+  })
 })
