@@ -130,4 +130,11 @@ describe('Order', () => {
 
     expect(order.getCode()).toBe('202200000001')
   })
+
+  it('should return CPF', () => {
+    const cpf = '858.620.912-03'
+    const sut = makeSut({ buyerCPF: cpf })
+
+    expect(sut.getCPF()).toBe(cpf)
+  })
 })
