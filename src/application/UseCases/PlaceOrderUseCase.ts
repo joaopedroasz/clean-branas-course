@@ -25,8 +25,8 @@ export class PlaceOrderUseCase implements PlaceOrder {
 
   public async execute (input: PlaceOrderInputDTO): Promise<PlaceOrderOutputDTO> {
     const { buyerCPF, orderItems, couponCode, purchaseDate } = input
-    await this.countOrdersRepository.count()
-    const order = new Order({ buyerCPF, purchaseDate, sequence: 1 })
+    const count = await this.countOrdersRepository.count()
+    const order = new Order({ buyerCPF, purchaseDate, sequence: count })
     for (const orderItem of orderItems) {
       const item = await this.getItemByIdRepository.getById(orderItem.itemId)
       order.addItem({ item, quantity: orderItem.quantity })
