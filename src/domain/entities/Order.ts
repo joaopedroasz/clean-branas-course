@@ -54,6 +54,10 @@ export class Order {
     return this.buyerCPF.getCPF()
   }
 
+  public getPurchaseDate (): Date {
+    return this.purchaseDate
+  }
+
   public addItem ({ item, quantity }: AddItemProps): void {
     if (this.alreadyHasItem(item.getId())) throw new ForbiddenAddDuplicatedItemError(item.getId())
     this.orderItems.push(new OrderItem({
