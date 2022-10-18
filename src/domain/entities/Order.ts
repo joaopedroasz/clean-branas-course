@@ -50,6 +50,10 @@ export class Order {
     return this.code.getCode()
   }
 
+  public getCPF (): string {
+    return this.buyerCPF.getCPF()
+  }
+
   public addItem ({ item, quantity }: AddItemProps): void {
     if (this.alreadyHasItem(item.getId())) throw new ForbiddenAddDuplicatedItemError(item.getId())
     this.orderItems.push(new OrderItem({
