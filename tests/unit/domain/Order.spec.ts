@@ -4,6 +4,7 @@ import { ForbiddenAddDuplicatedItemError, InvalidCpfError } from '@/domain/error
 const makeSut = (props?: Partial<OrderProps>): Order => new Order({
   buyerCPF: '607.109.010-54',
   purchaseDate: new Date('2022-10-17'),
+  sequence: 0,
   ...props
 })
 
@@ -116,5 +117,17 @@ describe('Order', () => {
     sut.addCoupon(coupon)
 
     expect(sut.getCoupon()).toBeUndefined()
+  })
+
+  it('should create a order and get code', () => {
+    const order = makeSut({ purchaseDate: new Date('2022-10-18'), sequence: 0 })
+    const item1 = makeItem({ id: 'any_item_1' })
+    const item2 = makeItem({ id: 'any_item_2' })
+    const item3 = makeItem({ id: 'any_item_3' })
+    sut.addItem({ item: item1, quantity: 1 })
+    sut.addItem({ item: item2, quantity: 1 })
+    sut.addItem({ item: item3, quantity: 3 })
+
+    expect(order.getCode()).toBe('202200000001')
   })
 })
