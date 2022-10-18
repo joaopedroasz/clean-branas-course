@@ -35,9 +35,14 @@ export class PlaceOrderUseCase implements PlaceOrder {
       const coupon = await this.getCouponByCodeRepository.getByCode(couponCode)
       order.addCoupon(coupon)
     }
-    await this.saveOrderRepository.save(order)
+    const createdOrder = await this.saveOrderRepository.save(order)
     return {
-      total: order.getTotalPrice()
+      total: order.getTotalPrice(),
+      order: {
+        code: createdOrder.getCode(),
+        purchaseDate: createdOrder.getPurchaseDate(),
+        CPF: createdOrder.getCPF()
+      }
     }
   }
 }
