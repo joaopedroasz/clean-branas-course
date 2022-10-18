@@ -111,7 +111,7 @@ describe('Order', () => {
     expect(sut.getTotalPrice()).toBe(6350)
   })
 
-  it('should not apply a expired coupon', () => {
+  it('should not apply an expired coupon', () => {
     const coupon = new Coupon({ code: 'VALE20', percentage: 20, dueDate: new Date('2022-10-01') })
     sut.addCoupon(coupon)
 
