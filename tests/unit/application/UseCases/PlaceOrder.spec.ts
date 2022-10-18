@@ -1,4 +1,5 @@
-import { Coupon, CouponProps, Item, ItemProps } from '@/domain/entities'
+import { Coupon, CouponProps, Item, ItemProps, Order } from '@/domain/entities'
+import { SaveOrderRepository } from '@/domain/repositories/Order'
 import { GetCouponByCodeRepository } from '@/domain/repositories/Coupon'
 import { GetItemByIdRepository } from '@/domain/repositories/Item'
 import { PlaceOrder } from '@/application/contracts'
@@ -23,6 +24,13 @@ const makeItem = (props?: Partial<ItemProps>): Item => new Item({
   ...props
 })
 
+const makeOrder = (props?: Partial<Order>): Order => new Order({
+  buyerCPF: '858.620.912-03',
+  sequence: 1,
+  purchaseDate: new Date('2022-10-18'),
+  ...props
+})
+
 const makeGetItemByIdRepository = (): GetItemByIdRepository => ({
   getById: async (id: string): Promise<Item> => makeItem({ id })
 })
@@ -31,23 +39,31 @@ const makeGetCouponByCodeRepository = (): GetCouponByCodeRepository => ({
   getByCode: async (code: string): Promise<Coupon> => makeCoupon({ code })
 })
 
+const makeSaveOrderRepository = (): SaveOrderRepository => ({
+  save: async (order: Order): Promise<Order> => makeOrder()
+})
+
 type SutType = {
   sut: PlaceOrder
   getItemByIdRepository: GetItemByIdRepository
   getCouponByCodeRepository: GetCouponByCodeRepository
+  saveOrderRepository: SaveOrderRepository
 }
 
 const makeSut = (): SutType => {
   const getItemByIdRepository = makeGetItemByIdRepository()
   const getCouponByCodeRepository = makeGetCouponByCodeRepository()
+  const saveOrderRepository = makeSaveOrderRepository()
   const sut = new PlaceOrderUseCase(
     getItemByIdRepository,
-    getCouponByCodeRepository
+    getCouponByCodeRepository,
+    saveOrderRepository
   )
   return {
     sut,
     getItemByIdRepository,
-    getCouponByCodeRepository
+    getCouponByCodeRepository,
+    saveOrderRepository
   }
 }
 
@@ -118,5 +134,24 @@ describe('PlaceOrder use case', () => {
 
     expect(getCouponByCodeRepositorySpy).toHaveBeenCalledTimes(1)
     expect(getCouponByCodeRepositorySpy).toHaveBeenCalledWith('any_coupon_with_10_percent_discount')
+  })
+
+  it('should call SaveOrderRepository correctly', async () => {
+    const { sut, saveOrderRepository } = makeSut()
+    const saveOrderRepositorySpy = vi.spyOn(saveOrderRepository, 'save')
+    const input: PlaceOrderInputDTO = {
+      buyerCPF: '607.109.010-54',
+      orderItems: [],
+      purchaseDate: new Date('2022-10-01')
+    }
+
+    await sut.execute(input)
+
+    expect(saveOrderRepositorySpy).toHaveBeenCalledTimes(1)
+    expect(saveOrderRepositorySpy).toHaveBeenCalledWith(new Order({
+      buyerCPF: '607.109.010-54',
+      purchaseDate: new Date('2022-10-01'),
+      sequence: 1
+    }))
   })
 })
