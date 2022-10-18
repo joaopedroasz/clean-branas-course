@@ -3,11 +3,13 @@ import { Coupon } from './Coupon'
 import { CPF } from './CPF'
 import { FreightCalculator } from './FreightCalculator'
 import { Item } from './Item'
+import { OrderCode } from './OrderCode'
 import { OrderItem } from './OrderItem'
 
 export type OrderProps = {
   buyerCPF: string
   purchaseDate?: Date
+  sequence: number
 }
 
 export type AddItemProps = {
@@ -21,16 +23,19 @@ export class Order {
   private readonly purchaseDate: Date
   private coupon?: Coupon
   private freight: number
+  private readonly code: string
 
   constructor ({
     buyerCPF,
-    purchaseDate = new Date()
+    purchaseDate = new Date(),
+    sequence
   }: OrderProps) {
     this.buyerCPF = new CPF(buyerCPF)
     this.orderItems = []
     this.coupon = undefined
     this.freight = 0
     this.purchaseDate = purchaseDate
+    this.code = new OrderCode({ date: purchaseDate, sequence }).getCode()
   }
 
   public getOrderItems (): OrderItem[] {
@@ -39,6 +44,10 @@ export class Order {
 
   public getCoupon (): Coupon | undefined {
     return this.coupon
+  }
+
+  public getCode (): string {
+    return this.code
   }
 
   public addItem ({ item, quantity }: AddItemProps): void {
