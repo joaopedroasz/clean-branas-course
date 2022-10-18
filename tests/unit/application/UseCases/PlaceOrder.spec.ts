@@ -1,4 +1,4 @@
-import { Coupon, CouponProps, Item, ItemProps, Order } from '@/domain/entities'
+import { Coupon, CouponProps, Item, ItemProps, Order, OrderProps } from '@/domain/entities'
 import { CountOrdersRepository, SaveOrderRepository } from '@/domain/repositories/Order'
 import { GetCouponByCodeRepository } from '@/domain/repositories/Coupon'
 import { GetItemByIdRepository } from '@/domain/repositories/Item'
@@ -24,7 +24,7 @@ const makeItem = (props?: Partial<ItemProps>): Item => new Item({
   ...props
 })
 
-const makeOrder = (props?: Partial<Order>): Order => new Order({
+const makeOrder = (props?: Partial<OrderProps>): Order => new Order({
   buyerCPF: '858.620.912-03',
   sequence: 1,
   purchaseDate: new Date('2022-10-18'),
@@ -175,5 +175,27 @@ describe('PlaceOrder use case', () => {
     await sut.execute(input)
 
     expect(countOrdersRepositorySpy).toHaveBeenCalledTimes(1)
+  })
+
+  it('should return created order by SaveOrderRepository', async () => {
+    const { sut, saveOrderRepository } = makeSut()
+    const input: PlaceOrderInputDTO = {
+      buyerCPF: '607.109.010-54',
+      orderItems: [],
+      purchaseDate: new Date('2022-10-01')
+    }
+    vi.spyOn(saveOrderRepository, 'save').mockResolvedValueOnce(makeOrder({
+      buyerCPF: '607.109.010-54',
+      purchaseDate: new Date('2022-10-01'),
+      sequence: 1
+    }))
+
+    const result = await sut.execute(input)
+
+    expect(result.order).toEqual({
+      CPF: '607.109.010-54',
+      purchaseDate: new Date('2022-10-01'),
+      code: '202200000002'
+    })
   })
 })
