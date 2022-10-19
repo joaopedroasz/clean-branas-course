@@ -11,6 +11,7 @@
     "test:coverage": "yarn db:test:up && run:migrate:test && vitest --coverage && yarn db:down",
     "test:unit": "vitest --config vite-unit.config.ts",
     "test:integration": "yarn db:test:up && run:migrate:test && vitest --config vite-integration.config.ts && yarn db:down",
+    "test:related": "yarn db:test:up && run:migrate:test && vitest related --run && yarn db:down",
     "create:migrate:dev": "dotenv -e .env.development -- yarn prisma migrate dev --name",
     "run:migrate:test": "dotenv -e .env.test -- yarn prisma migrate deploy",
     "db:dev:up": "docker-compose --env-file .env.development up -d development-database",

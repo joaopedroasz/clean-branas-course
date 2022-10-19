@@ -1,3 +1,3 @@
 {
-  "*.ts": ["eslint 'src/**' --fix", "vitest related --run"]
+  "*.ts": ["eslint 'src/**' --fix", "yarn test:related"]
 }
