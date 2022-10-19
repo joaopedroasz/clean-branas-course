@@ -13,7 +13,7 @@
     "test:integration": "yarn db:test:up && run:migrate:test && vitest --config vite-integration.config.ts && yarn db:down",
     "create:migrate:dev": "dotenv -e .env.development -- yarn prisma migrate dev --name",
     "run:migrate:test": "dotenv -e .env.test -- yarn prisma migrate deploy",
-    "db:up": "docker-compose --env-file .env.development up -d",
+    "db:dev:up": "docker-compose --env-file .env.development up -d development-database",
     "db:test:up": "docker-compose --env-file .env.test up -d test-database",
     "db:down": "docker-compose down"
   },
@@ -34,6 +34,7 @@
     "vitest": "^0.24.3"
   },
   "dependencies": {
+    "@prisma/client": "4.5.0",
     "dotenv-cli": "^6.0.0",
     "prisma": "^4.5.0"
   }
