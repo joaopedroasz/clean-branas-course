@@ -29,6 +29,7 @@
     "vitest": "^0.24.3"
   },
   "dependencies": {
+    "dotenv-cli": "^6.0.0",
     "prisma": "^4.5.0"
   }
 }
