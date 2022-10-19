@@ -42,7 +42,7 @@ model Order {
   cpf         String      @unique
   issue_date  DateTime    @default(now())
   freight     Int?
-  sequence    Int         @default(autoincrement())
+  sequence    Int         @unique @default(autoincrement())
   total       Int
   OrderItem   OrderItem[]
 
