@@ -13,8 +13,8 @@
     "test:integration": "vitest --config vite-integration.config.ts"
   },
   "devDependencies": {
-    "@types/node": "^18.8.5",
-    "@typescript-eslint/eslint-plugin": "^5.40.0",
+    "@types/node": "^18.11.2",
+    "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@vitest/coverage-c8": "^0.24.3",
     "eslint": "^8.25.0",
     "eslint-config-standard-with-typescript": "^23.0.0",
