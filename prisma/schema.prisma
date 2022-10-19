@@ -11,13 +11,14 @@ datasource db {
 }
 
 model Item {
-  id          String @id @default(uuid())
+  id          String      @id @default(uuid())
   description String
   price       Int
   weight      Int
   width       Int
   height      Int
   depth       Int
+  OrderItem   OrderItem[]
 
   @@map("items")
 }
@@ -34,15 +35,28 @@ model Coupon {
 }
 
 model Order {
-  id          String   @id @default(uuid())
-  coupon      Coupon?  @relation(fields: [coupon_code], references: [code])
+  id          String      @id @default(uuid())
+  coupon      Coupon?     @relation(fields: [coupon_code], references: [code])
   coupon_code String?
-  code        String   @unique
-  cpf         String   @unique
-  issue_date  DateTime @default(now())
+  code        String      @unique
+  cpf         String      @unique
+  issue_date  DateTime    @default(now())
   freight     Int?
-  sequence    Int      @default(autoincrement())
+  sequence    Int         @default(autoincrement())
   total       Int
+  OrderItem   OrderItem[]
 
   @@map("orders")
+}
+
+model OrderItem {
+  id       String @id @default(uuid())
+  order    Order  @relation(fields: [order_id], references: [id])
+  order_id String
+  item     Item   @relation(fields: [item_id], references: [id])
+  item_id  String
+  quantity Int
+  price    Int
+
+  @@map("order_items")
 }
