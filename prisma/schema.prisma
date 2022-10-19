@@ -21,3 +21,13 @@ model Item {
 
   @@map("items")
 }
+
+model Coupon {
+  id         String    @id @default(uuid())
+  code       String
+  percentage String
+  discount   Int
+  expires_at DateTime?
+
+  @@map("coupons")
+}
