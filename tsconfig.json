@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "types": ["node", "vitest/globals"],
+    "lib": ["ESNext"],
     "outDir": "./dist",
     "module": "CommonJS",
     "target": "ES2019",
