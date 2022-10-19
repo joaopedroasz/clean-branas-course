@@ -24,10 +24,25 @@ model Item {
 
 model Coupon {
   id         String    @id @default(uuid())
-  code       String
+  code       String    @unique
   percentage String
   discount   Int
   expires_at DateTime?
+  Order      Order[]
 
   @@map("coupons")
+}
+
+model Order {
+  id          String   @id @default(uuid())
+  coupon      Coupon?  @relation(fields: [coupon_code], references: [code])
+  coupon_code String?
+  code        String   @unique
+  cpf         String   @unique
+  issue_date  DateTime @default(now())
+  freight     Int?
+  sequence    Int      @default(autoincrement())
+  total       Int
+
+  @@map("orders")
 }
