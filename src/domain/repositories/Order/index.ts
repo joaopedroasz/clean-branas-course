@@ -1,2 +1,2 @@
-export * from './SaveOrderRepository'
-export * from './CountOrdersRepository'
+export * from './SaveOrder'
+export * from './CountOrders'

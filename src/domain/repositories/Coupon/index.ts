@@ -1,1 +1,1 @@
-export * from './GetCouponByCodeRepository'
+export * from './GetCouponByCode'

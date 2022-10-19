@@ -1,1 +1,1 @@
-export * from './GetItemByIdRepository'
+export * from './GetItemById'
