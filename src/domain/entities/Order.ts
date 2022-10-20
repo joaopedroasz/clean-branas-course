@@ -42,8 +42,8 @@ export class Order {
     return this.orderItems
   }
 
-  public getCoupon (): Coupon | undefined {
-    return this.coupon
+  public getCouponCode (): string | undefined {
+    return this.coupon?.getCode()
   }
 
   public getCode (): string {
@@ -56,6 +56,10 @@ export class Order {
 
   public getPurchaseDate (): Date {
     return this.purchaseDate
+  }
+
+  public getFreightPrice (): number {
+    return this.freight
   }
 
   public addItem ({ item, quantity }: AddItemProps): void {
