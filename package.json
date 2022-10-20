@@ -9,6 +9,7 @@
     "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules",
     "test": "yarn run:migrate:test && yarn env:test vitest && yarn db:down",
     "test:coverage": "yarn run:migrate:test && yarn env:test vitest --coverage && yarn db:down",
+    "test:push": "yarn run:migrate:test && yarn env:test vitest --coverage --run",
     "test:unit": "vitest --config vite-unit.config.ts --run",
     "test:unit:watch": "vitest --config vite-unit.config.ts",
     "test:integration": "yarn run:migrate:test && yarn env:test vitest --config vite-integration.config.ts --run",
