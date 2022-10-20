@@ -17,6 +17,7 @@
     "test:related": "yarn run:migrate:test && yarn env:test vitest related --run",
     "create:migrate:dev": "yarn env:dev yarn prisma migrate dev --name",
     "run:migrate:test": "yarn env:test yarn prisma migrate deploy",
+    "prisma:studio:dev": "yarn env:dev prisma studio",
     "db:dev:up": "docker-compose --env-file .env.development up -d development-database",
     "db:test:up": "docker-compose --env-file .env.test up -d test-database",
     "db:down": "docker-compose down",
