@@ -73,7 +73,7 @@ describe('Order', () => {
     const coupon = new Coupon({ code: 'VALE20', percentage: 20 })
     sut.addCoupon(coupon)
 
-    expect(sut.getCoupon()).toBeDefined()
+    expect(sut.getCouponCode()).toBe('VALE20')
   })
 
   it('should calculate total price with coupon discount', () => {
@@ -116,7 +116,7 @@ describe('Order', () => {
     const coupon = new Coupon({ code: 'VALE20', percentage: 20, dueDate: new Date('2022-10-01') })
     sut.addCoupon(coupon)
 
-    expect(sut.getCoupon()).toBeUndefined()
+    expect(sut.getCouponCode()).toBeUndefined()
   })
 
   it('should create a order and get code', () => {
@@ -143,5 +143,23 @@ describe('Order', () => {
     const sut = makeSut({ purchaseDate })
 
     expect(sut.getPurchaseDate()).toBe(purchaseDate)
+  })
+
+  it('should return coupon code', () => {
+    const coupon = new Coupon({ code: 'VALE20', percentage: 20 })
+    sut.addCoupon(coupon)
+
+    expect(sut.getCouponCode()).toBe('VALE20')
+  })
+
+  it('should return freight price', () => {
+    const guitar = makeItem({ id: 'guitar', price: 1000, heightInCm: 100, widthInCm: 30, depthInCm: 10, weightInKg: 3 })
+    const amplifier = makeItem({ id: 'amplifier', price: 5000, heightInCm: 50, widthInCm: 50, depthInCm: 50, weightInKg: 20 })
+    const cable = makeItem({ id: 'cable', price: 30, heightInCm: 10, widthInCm: 10, depthInCm: 10, weightInKg: 1 })
+    sut.addItem({ item: guitar, quantity: 1 })
+    sut.addItem({ item: amplifier, quantity: 1 })
+    sut.addItem({ item: cable, quantity: 3 })
+
+    expect(sut.getFreightPrice()).toBe(260)
   })
 })
