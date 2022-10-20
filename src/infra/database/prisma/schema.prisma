@@ -26,7 +26,7 @@ model Item {
 model Coupon {
   id         String    @id @default(uuid())
   code       String    @unique
-  percentage String
+  percentage Int
   expires_at DateTime?
   Order      Order[]
 
