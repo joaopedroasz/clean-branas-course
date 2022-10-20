@@ -38,7 +38,7 @@ model Order {
   coupon      Coupon?     @relation(fields: [coupon_code], references: [code])
   coupon_code String?
   code        String      @unique
-  cpf         String      @unique
+  cpf         String
   issue_date  DateTime    @default(now())
   freight     Int?
   sequence    Int         @unique @default(autoincrement())
