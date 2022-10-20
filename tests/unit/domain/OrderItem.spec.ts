@@ -44,4 +44,15 @@ describe('OrderItem', () => {
 
     expect(sut.getItemId()).toEqual(itemId)
   })
+
+  it('should return quantity', () => {
+    const quantity = 2
+    const sut = makeSut({
+      itemId: 'any_id',
+      price: 10,
+      quantity
+    })
+
+    expect(sut.getQuantity()).toEqual(quantity)
+  })
 })
