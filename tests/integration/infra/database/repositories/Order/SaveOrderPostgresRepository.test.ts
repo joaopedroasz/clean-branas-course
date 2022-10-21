@@ -42,10 +42,10 @@ describe('SaveOrderPostgresRepository', () => {
     const { connection } = makeSut()
     await connection.$connect()
 
-    await connection.coupon.deleteMany()
     await connection.orderItem.deleteMany()
     await connection.item.deleteMany()
     await connection.order.deleteMany()
+    await connection.coupon.deleteMany()
   })
 
   afterAll(async () => {
@@ -107,7 +107,7 @@ describe('SaveOrderPostgresRepository', () => {
 
   it('should save an order and return coupon if it provided', async () => {
     const { sut, connection } = makeSut()
-    const couponCode = 'any_code'
+    const couponCode = 'any_code_coupon'
     const coupon = makeCoupon({ code: couponCode })
     await connection.coupon.create({
       data: {
@@ -126,5 +126,18 @@ describe('SaveOrderPostgresRepository', () => {
     const createdOrder = await sut.save(order)
 
     expect(createdOrder.getCouponCode()).toBe(couponCode)
+  })
+
+  it('should not return coupon if it not provided', async () => {
+    const { sut } = makeSut()
+    const order = new Order({
+      buyerCPF: '60710901054',
+      sequence: 4,
+      purchaseDate: new Date('2022-10-20T14:00:00')
+    })
+
+    const createdOrder = await sut.save(order)
+
+    expect(createdOrder.getCouponCode()).toBeUndefined()
   })
 })
