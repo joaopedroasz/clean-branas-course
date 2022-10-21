@@ -52,7 +52,7 @@ model OrderItem {
   id       String @id @default(uuid())
   order    Order  @relation(fields: [order_id], references: [id], onDelete: Cascade)
   order_id String
-  item     Item   @relation(fields: [item_id], references: [id], onDelete: SetNull)
+  item     Item   @relation(fields: [item_id], references: [id], onDelete: Cascade)
   item_id  String
   quantity Int
   price    Int
