@@ -52,4 +52,37 @@ describe('Dimensions', () => {
 
     expect(sut.calculateVolumeInCubicMeter()).toBe(0.003)
   })
+
+  it('should return height', () => {
+    const heightInCm = 20
+    const sut = makeSut({
+      heightInCm,
+      widthInCm: 15,
+      depthInCm: 10
+    })
+
+    expect(sut.getHeight()).toBe(heightInCm)
+  })
+
+  it('should return width', () => {
+    const widthInCm = 15
+    const sut = makeSut({
+      heightInCm: 20,
+      widthInCm,
+      depthInCm: 10
+    })
+
+    expect(sut.getWidth()).toBe(widthInCm)
+  })
+
+  it('should return depth', () => {
+    const depthInCm = 10
+    const sut = makeSut({
+      heightInCm: 20,
+      widthInCm: 15,
+      depthInCm
+    })
+
+    expect(sut.getDepth()).toBe(depthInCm)
+  })
 })
