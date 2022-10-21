@@ -18,7 +18,7 @@ model Item {
   width       Int
   height      Int
   depth       Int
-  OrderItem   OrderItem[]
+  order_items OrderItem[]
 
   @@map("items")
 }
@@ -28,7 +28,7 @@ model Coupon {
   code       String    @unique
   percentage Int
   expires_at DateTime?
-  Order      Order[]
+  order      Order[]
 
   @@map("coupons")
 }
@@ -43,7 +43,7 @@ model Order {
   freight     Int?
   sequence    Int         @unique @default(autoincrement())
   total       Int
-  OrderItem   OrderItem[]
+  order_items OrderItem[]
 
   @@map("orders")
 }

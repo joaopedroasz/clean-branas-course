@@ -15,7 +15,7 @@ export class SaveOrderPostgresRepository implements SaveOrderRepository {
       cpf,
       issue_date: issueDate,
       sequence,
-      OrderItem,
+      order_items: orderItems,
       coupon
     } = await this.connection.order.create({
       data: {
@@ -25,7 +25,7 @@ export class SaveOrderPostgresRepository implements SaveOrderRepository {
         coupon_code: order.getCouponCode(),
         issue_date: order.getPurchaseDate(),
         freight: order.getFreightPrice(),
-        OrderItem: {
+        order_items: {
           createMany: {
             data: order.getOrderItems().map(orderItem => ({
               item_id: orderItem.getItemId(),
@@ -37,7 +37,7 @@ export class SaveOrderPostgresRepository implements SaveOrderRepository {
       },
       include: {
         coupon: true,
-        OrderItem: {
+        order_items: {
           include: {
             item: true
           }
@@ -63,7 +63,7 @@ export class SaveOrderPostgresRepository implements SaveOrderRepository {
       createdOrder.addCoupon(loadedCoupon)
     }
 
-    for (const orderItem of OrderItem) {
+    for (const orderItem of orderItems) {
       const item = new Item({
         id: orderItem.item.id,
         depthInCm: orderItem.item.depth,
