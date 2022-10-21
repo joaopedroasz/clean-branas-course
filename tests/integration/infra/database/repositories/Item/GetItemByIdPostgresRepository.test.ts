@@ -26,9 +26,9 @@ describe('GetItemByIdPostgresRepository', () => {
 
   afterAll(async () => {
     const { connection } = makeSut()
-    const orderItemDeleteAll = connection.orderItem.deleteMany()
-    const itemDeleteAll = connection.item.deleteMany()
-    await connection.$transaction([orderItemDeleteAll, itemDeleteAll])
+    const deleteItems = connection.item.deleteMany()
+    const deleteOrderItems = connection.orderItem.deleteMany()
+    await connection.$transaction([deleteItems, deleteOrderItems])
     await connection.$disconnect()
   })
 
