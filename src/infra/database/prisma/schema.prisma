@@ -35,7 +35,7 @@ model Coupon {
 
 model Order {
   id          String      @id @default(uuid())
-  coupon      Coupon?     @relation(fields: [coupon_code], references: [code])
+  coupon      Coupon?     @relation(fields: [coupon_code], references: [code], onDelete: SetNull)
   coupon_code String?
   code        String      @unique
   cpf         String
@@ -50,9 +50,9 @@ model Order {
 
 model OrderItem {
   id       String @id @default(uuid())
-  order    Order  @relation(fields: [order_id], references: [id])
+  order    Order  @relation(fields: [order_id], references: [id], onDelete: Cascade)
   order_id String
-  item     Item   @relation(fields: [item_id], references: [id])
+  item     Item   @relation(fields: [item_id], references: [id], onDelete: SetNull)
   item_id  String
   quantity Int
   price    Int
