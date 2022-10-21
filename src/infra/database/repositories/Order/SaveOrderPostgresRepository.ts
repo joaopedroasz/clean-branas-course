@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 
-import { Item, Order } from '@/domain/entities'
+import { Coupon, Item, Order } from '@/domain/entities'
 import { SaveOrderRepository } from '@/domain/repositories/Order'
 
 export class SaveOrderPostgresRepository implements SaveOrderRepository {
@@ -15,7 +15,8 @@ export class SaveOrderPostgresRepository implements SaveOrderRepository {
       cpf,
       issue_date: issueDate,
       sequence,
-      OrderItem
+      OrderItem,
+      coupon
     } = await this.connection.order.create({
       data: {
         cpf: order.getCPF(),
@@ -49,6 +50,18 @@ export class SaveOrderPostgresRepository implements SaveOrderRepository {
       purchaseDate: issueDate,
       sequence
     })
+
+    let loadedCoupon: Coupon | undefined
+
+    if (coupon) {
+      const dueDate = coupon.expires_at ?? undefined
+      loadedCoupon = new Coupon({
+        code: coupon.code,
+        percentage: coupon.percentage,
+        dueDate
+      })
+      createdOrder.addCoupon(loadedCoupon)
+    }
 
     for (const orderItem of OrderItem) {
       const item = new Item({
