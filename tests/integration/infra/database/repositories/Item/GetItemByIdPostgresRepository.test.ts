@@ -22,13 +22,12 @@ describe('GetItemByIdPostgresRepository', () => {
   beforeAll(async () => {
     const { connection } = makeSut()
     await connection.$connect()
-
-    await connection.orderItem.deleteMany()
-    await connection.item.deleteMany()
   })
 
   afterAll(async () => {
     const { connection } = makeSut()
+    await connection.orderItem.deleteMany()
+    await connection.item.deleteMany()
     await connection.$disconnect()
   })
 

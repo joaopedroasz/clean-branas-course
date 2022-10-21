@@ -41,15 +41,14 @@ describe('SaveOrderPostgresRepository', () => {
   beforeAll(async () => {
     const { connection } = makeSut()
     await connection.$connect()
-
-    await connection.orderItem.deleteMany()
-    await connection.item.deleteMany()
-    await connection.order.deleteMany()
-    await connection.coupon.deleteMany()
   })
 
   afterAll(async () => {
     const { connection } = makeSut()
+    await connection.orderItem.deleteMany()
+    await connection.item.deleteMany()
+    await connection.order.deleteMany()
+    await connection.coupon.deleteMany()
     await connection.$disconnect()
   })
 

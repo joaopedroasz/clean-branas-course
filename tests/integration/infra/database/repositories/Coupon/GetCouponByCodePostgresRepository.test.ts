@@ -23,11 +23,11 @@ describe('GetCouponByCodePostgresRepository', () => {
   beforeAll(async () => {
     const { connection } = makeSut()
     await connection.$connect()
-    await connection.coupon.deleteMany()
   })
 
   afterAll(async () => {
     const { connection } = makeSut()
+    await connection.coupon.deleteMany()
     await connection.$disconnect()
   })
 
