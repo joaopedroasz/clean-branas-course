@@ -83,4 +83,39 @@ describe('Item', () => {
 
     expect(volume).toBe(0.003)
   })
+
+  it('should return description', () => {
+    const description = 'any_description'
+    const sut = makeSut({ description })
+
+    expect(sut.getDescription()).toBe(description)
+  })
+
+  it('should return weight', () => {
+    const weightInKg = 1
+    const sut = makeSut({ weightInKg })
+
+    expect(sut.getWeight()).toBe(weightInKg)
+  })
+
+  it('should return height', () => {
+    const heightInCm = 1
+    const sut = makeSut({ heightInCm })
+
+    expect(sut.getHeight()).toBe(heightInCm)
+  })
+
+  it('should return width', () => {
+    const widthInCm = 1
+    const sut = makeSut({ widthInCm })
+
+    expect(sut.getWidth()).toBe(widthInCm)
+  })
+
+  it('should return depth', () => {
+    const depthInCm = 1
+    const sut = makeSut({ depthInCm })
+
+    expect(sut.getDepth()).toBe(depthInCm)
+  })
 })
