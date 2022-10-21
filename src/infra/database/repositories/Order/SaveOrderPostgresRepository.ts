@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 
-import { Order } from '@/domain/entities'
+import { Item, Order } from '@/domain/entities'
 import { SaveOrderRepository } from '@/domain/repositories/Order'
 
 export class SaveOrderPostgresRepository implements SaveOrderRepository {
@@ -11,7 +11,12 @@ export class SaveOrderPostgresRepository implements SaveOrderRepository {
   }
 
   public async save (order: Order): Promise<Order> {
-    const createdOrder = await this.connection.order.create({
+    const {
+      cpf,
+      issue_date: issueDate,
+      sequence,
+      OrderItem
+    } = await this.connection.order.create({
       data: {
         cpf: order.getCPF(),
         code: order.getCode(),
@@ -39,10 +44,29 @@ export class SaveOrderPostgresRepository implements SaveOrderRepository {
       }
     })
 
-    return new Order({
-      buyerCPF: createdOrder.cpf,
-      purchaseDate: createdOrder.issue_date,
-      sequence: createdOrder.sequence
+    const createdOrder = new Order({
+      buyerCPF: cpf,
+      purchaseDate: issueDate,
+      sequence
     })
+
+    for (const orderItem of OrderItem) {
+      const item = new Item({
+        id: orderItem.item.id,
+        depthInCm: orderItem.item.depth,
+        description: orderItem.item.description,
+        heightInCm: orderItem.item.height,
+        price: orderItem.item.price,
+        weightInKg: orderItem.item.weight,
+        widthInCm: orderItem.item.width
+      })
+
+      createdOrder.addItem({
+        item,
+        quantity: orderItem.quantity
+      })
+    }
+
+    return createdOrder
   }
 }
