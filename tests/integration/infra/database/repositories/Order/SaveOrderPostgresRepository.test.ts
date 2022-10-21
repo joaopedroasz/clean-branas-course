@@ -145,4 +145,27 @@ describe('SaveOrderPostgresRepository', () => {
 
     expect(createdOrder.getCouponCode()).toBeUndefined()
   })
+
+  it('should save an order with coupon with no expired date', async () => {
+    const { sut, connection } = makeSut()
+    const couponCode = 'any_code_coupon_no_expired_date'
+    const coupon = makeCoupon({ code: couponCode, dueDate: undefined })
+    await connection.coupon.create({
+      data: {
+        code: coupon.getCode(),
+        percentage: coupon.getPercentage(),
+        expires_at: null
+      }
+    })
+    const order = new Order({
+      buyerCPF: '60710901054',
+      sequence: 5,
+      purchaseDate: new Date('2022-10-20T14:00:00')
+    })
+    order.addCoupon(coupon)
+
+    const createdOrder = await sut.save(order)
+
+    expect(createdOrder.getCouponCode()).toBe(couponCode)
+  })
 })
