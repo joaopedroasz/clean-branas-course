@@ -27,6 +27,18 @@ export class Dimensions {
     return value > 0
   }
 
+  public getHeight (): number {
+    return this.heightInCm
+  }
+
+  public getWidth (): number {
+    return this.widthInCm
+  }
+
+  public getDepth (): number {
+    return this.depthInCm
+  }
+
   public calculateVolumeInCubicMeter (): number {
     const volumeInCubicCm = this.heightInCm * this.widthInCm * this.depthInCm
     return volumeInCubicCm / this.CONVERT_TO_CUBIC_METER_FACTOR
