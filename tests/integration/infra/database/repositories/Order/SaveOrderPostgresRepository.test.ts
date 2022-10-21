@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 
-import { Item, ItemProps, Order } from '@/domain/entities'
+import { Coupon, CouponProps, Item, ItemProps, Order } from '@/domain/entities'
 import { SaveOrderRepository } from '@/domain/repositories/Order'
 import { SaveOrderPostgresRepository } from '@/infra/database/repositories/Order'
 
@@ -20,6 +20,13 @@ const makeItem = (props?: Partial<ItemProps>): Item => new Item({
   ...props
 })
 
+const makeCoupon = (props?: Partial<CouponProps>): Coupon => new Coupon({
+  code: 'any_code',
+  percentage: 1,
+  dueDate: new Date('2022-10-21'),
+  ...props
+})
+
 const makeSut = (): SutType => {
   const connection = new PrismaClient()
   const sut = new SaveOrderPostgresRepository(connection)
@@ -35,6 +42,7 @@ describe('SaveOrderPostgresRepository', () => {
     const { connection } = makeSut()
     await connection.$connect()
 
+    await connection.coupon.deleteMany()
     await connection.orderItem.deleteMany()
     await connection.item.deleteMany()
     await connection.order.deleteMany()
@@ -95,5 +103,28 @@ describe('SaveOrderPostgresRepository', () => {
 
     expect(createdOrder.getOrderItems()).toBeDefined()
     expect(createdOrder.getOrderItems()).toHaveLength(2)
+  })
+
+  it('should save an order and return coupon if it provided', async () => {
+    const { sut, connection } = makeSut()
+    const couponCode = 'any_code'
+    const coupon = makeCoupon({ code: couponCode })
+    await connection.coupon.create({
+      data: {
+        code: coupon.getCode(),
+        percentage: coupon.getPercentage(),
+        expires_at: coupon.getDueDate()
+      }
+    })
+    const order = new Order({
+      buyerCPF: '60710901054',
+      sequence: 3,
+      purchaseDate: new Date('2022-10-20T14:00:00')
+    })
+    order.addCoupon(coupon)
+
+    const createdOrder = await sut.save(order)
+
+    expect(createdOrder.getCouponCode()).toBe(couponCode)
   })
 })
