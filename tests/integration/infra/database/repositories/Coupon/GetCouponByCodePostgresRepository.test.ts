@@ -27,7 +27,8 @@ describe('GetCouponByCodePostgresRepository', () => {
 
   afterAll(async () => {
     const { connection } = makeSut()
-    await connection.coupon.deleteMany()
+    const couponDeleteAll = connection.coupon.deleteMany()
+    await connection.$transaction([couponDeleteAll])
     await connection.$disconnect()
   })
 
