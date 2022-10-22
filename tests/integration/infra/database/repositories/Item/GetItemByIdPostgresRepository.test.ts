@@ -9,8 +9,8 @@ type SutTypes = {
   connection: PrismaClient
 }
 
+const connection = new PrismaClient()
 const makeSut = (): SutTypes => {
-  const connection = new PrismaClient()
   const sut = new GetItemByIdPostgresRepository(connection)
   return {
     sut,
@@ -19,11 +19,6 @@ const makeSut = (): SutTypes => {
 }
 
 describe('GetItemByIdPostgresRepository', () => {
-  beforeAll(async () => {
-    const { connection } = makeSut()
-    await connection.$connect()
-  })
-
   afterAll(async () => {
     const { connection } = makeSut()
     const deleteItems = connection.item.deleteMany()

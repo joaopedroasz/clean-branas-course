@@ -9,8 +9,8 @@ type SutTypes = {
   sut: GetCouponByCodeRepository
 }
 
+const connection = new PrismaClient()
 const makeSut = (): SutTypes => {
-  const connection = new PrismaClient()
   const sut = new GetCouponByCodePostgresRepository(connection)
 
   return {
@@ -20,11 +20,6 @@ const makeSut = (): SutTypes => {
 }
 
 describe('GetCouponByCodePostgresRepository', () => {
-  beforeAll(async () => {
-    const { connection } = makeSut()
-    await connection.$connect()
-  })
-
   afterAll(async () => {
     const { connection } = makeSut()
     const couponDeleteAll = connection.coupon.deleteMany()

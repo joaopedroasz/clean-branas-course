@@ -27,10 +27,9 @@ const makeCoupon = (props?: Partial<CouponProps>): Coupon => new Coupon({
   ...props
 })
 
+const connection = new PrismaClient()
 const makeSut = (): SutType => {
-  const connection = new PrismaClient()
   const sut = new SaveOrderPostgresRepository(connection)
-
   return {
     sut,
     connection
@@ -38,11 +37,6 @@ const makeSut = (): SutType => {
 }
 
 describe('SaveOrderPostgresRepository', () => {
-  beforeAll(async () => {
-    const { connection } = makeSut()
-    await connection.$connect()
-  })
-
   afterAll(async () => {
     const { connection } = makeSut()
     const orderItemDeleteAll = connection.orderItem.deleteMany()
@@ -62,7 +56,7 @@ describe('SaveOrderPostgresRepository', () => {
     const { sut } = makeSut()
 
     const order = await sut.save(new Order({
-      buyerCPF: '60710901054',
+      buyerCPF: '74699434126',
       sequence: 1,
       purchaseDate: new Date('2022-10-20T14:00:00')
     }))
@@ -97,7 +91,7 @@ describe('SaveOrderPostgresRepository', () => {
       }
     })
     const order = new Order({
-      buyerCPF: '60710901054',
+      buyerCPF: '67440503112',
       sequence: 2,
       purchaseDate: new Date('2022-10-20T14:00:00')
     })
@@ -122,7 +116,7 @@ describe('SaveOrderPostgresRepository', () => {
       }
     })
     const order = new Order({
-      buyerCPF: '60710901054',
+      buyerCPF: '80978447298',
       sequence: 3,
       purchaseDate: new Date('2022-10-20T14:00:00')
     })
@@ -136,7 +130,7 @@ describe('SaveOrderPostgresRepository', () => {
   it('should not return coupon if it not provided', async () => {
     const { sut } = makeSut()
     const order = new Order({
-      buyerCPF: '60710901054',
+      buyerCPF: '23411653701',
       sequence: 4,
       purchaseDate: new Date('2022-10-20T14:00:00')
     })
@@ -158,7 +152,7 @@ describe('SaveOrderPostgresRepository', () => {
       }
     })
     const order = new Order({
-      buyerCPF: '60710901054',
+      buyerCPF: '64836366364',
       sequence: 5,
       purchaseDate: new Date('2022-10-20T14:00:00')
     })
