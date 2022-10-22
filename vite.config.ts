@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { defineConfig, UserConfig } from 'vitest/config'
 
 export const baseConfig: UserConfig = {
