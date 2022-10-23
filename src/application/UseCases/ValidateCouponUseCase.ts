@@ -3,15 +3,15 @@ import { ValidateCoupon } from '@/application/contracts'
 import { ValidateCouponInputDTO, ValidateCouponOutputDTO } from '@/application/DTOs'
 
 export class ValidateCouponUseCase implements ValidateCoupon {
-  private readonly getCouponByIdRepository: GetCouponByCodeRepository
+  private readonly getCouponByCodeRepository: GetCouponByCodeRepository
 
-  constructor (getCouponByIdRepository: GetCouponByCodeRepository) {
-    this.getCouponByIdRepository = getCouponByIdRepository
+  constructor (getCouponByCodeRepository: GetCouponByCodeRepository) {
+    this.getCouponByCodeRepository = getCouponByCodeRepository
   }
 
   public async execute (input: ValidateCouponInputDTO): Promise<ValidateCouponOutputDTO> {
     const { couponCode, date } = input
-    const coupon = await this.getCouponByIdRepository.getByCode(couponCode)
+    const coupon = await this.getCouponByCodeRepository.getByCode(couponCode)
     const isValid = coupon.isExpired(date)
 
     return {
