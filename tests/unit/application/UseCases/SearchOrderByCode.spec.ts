@@ -23,7 +23,7 @@ const makeGetOrderByCodeRepository = (): GetOrderByCodeRepository => ({
 
 const makeSut = (): SutType => {
   const getOrderByCodeRepository = makeGetOrderByCodeRepository()
-  const sut = new SearchOrderByCodeUseCase()
+  const sut = new SearchOrderByCodeUseCase(getOrderByCodeRepository)
 
   return {
     sut,
@@ -32,14 +32,25 @@ const makeSut = (): SutType => {
 }
 
 describe('SearchOrderByCode UseCase', () => {
-  it('should return an order by code', () => {
+  it('should return an order by code', async () => {
     const { sut, getOrderByCodeRepository } = makeSut()
     const orderCode = '202200000001'
     const order = makeOrder()
     vi.spyOn(getOrderByCodeRepository, 'getByCode').mockResolvedValueOnce(order)
 
-    const result = sut.execute({ code: orderCode })
+    const result = await sut.execute({ code: orderCode })
 
     expect(result).toBeDefined()
+  })
+
+  it('should call GetOrderByCodeRepository correctly', async () => {
+    const { sut, getOrderByCodeRepository } = makeSut()
+    const orderCode = '202200000001'
+    const order = makeOrder()
+    const getByCodeSpy = vi.spyOn(getOrderByCodeRepository, 'getByCode').mockResolvedValueOnce(order)
+
+    await sut.execute({ code: orderCode })
+
+    expect(getByCodeSpy).toHaveBeenCalledWith(orderCode)
   })
 })
