@@ -35,7 +35,7 @@ describe('Validate Coupon Use Case', () => {
 
     const result = await sut.execute({ couponCode })
 
-    expect(result.isValid).toBeTruthy()
+    expect(result.isValid).toBeFalsy()
     expect(result.coupon).toBeDefined()
   })
 
@@ -63,5 +63,31 @@ describe('Validate Coupon Use Case', () => {
       dueDate: coupon.getDueDate(),
       percentage: coupon.getPercentage()
     })
+  })
+
+  it('should return false if coupon is expired', async () => {
+    const { sut, getCouponByCodeRepository } = makeSut()
+    const couponCode = 'any_code'
+    const dueDate = new Date('2020-10-17')
+    const today = new Date('2021-10-18')
+    const expiredCoupon = makeCoupon({ code: couponCode, dueDate })
+    vi.spyOn(getCouponByCodeRepository, 'getByCode').mockResolvedValueOnce(expiredCoupon)
+
+    const result = await sut.execute({ couponCode, date: today })
+
+    expect(result.isValid).toBeFalsy()
+  })
+
+  it('should return true if coupon is NOT expired', async () => {
+    const { sut, getCouponByCodeRepository } = makeSut()
+    const couponCode = 'any_code'
+    const dueDate = new Date('2022-10-18')
+    const today = new Date('2021-10-17')
+    const expiredCoupon = makeCoupon({ code: couponCode, dueDate })
+    vi.spyOn(getCouponByCodeRepository, 'getByCode').mockResolvedValueOnce(expiredCoupon)
+
+    const result = await sut.execute({ couponCode, date: today })
+
+    expect(result.isValid).toBeTruthy()
   })
 })
