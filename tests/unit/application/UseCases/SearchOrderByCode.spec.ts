@@ -53,4 +53,20 @@ describe('SearchOrderByCode UseCase', () => {
 
     expect(getByCodeSpy).toHaveBeenCalledWith(orderCode)
   })
+
+  it('should return same order loaded by GetOrderByCodeRepository', async () => {
+    const { sut, getOrderByCodeRepository } = makeSut()
+    const orderCode = '202200000002'
+    const order = makeOrder({ sequence: 1 })
+    vi.spyOn(getOrderByCodeRepository, 'getByCode').mockResolvedValueOnce(order)
+
+    const result = await sut.execute({ code: orderCode })
+
+    expect(result).toMatchObject({
+      code: order.getCode(),
+      CPF: order.getCPF(),
+      purchaseDate: order.getPurchaseDate(),
+      total: order.getTotalPrice()
+    })
+  })
 })
