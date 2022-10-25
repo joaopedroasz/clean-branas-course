@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 
 import { GetItemByIdRepository } from '@/domain/repositories/Item'
 import { ItemNotFoundError } from '@/domain/errors'
-import { GetItemByIdPostgresRepository } from '@/infra/database'
+import { GetItemByIdPrismaRepository } from '@/infra/database'
 
 type SutTypes = {
   sut: GetItemByIdRepository
@@ -11,14 +11,14 @@ type SutTypes = {
 
 const connection = new PrismaClient()
 const makeSut = (): SutTypes => {
-  const sut = new GetItemByIdPostgresRepository(connection)
+  const sut = new GetItemByIdPrismaRepository(connection)
   return {
     sut,
     connection
   }
 }
 
-describe('GetItemByIdPostgresRepository', () => {
+describe('GetItemByIdPrismaRepository', () => {
   afterAll(async () => {
     const { connection } = makeSut()
     const deleteItems = connection.item.deleteMany()

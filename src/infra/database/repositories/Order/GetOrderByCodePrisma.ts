@@ -4,7 +4,7 @@ import { Order } from '@/domain/entities'
 import { GetOrderByCodeRepository } from '@/domain/repositories/Order'
 import { OrderNotFoundError } from '@/domain/errors'
 
-export class GetOrderByCodePostgresRepository implements GetOrderByCodeRepository {
+export class GetOrderByCodePrismaRepository implements GetOrderByCodeRepository {
   constructor (private readonly connection: PrismaClient) {}
 
   public async getByCode (code: string): Promise<Order> {

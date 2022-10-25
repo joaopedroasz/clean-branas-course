@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 
 import { Order, OrderProps } from '@/domain/entities'
 import { CountOrdersRepository } from '@/domain/repositories/Order'
-import { CountOrdersPostgresRepository } from '@/infra/database'
+import { CountOrdersPrismaRepository } from '@/infra/database'
 
 const makeOrder = (props?: Partial<OrderProps>): Order => new Order({
   buyerCPF: '25512268139',
@@ -18,14 +18,14 @@ type SutType = {
 
 const connection = new PrismaClient()
 const makeSut = (): SutType => {
-  const sut = new CountOrdersPostgresRepository(connection)
+  const sut = new CountOrdersPrismaRepository(connection)
   return {
     sut,
     connection
   }
 }
 
-describe('CountOrdersPostgresRepository', () => {
+describe('CountOrdersPrismaRepository', () => {
   beforeAll(async () => {
     const { connection } = makeSut()
     await connection.$connect()

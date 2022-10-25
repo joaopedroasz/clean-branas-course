@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 
 import { CouponNotFoundError } from '@/domain/errors'
 import { GetCouponByCodeRepository } from '@/domain/repositories/Coupon'
-import { GetCouponByCodePostgresRepository } from '@/infra/database'
+import { GetCouponByCodePrismaRepository } from '@/infra/database'
 
 type SutTypes = {
   connection: PrismaClient
@@ -11,7 +11,7 @@ type SutTypes = {
 
 const connection = new PrismaClient()
 const makeSut = (): SutTypes => {
-  const sut = new GetCouponByCodePostgresRepository(connection)
+  const sut = new GetCouponByCodePrismaRepository(connection)
 
   return {
     connection,
@@ -19,7 +19,7 @@ const makeSut = (): SutTypes => {
   }
 }
 
-describe('GetCouponByCodePostgresRepository', () => {
+describe('GetCouponByCodePrismaRepository', () => {
   afterAll(async () => {
     const { connection } = makeSut()
     const couponDeleteAll = connection.coupon.deleteMany()

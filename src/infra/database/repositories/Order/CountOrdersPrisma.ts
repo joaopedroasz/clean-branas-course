@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 
 import { CountOrdersRepository } from '@/domain/repositories/Order'
 
-export class CountOrdersPostgresRepository implements CountOrdersRepository {
+export class CountOrdersPrismaRepository implements CountOrdersRepository {
   private readonly connection: PrismaClient
 
   constructor (connection: PrismaClient) {

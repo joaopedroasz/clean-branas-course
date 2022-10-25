@@ -4,7 +4,7 @@ import { Item } from '@/domain/entities'
 import { ItemNotFoundError } from '@/domain/errors'
 import { GetItemByIdRepository } from '@/domain/repositories/Item'
 
-export class GetItemByIdPostgresRepository implements GetItemByIdRepository {
+export class GetItemByIdPrismaRepository implements GetItemByIdRepository {
   private readonly connection: PrismaClient
 
   constructor (connection: PrismaClient) {

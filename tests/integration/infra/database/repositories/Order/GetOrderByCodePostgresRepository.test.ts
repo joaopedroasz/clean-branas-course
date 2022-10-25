@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import { Order, OrderProps } from '@/domain/entities'
 import { OrderNotFoundError } from '@/domain/errors'
 import { GetOrderByCodeRepository } from '@/domain/repositories/Order'
-import { GetOrderByCodePostgresRepository } from '@/infra/database'
+import { GetOrderByCodePrismaRepository } from '@/infra/database'
 
 const makeOrder = (props?: Partial<OrderProps>): Order => new Order({
   buyerCPF: '67440503112',
@@ -19,14 +19,14 @@ type SutType = {
 
 const connection = new PrismaClient()
 const makeSut = (): SutType => {
-  const sut = new GetOrderByCodePostgresRepository(connection)
+  const sut = new GetOrderByCodePrismaRepository(connection)
   return {
     sut,
     connection
   }
 }
 
-describe('GetOrderByCodePostgresRepository', () => {
+describe('GetOrderByCodePrismaRepository', () => {
   afterAll(async () => {
     const { connection } = makeSut()
     const deleteOrders = connection.order.deleteMany()

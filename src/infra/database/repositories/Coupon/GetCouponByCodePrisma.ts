@@ -4,8 +4,12 @@ import { Coupon } from '@/domain/entities'
 import { CouponNotFoundError } from '@/domain/errors'
 import { GetCouponByCodeRepository } from '@/domain/repositories/Coupon'
 
-export class GetCouponByCodePostgresRepository implements GetCouponByCodeRepository {
-  constructor (private readonly connection: PrismaClient) {}
+export class GetCouponByCodePrismaRepository implements GetCouponByCodeRepository {
+  private readonly connection: PrismaClient
+
+  constructor (connection: PrismaClient) {
+    this.connection = connection
+  }
 
   async getByCode (code: string): Promise<Coupon> {
     const coupon = await this.connection.coupon.findUnique({

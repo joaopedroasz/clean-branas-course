@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 
 import { Coupon, CouponProps, Item, ItemProps, Order } from '@/domain/entities'
 import { SaveOrderRepository } from '@/domain/repositories/Order'
-import { SaveOrderPostgresRepository } from '@/infra/database/repositories/Order'
+import { SaveOrderPrismaRepository } from '@/infra/database/repositories/Order'
 
 type SutType = {
   sut: SaveOrderRepository
@@ -29,14 +29,14 @@ const makeCoupon = (props?: Partial<CouponProps>): Coupon => new Coupon({
 
 const connection = new PrismaClient()
 const makeSut = (): SutType => {
-  const sut = new SaveOrderPostgresRepository(connection)
+  const sut = new SaveOrderPrismaRepository(connection)
   return {
     sut,
     connection
   }
 }
 
-describe('SaveOrderPostgresRepository', () => {
+describe('SaveOrderPrismaRepository', () => {
   afterAll(async () => {
     const { connection } = makeSut()
     const orderItemDeleteAll = connection.orderItem.deleteMany()

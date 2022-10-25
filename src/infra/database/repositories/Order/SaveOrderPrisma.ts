@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import { Coupon, Item, Order } from '@/domain/entities'
 import { SaveOrderRepository } from '@/domain/repositories/Order'
 
-export class SaveOrderPostgresRepository implements SaveOrderRepository {
+export class SaveOrderPrismaRepository implements SaveOrderRepository {
   private readonly connection: PrismaClient
 
   constructor (connection: PrismaClient) {
