@@ -1,1 +1,1 @@
-export * from './GetItemByIdPostgresRepository'
+export * from './GetItemByIdPrisma'

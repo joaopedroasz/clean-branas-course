@@ -1,3 +1,3 @@
-export * from './SaveOrderPostgresRepository'
-export * from './CountOrdersPostgresRepository'
-export * from './GetOrderByCodePostgresRepository'
+export * from './SaveOrderPrisma'
+export * from './CountOrdersPrisma'
+export * from './GetOrderByCodePrisma'

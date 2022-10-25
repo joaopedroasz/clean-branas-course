@@ -22,9 +22,9 @@ export class GetOrderByCodePostgresRepository implements GetOrderByCodeRepositor
     }
 
     return new Order({
-      buyerCPF: order?.cpf,
-      sequence: order?.sequence,
-      purchaseDate: order?.issue_date
+      buyerCPF: order.cpf,
+      sequence: order.sequence,
+      purchaseDate: order.issue_date
     })
   }
 }

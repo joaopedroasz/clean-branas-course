@@ -1,1 +1,1 @@
-export * from './GetCouponByCodePostgresRepository'
+export * from './GetCouponByCodePrisma'
