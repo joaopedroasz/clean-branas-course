@@ -64,4 +64,24 @@ describe('GetOrderByCodePostgresRepository', () => {
       targetValue: order.getCode()
     }))
   })
+
+  it('should return an order with same properties as the created order', async () => {
+    const { sut, connection } = makeSut()
+    const sequence = 1
+    const order = makeOrder({ sequence })
+
+    const { code: createdOrderCode } = await connection.order.create({
+      data: {
+        cpf: order.getCPF(),
+        code: order.getCode(),
+        total: order.getTotalPrice(),
+        sequence,
+        issue_date: order.getPurchaseDate()
+      }
+    })
+
+    const result = await sut.getByCode(createdOrderCode)
+
+    expect(result).toEqual(order)
+  })
 })
