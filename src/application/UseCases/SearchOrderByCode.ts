@@ -24,7 +24,7 @@ export class SearchOrderByCodeUseCase implements SearchOrderByCode {
   public async execute (input: SearchOrderByCodeInput): Promise<SearchOrderByCodeOutput> {
     const [order, items, orderItems] = await Promise.all([
       this.getOrderByCodeRepository.getByCode(input.code),
-      this.getItemsByOrderCodeRepository.getByCode(input.code),
+      this.getItemsByOrderCodeRepository.getByOrderCode(input.code),
       this.getOrderItemsByOrderCodeRepository.getByOrderCode(input.code)
     ])
 

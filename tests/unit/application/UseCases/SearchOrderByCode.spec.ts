@@ -45,7 +45,7 @@ const makeGetOrderItemsByOrderCodeRepository = (): GetOrderItemsByOrderCodeRepos
 })
 
 const makeGetItemsByOrderCodeRepository = (): GetItemsByOrderCodeRepository => ({
-  async getByCode (code: string): Promise<Item[]> {
+  async getByOrderCode (code: string): Promise<Item[]> {
     return [makeItem()]
   }
 })
@@ -118,7 +118,7 @@ describe('SearchOrderByCode UseCase', () => {
     const orderCode = '202200000003'
     const itemsIds = ['1', '2', '3']
     const items: Item[] = itemsIds.map(id => makeItem({ id }))
-    const getItemsByOrderCodeRepositorySpy = vi.spyOn(getItemsByOrderCodeRepository, 'getByCode').mockResolvedValueOnce(items)
+    const getItemsByOrderCodeRepositorySpy = vi.spyOn(getItemsByOrderCodeRepository, 'getByOrderCode').mockResolvedValueOnce(items)
     const orderItems = itemsIds.map(id => makeOrderItem({ itemId: id }))
     vi.spyOn(getOrderItemsByOrderCodeRepository, 'getByOrderCode').mockResolvedValueOnce(orderItems)
 
@@ -132,7 +132,7 @@ describe('SearchOrderByCode UseCase', () => {
     const orderCode = '202200000004'
     const itemsIds = ['1', '2', '3']
     const items: Item[] = itemsIds.map(id => makeItem({ id }))
-    vi.spyOn(getItemsByOrderCodeRepository, 'getByCode').mockResolvedValueOnce(items)
+    vi.spyOn(getItemsByOrderCodeRepository, 'getByOrderCode').mockResolvedValueOnce(items)
     const orderItems = itemsIds.map(id => makeOrderItem({ itemId: id }))
     vi.spyOn(getOrderItemsByOrderCodeRepository, 'getByOrderCode').mockResolvedValueOnce(orderItems)
 
@@ -161,7 +161,7 @@ describe('SearchOrderByCode UseCase', () => {
     const { sut, getOrderItemsByOrderCodeRepository, getItemsByOrderCodeRepository } = makeSut()
     const orderCode = '202200000005'
     const items: Item[] = [makeItem({ id: '1' }), makeItem({ id: '2' }), makeItem({ id: '3' })]
-    vi.spyOn(getItemsByOrderCodeRepository, 'getByCode').mockResolvedValueOnce(items)
+    vi.spyOn(getItemsByOrderCodeRepository, 'getByOrderCode').mockResolvedValueOnce(items)
     const orderItems = [makeOrderItem({ itemId: '4' })]
     vi.spyOn(getOrderItemsByOrderCodeRepository, 'getByOrderCode').mockResolvedValueOnce(orderItems)
 
