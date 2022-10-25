@@ -1,12 +1,10 @@
-type Item = {
+export type SearchOrderByCodeOutputItem = {
   id: string
   description: string
-  quantity: number
   price: number
   weight: number
   height: number
   width: number
-  length: number
   depth: number
 }
 
@@ -17,12 +15,17 @@ type Coupon = {
   expirationDate: Date
 }
 
+export type SearchOrderByCodeOutputOrderItem = {
+  quantity: number
+  item: SearchOrderByCodeOutputItem
+}
+
 type SearchOrderByCodeOutputProps = {
   code: string
   CPF: string
   total: number
   purchaseDate: Date
-  items: Item[]
+  orderItems: SearchOrderByCodeOutputOrderItem[]
   coupon?: Coupon
 }
 
@@ -31,7 +34,7 @@ export class SearchOrderByCodeOutput {
   public readonly CPF: string
   public readonly total: number
   public readonly purchaseDate: Date
-  public readonly items: Item[]
+  public readonly orderItems: SearchOrderByCodeOutputOrderItem[]
   public readonly coupon?: Coupon
 
   constructor ({
@@ -39,14 +42,14 @@ export class SearchOrderByCodeOutput {
     CPF,
     total,
     purchaseDate,
-    items,
+    orderItems,
     coupon
   }: SearchOrderByCodeOutputProps) {
     this.code = code
     this.CPF = CPF
     this.total = total
     this.purchaseDate = purchaseDate
-    this.items = items
+    this.orderItems = orderItems
     this.coupon = coupon
   }
 }
