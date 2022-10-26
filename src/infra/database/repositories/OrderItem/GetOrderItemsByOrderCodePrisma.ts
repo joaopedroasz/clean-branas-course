@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
 import { OrderItem } from '@/domain/entities'
+import { OrderItemNotFoundError } from '@/domain/errors'
 import { GetOrderItemsByOrderCodeRepository } from '@/domain/repositories/OrderItem'
 
 export class GetOrderItemsByOrderCodePrismaRepository implements GetOrderItemsByOrderCodeRepository {
@@ -18,6 +19,13 @@ export class GetOrderItemsByOrderCodePrismaRepository implements GetOrderItemsBy
         }
       }
     })
+
+    if (!orderItems.length) {
+      throw new OrderItemNotFoundError({
+        targetProperty: 'order code',
+        targetValue: orderCode
+      })
+    }
 
     return orderItems.map(orderItem => new OrderItem({
       itemId: orderItem.item_id,
