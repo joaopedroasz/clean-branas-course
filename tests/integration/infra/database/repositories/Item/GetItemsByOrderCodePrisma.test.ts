@@ -88,6 +88,7 @@ describe('GetItemsByOrderCodePrismaRepository', () => {
 
     expect(loadedItems).toBeDefined()
     expect(loadedItems).toBeInstanceOf(Array)
-    expect(loadedItems).toEqual(items)
+    expect(loadedItems[0]).toBeInstanceOf(Item)
+    expect(loadedItems[1]).toBeInstanceOf(Item)
   })
 })
