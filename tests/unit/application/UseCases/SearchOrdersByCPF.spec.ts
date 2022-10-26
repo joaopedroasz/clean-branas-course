@@ -1,7 +1,15 @@
-import { Order, OrderProps } from '@/domain/entities'
+import { Order, OrderItem, OrderItemProps, OrderProps } from '@/domain/entities'
 import { GetOrdersByCPFRepository } from '@/domain/repositories/Order'
+import { GetOrderItemsByOrderCPFRepository } from '@/domain/repositories/OrderItem'
 import { SearchOrdersByCPF } from '@/application/contracts'
 import { SearchOrdersByCPFUseCase } from '@/application/UseCases'
+
+const makeOrderItem = (props?: Partial<OrderItemProps>): OrderItem => new OrderItem({
+  itemId: 'any_id',
+  price: 1,
+  quantity: 1,
+  ...props
+})
 
 const makeOrder = (props?: Partial<OrderProps>): Order => new Order({
   buyerCPF: '607.109.010-54',
@@ -16,17 +24,29 @@ const makeGetOrdersByCPFRepository = (): GetOrdersByCPFRepository => ({
   }
 })
 
+const makeGetOrderItemsByOrderCPFRepository = (): GetOrderItemsByOrderCPFRepository => ({
+  async getByOrderCPF (CPF: string): Promise<OrderItem[]> {
+    return [makeOrderItem()]
+  }
+})
+
 type SutType = {
   sut: SearchOrdersByCPF
   getOrdersByCPFRepository: GetOrdersByCPFRepository
+  getOrderItemsByOrderCPFRepository: GetOrderItemsByOrderCPFRepository
 }
 
 const makeSut = (): SutType => {
   const getOrdersByCPFRepository = makeGetOrdersByCPFRepository()
-  const sut = new SearchOrdersByCPFUseCase(getOrdersByCPFRepository)
+  const getOrderItemsByOrderCPFRepository = makeGetOrderItemsByOrderCPFRepository()
+  const sut = new SearchOrdersByCPFUseCase(
+    getOrdersByCPFRepository,
+    getOrderItemsByOrderCPFRepository
+  )
   return {
     sut,
-    getOrdersByCPFRepository
+    getOrdersByCPFRepository,
+    getOrderItemsByOrderCPFRepository
   }
 }
 
@@ -63,5 +83,15 @@ describe('SearchOrdersByCPF Use Case', () => {
     expect(result.orders[0].code).toBe('202200000001')
     expect(result.orders[0].CPF).toBe(order.getCPF())
     expect(result.orders[0].totalValue).toBe(order.getTotalPrice())
+  })
+
+  it('should call GetOrderItemsByOrderCPFRepository with provided CPF', async () => {
+    const { sut, getOrderItemsByOrderCPFRepository } = makeSut()
+    const CPF = '737.978.953-80'
+    const getOrderItemsByOrderCPFRepositorySpy = vi.spyOn(getOrderItemsByOrderCPFRepository, 'getByOrderCPF')
+
+    await sut.execute({ CPF })
+
+    expect(getOrderItemsByOrderCPFRepositorySpy).toHaveBeenCalledWith(CPF)
   })
 })
