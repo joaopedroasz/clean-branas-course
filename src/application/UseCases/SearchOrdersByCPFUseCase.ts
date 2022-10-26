@@ -10,9 +10,15 @@ export class SearchOrdersByCPFUseCase implements SearchOrdersByCPF {
   }
 
   public async execute (input: SearchOrdersByCPFInputDTO): Promise<SearchOrdersByCPFOutputDTO> {
-    await this.getOrdersByCPFRepository.getByCPF(input.CPF)
+    const orders = await this.getOrdersByCPFRepository.getByCPF(input.CPF)
     return {
-      orders: []
+      orders: orders.map(order => ({
+        code: order.getCode(),
+        CPF: order.getCPF(),
+        purchaseDate: order.getPurchaseDate(),
+        totalValue: order.getTotalPrice(),
+        orderItems: []
+      }))
     }
   }
 }
