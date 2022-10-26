@@ -1,14 +1,18 @@
+import { GetOrdersByCPFRepository } from '@/domain/repositories/Order'
 import { SearchOrdersByCPF } from '../contracts'
-import { SearchOrdersByCPFInput, SearchOrdersByCPFOutput } from '../DTOs'
+import { SearchOrdersByCPFInputDTO, SearchOrdersByCPFOutputDTO } from '../DTOs'
 
 export class SearchOrdersByCPFUseCase implements SearchOrdersByCPF {
-  public async execute (input: SearchOrdersByCPFInput): Promise<SearchOrdersByCPFOutput> {
+  private readonly getOrdersByCPFRepository: GetOrdersByCPFRepository
+
+  constructor (getOrdersByCPFRepository: GetOrdersByCPFRepository) {
+    this.getOrdersByCPFRepository = getOrdersByCPFRepository
+  }
+
+  public async execute (input: SearchOrdersByCPFInputDTO): Promise<SearchOrdersByCPFOutputDTO> {
+    await this.getOrdersByCPFRepository.getByCPF(input.CPF)
     return {
-      code: '123',
-      CPF: '737.978.953-80',
-      orderItems: [],
-      purchaseDate: new Date(),
-      totalValue: 0
+      orders: []
     }
   }
 }
