@@ -50,4 +50,18 @@ describe('SearchOrdersByCPF Use Case', () => {
 
     expect(getOrdersByCPFRepositorySpy).toBeCalledWith(CPF)
   })
+
+  it('should return the same orders loaded by GetOrdersByCPFRepository', async () => {
+    const { sut, getOrdersByCPFRepository } = makeSut()
+    const CPF = '737.978.953-80'
+    const sequence = 0
+    const order = makeOrder({ buyerCPF: CPF, sequence })
+    vi.spyOn(getOrdersByCPFRepository, 'getByCPF').mockResolvedValueOnce([order])
+
+    const result = await sut.execute({ CPF })
+
+    expect(result.orders[0].code).toBe('202200000001')
+    expect(result.orders[0].CPF).toBe(order.getCPF())
+    expect(result.orders[0].totalValue).toBe(order.getTotalPrice())
+  })
 })
