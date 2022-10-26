@@ -13,7 +13,7 @@ export type SearchOrdersByCPFOutputOrderItem = {
   item: SearchOrdersByCPFOutputItem
 }
 
-export type SearchOrdersByCPFOutputProps = {
+export type SearchOrdersByCPFOutputOrder = {
   code: string
   CPF: string
   purchaseDate: Date
@@ -21,24 +21,14 @@ export type SearchOrdersByCPFOutputProps = {
   orderItems: SearchOrdersByCPFOutputOrderItem[]
 }
 
-export class SearchOrdersByCPFOutput implements SearchOrdersByCPFOutputProps {
-  public readonly code: string
-  public readonly CPF: string
-  public readonly purchaseDate: Date
-  public readonly totalValue: number
-  public readonly orderItems: SearchOrdersByCPFOutputOrderItem[]
+export type SearchOrdersByCPFOutputProps = {
+  orders: SearchOrdersByCPFOutputOrder[]
+}
 
-  constructor ({
-    code,
-    CPF,
-    purchaseDate,
-    totalValue,
-    orderItems
-  }: SearchOrdersByCPFOutputProps) {
-    this.code = code
-    this.CPF = CPF
-    this.purchaseDate = purchaseDate
-    this.totalValue = totalValue
-    this.orderItems = orderItems
+export class SearchOrdersByCPFOutputDTO {
+  public readonly orders: SearchOrdersByCPFOutputOrder[]
+
+  constructor ({ orders }: SearchOrdersByCPFOutputProps) {
+    this.orders = orders
   }
 }

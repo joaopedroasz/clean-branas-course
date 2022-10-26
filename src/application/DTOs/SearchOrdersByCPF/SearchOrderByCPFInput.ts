@@ -2,7 +2,7 @@ export type SearchOrdersByCPFInputProps = {
   CPF: string
 }
 
-export class SearchOrdersByCPFInput {
+export class SearchOrdersByCPFInputDTO {
   public readonly CPF: string
 
   constructor ({ CPF }: SearchOrdersByCPFInputProps) {
