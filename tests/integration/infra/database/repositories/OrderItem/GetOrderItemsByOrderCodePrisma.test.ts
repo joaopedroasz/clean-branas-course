@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
 import { Item, ItemProps, Order, OrderItem, OrderProps } from '@/domain/entities'
+import { OrderItemNotFoundError } from '@/domain/errors'
 import { GetOrderItemsByOrderCodeRepository } from '@/domain/repositories/OrderItem'
 import { GetOrderItemsByOrderCodePrismaRepository } from '@/infra/database'
 
@@ -88,5 +89,15 @@ describe('GetOrderItemsByOrderCodePrismaRepository', () => {
     expect(loadedOrderItem[0]).toBeInstanceOf(OrderItem)
     expect(loadedOrderItem[0].getItemId()).toBe(orderItem.getItemId())
     expect(loadedOrderItem[0].getQuantity()).toBe(orderItem.getQuantity())
+  })
+
+  it('should throw if not found any order item', async () => {
+    const { sut } = makeSut()
+    const code = 'any_code'
+
+    await expect(sut.getByOrderCode(code)).rejects.toThrowError(new OrderItemNotFoundError({
+      targetProperty: 'order code',
+      targetValue: code
+    }))
   })
 })
