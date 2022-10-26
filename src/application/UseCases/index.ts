@@ -1,3 +1,5 @@
 export * from './PlaceOrderUseCase'
 export * from './SimulateFreightUseCase'
 export * from './ValidateCouponUseCase'
+export * from './SearchOrderByCodeUseCase'
+export * from './SearchOrdersByCPFUseCase'
