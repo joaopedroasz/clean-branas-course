@@ -4,7 +4,7 @@ import { GetOrderByCodeRepository } from '@/domain/repositories/Order'
 import { GetItemsByOrderCodeRepository } from '@/domain/repositories/Item'
 import { GetOrderItemsByOrderCodeRepository } from '@/domain/repositories/OrderItem'
 import { SearchOrderByCode } from '@/application/contracts'
-import { SearchOrderByCodeUseCase } from '@/application/UseCases/SearchOrderByCode'
+import { SearchOrderByCodeUseCase } from '@/application/UseCases'
 
 type SutType = {
   sut: SearchOrderByCode
