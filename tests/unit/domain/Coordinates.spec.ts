@@ -56,4 +56,10 @@ describe('Coordinates Entity', () => {
 
     expect(error).toThrowError(new InvalidLongitudeError(invalidLongitude))
   })
+
+  it('should create valid instance if longitude is equal to 180', () => {
+    const sut = makeSut({ longitude: 180 })
+
+    expect(sut).toBeDefined()
+  })
 })
