@@ -49,4 +49,11 @@ describe('Coordinates Entity', () => {
 
     expect(error).toThrowError(new InvalidLongitudeError(invalidLongitude))
   })
+
+  it('should throw InvalidLongitudeError if longitude less than -180', () => {
+    const invalidLongitude = -181
+    const error = (): Coordinates => makeSut({ longitude: invalidLongitude })
+
+    expect(error).toThrowError(new InvalidLongitudeError(invalidLongitude))
+  })
 })
