@@ -1,5 +1,5 @@
 import { Coordinates, CoordinatesProps } from '@/domain/entities'
-import { InvalidLatitudeError } from '@/domain/errors'
+import { InvalidLatitudeError, InvalidLongitudeError } from '@/domain/errors'
 
 const makeSut = (props?: Partial<CoordinatesProps>): Coordinates => new Coordinates({
   latitude: -5.81,
@@ -41,5 +41,12 @@ describe('Coordinates Entity', () => {
     const sut = makeSut({ latitude: -90 })
 
     expect(sut).toBeDefined()
+  })
+
+  it('should throw InvalidLongitudeError if longitude greater than 180', () => {
+    const invalidLongitude = 181
+    const error = (): Coordinates => makeSut({ longitude: invalidLongitude })
+
+    expect(error).toThrowError(new InvalidLongitudeError(invalidLongitude))
   })
 })
