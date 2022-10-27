@@ -36,4 +36,10 @@ describe('Coordinates Entity', () => {
 
     expect(sut).toBeDefined()
   })
+
+  it('should create valid instance if latitude is equal to -90', () => {
+    const sut = makeSut({ latitude: -90 })
+
+    expect(sut).toBeDefined()
+  })
 })
