@@ -20,6 +20,6 @@ export class Coordinates {
   }
 
   private isValidLatitude (): boolean {
-    return this.latitude > -90 && this.latitude < 90
+    return this.latitude > -90 && this.latitude <= 90
   }
 }
