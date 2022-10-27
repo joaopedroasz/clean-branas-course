@@ -16,10 +16,10 @@ export class Coordinates {
     this.latitude = latitude
     this.longitude = longitude
 
-    if (this.isValidLatitude()) throw new InvalidLatitudeError(this.latitude)
+    if (!this.isValidLatitude()) throw new InvalidLatitudeError(this.latitude)
   }
 
   private isValidLatitude (): boolean {
-    return this.latitude > 90
+    return this.latitude > -90 && this.latitude < 90
   }
 }
