@@ -29,6 +29,6 @@ export class Coordinates {
   }
 
   public equals (other: Coordinates): boolean {
-    return true
+    return this.latitude === other.latitude
   }
 }
