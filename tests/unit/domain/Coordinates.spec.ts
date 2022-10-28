@@ -105,4 +105,10 @@ describe('Coordinates Entity', () => {
 
     expect(sut.latitudeInRadians()).toBe(0.17453292519943295)
   })
+
+  it('should return longitude in radians', () => {
+    const sut = makeSut({ longitude: 25 })
+
+    expect(sut.longitudeInRadians()).toBe(0.4363323129985824)
+  })
 })
