@@ -68,4 +68,11 @@ describe('Coordinates Entity', () => {
 
     expect(sut).toBeDefined()
   })
+
+  it('should return true if two instances have the same values', () => {
+    const sut1 = makeSut()
+    const sut2 = makeSut()
+
+    expect(sut1.equals(sut2)).toBeTruthy()
+  })
 })
