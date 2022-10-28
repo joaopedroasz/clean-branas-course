@@ -31,4 +31,8 @@ export class Coordinates {
   public equals (other: Coordinates): boolean {
     return this.latitude === other.latitude && this.longitude === other.longitude
   }
+
+  public latitudeInRadians (): number {
+    return this.latitude * Math.PI / 180
+  }
 }
