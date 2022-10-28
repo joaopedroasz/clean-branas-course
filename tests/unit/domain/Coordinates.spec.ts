@@ -99,4 +99,10 @@ describe('Coordinates Entity', () => {
     expect(sut1.equals(sut2)).toBeFalsy()
     expect(sut2.equals(sut1)).toBeFalsy()
   })
+
+  it('should return latitude in radians', () => {
+    const sut = makeSut({ latitude: 10 })
+
+    expect(sut.latitudeInRadians()).toBe(0.17453292519943295)
+  })
 })
