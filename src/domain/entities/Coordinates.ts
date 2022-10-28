@@ -6,6 +6,8 @@ export type CoordinatesProps = {
 }
 
 export class Coordinates {
+  private readonly CONVERT_TO_RADIAN_FACTOR = 180
+
   private readonly latitude: number
   private readonly longitude: number
 
@@ -33,6 +35,14 @@ export class Coordinates {
   }
 
   public latitudeInRadians (): number {
-    return this.latitude * Math.PI / 180
+    return this.calculateInRadians(this.latitude)
+  }
+
+  public longitudeInRadians (): number {
+    return this.calculateInRadians(this.longitude)
+  }
+
+  private calculateInRadians (degreeValue: number): number {
+    return degreeValue * Math.PI / this.CONVERT_TO_RADIAN_FACTOR
   }
 }
