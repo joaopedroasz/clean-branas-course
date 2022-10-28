@@ -27,4 +27,8 @@ export class Coordinates {
   private isValidLongitude (): boolean {
     return this.longitude <= 180 && this.longitude >= -180
   }
+
+  public equals (other: Coordinates): boolean {
+    return true
+  }
 }
