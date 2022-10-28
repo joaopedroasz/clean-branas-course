@@ -91,4 +91,12 @@ describe('Coordinates Entity', () => {
     expect(sut1.equals(sut2)).toBeFalsy()
     expect(sut2.equals(sut1)).toBeFalsy()
   })
+
+  it('should return false if two instances have different latitudes and longitudes', () => {
+    const sut1 = makeSut({ latitude: 10, longitude: 11 })
+    const sut2 = makeSut({ latitude: 20, longitude: 22 })
+
+    expect(sut1.equals(sut2)).toBeFalsy()
+    expect(sut2.equals(sut1)).toBeFalsy()
+  })
 })
