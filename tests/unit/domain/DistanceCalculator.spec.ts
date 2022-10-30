@@ -27,4 +27,10 @@ describe('DistanceCalculator', () => {
 
     expect(sut.calculate()).toBe(0)
   })
+
+  it('should return distance in kilometers if the coordinates not equals', () => {
+    const sut = makeSut()
+
+    expect(sut.calculate()).toBe(2245.060226631455)
+  })
 })
