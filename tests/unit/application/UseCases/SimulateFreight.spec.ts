@@ -46,7 +46,8 @@ describe('SimulateFreight Use Case', () => {
           itemId: '2',
           quantity: 1
         }
-      ]
+      ],
+      CEP: 'any_cep'
     }
 
     const output = await sut.execute(input)
@@ -67,7 +68,8 @@ describe('SimulateFreight Use Case', () => {
           itemId: '2',
           quantity: 2
         }
-      ]
+      ],
+      CEP: 'any_cep'
     }
 
     await sut.execute(input)
@@ -90,7 +92,8 @@ describe('SimulateFreight Use Case', () => {
           itemId: '2',
           quantity: 2
         }
-      ]
+      ],
+      CEP: 'any_cep'
     }
 
     await sut.execute(input)
