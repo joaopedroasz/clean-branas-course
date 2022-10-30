@@ -111,4 +111,11 @@ describe('Coordinates Entity', () => {
 
     expect(sut.longitudeInRadians()).toBe(0.4363323129985824)
   })
+
+  it('should calculate theta between two coordinates', () => {
+    const sut1 = makeSut({ longitude: 25 })
+    const sut2 = makeSut({ longitude: 35 })
+
+    expect(sut1.calculateTheta(sut2)).toBe(-10)
+  })
 })
