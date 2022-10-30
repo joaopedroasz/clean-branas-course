@@ -45,4 +45,8 @@ export class Coordinates {
   private calculateInRadians (degreeValue: number): number {
     return degreeValue * Math.PI / this.CONVERT_TO_RADIAN_FACTOR
   }
+
+  public calculateTheta (other: Coordinates): number {
+    return this.longitude - other.longitude
+  }
 }
