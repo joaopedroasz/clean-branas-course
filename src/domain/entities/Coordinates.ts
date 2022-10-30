@@ -49,4 +49,8 @@ export class Coordinates {
   public calculateTheta (other: Coordinates): number {
     return this.longitude - other.longitude
   }
+
+  public calculateThetaInRadians (other: Coordinates): number {
+    return this.calculateInRadians(this.calculateTheta(other))
+  }
 }
