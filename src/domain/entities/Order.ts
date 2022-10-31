@@ -69,7 +69,7 @@ export class Order {
       price: item.getPrice(),
       quantity
     }))
-    this.freight += new FreightCalculator({ item, quantity }).calculate()
+    this.freight += new FreightCalculator({ item, quantity, distanceInKm: 1000 }).calculate()
   }
 
   private alreadyHasItem (itemId: string): boolean {
