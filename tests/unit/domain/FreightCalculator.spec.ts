@@ -1,5 +1,5 @@
 import { FreightCalculator, FreightCalculatorProps, Item, ItemProps } from '@/domain/entities'
-import { InvalidQuantityError } from '@/domain/errors'
+import { InvalidDistanceError, InvalidQuantityError } from '@/domain/errors'
 
 const makeSut = (props: FreightCalculatorProps): FreightCalculator => new FreightCalculator(props)
 const makeItem = (props?: Partial<ItemProps>): Item => new Item({
@@ -19,7 +19,8 @@ describe('Freight Calculator', () => {
     const quantity = 2
     const sut = makeSut({
       item,
-      quantity
+      quantity,
+      distanceInKm: 1000
     })
 
     const freight = sut.calculate()
@@ -33,7 +34,7 @@ describe('Freight Calculator', () => {
     const widthInCm = 15
     const depthInCm = 10
     const item = makeItem({ weightInKg, heightInCm, widthInCm, depthInCm })
-    const sut = makeSut({ quantity: 1, item })
+    const sut = makeSut({ quantity: 1, item, distanceInKm: 1000 })
 
     const freight = sut.calculate()
 
@@ -43,8 +44,16 @@ describe('Freight Calculator', () => {
   it('should not calculate freight with negative quantity', () => {
     const item = makeItem()
     const quantity = -1
-    const sut = (): FreightCalculator => makeSut({ quantity, item })
+    const sut = (): FreightCalculator => makeSut({ quantity, item, distanceInKm: 1000 })
 
     expect(sut).toThrowError(new InvalidQuantityError(quantity))
+  })
+
+  it('should throw InvalidDistanceError if distance is negative', () => {
+    const item = makeItem()
+    const distanceInKm = -1
+    const sut = (): FreightCalculator => makeSut({ distanceInKm, item, quantity: 1 })
+
+    expect(sut).toThrowError(new InvalidDistanceError(distanceInKm))
   })
 })
