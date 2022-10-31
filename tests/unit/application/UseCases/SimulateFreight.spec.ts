@@ -66,7 +66,7 @@ describe('SimulateFreight Use Case', () => {
 
     const output = await sut.execute(input)
 
-    expect(output.total).toBe(200)
+    expect(output.total).toBe(848.5665084067638)
   })
 
   it('should call GetItemByIdRepository correctly', async () => {
@@ -93,6 +93,42 @@ describe('SimulateFreight Use Case', () => {
     expect(getItemByIdRepositorySpy).toBeCalledWith('2')
   })
 
+  it('should call GetCoordinateByCEP correctly', async () => {
+    const { sut, getCoordinatesByCEPGateway } = makeSut()
+    const getCoordinatesByCEPSpy = vi.spyOn(getCoordinatesByCEPGateway, 'getByCEP')
+    const input: SimulateFreightInputDTO = {
+      items: [
+        {
+          itemId: '1',
+          quantity: 1
+        }
+      ],
+      destinationCEP: 'any_cep'
+    }
+
+    await sut.execute(input)
+
+    expect(getCoordinatesByCEPSpy).toBeCalledTimes(1)
+    expect(getCoordinatesByCEPSpy).toBeCalledWith('any_cep')
+  })
+
+  it('should calculate freight with distance between origin and provided destination', async () => {
+    const { sut } = makeSut()
+    const input: SimulateFreightInputDTO = {
+      items: [
+        {
+          itemId: '1',
+          quantity: 1
+        }
+      ],
+      destinationCEP: 'any_cep'
+    }
+
+    const output = await sut.execute(input)
+
+    expect(output.total).toBe(424.2832542033819)
+  })
+
   it('should call FreightCalculator correctly', async () => {
     const { sut } = makeSut()
     const freightCalculatorSpy = vi.spyOn(FreightCalculator.prototype, 'calculate')
@@ -113,24 +149,5 @@ describe('SimulateFreight Use Case', () => {
     await sut.execute(input)
 
     expect(freightCalculatorSpy).toBeCalledTimes(2)
-  })
-
-  it('should call GetCoordinateByCEP correctly', async () => {
-    const { sut, getCoordinatesByCEPGateway } = makeSut()
-    const getCoordinatesByCEPSpy = vi.spyOn(getCoordinatesByCEPGateway, 'getByCEP')
-    const input: SimulateFreightInputDTO = {
-      items: [
-        {
-          itemId: '1',
-          quantity: 1
-        }
-      ],
-      destinationCEP: 'any_cep'
-    }
-
-    await sut.execute(input)
-
-    expect(getCoordinatesByCEPSpy).toBeCalledTimes(1)
-    expect(getCoordinatesByCEPSpy).toBeCalledWith('any_cep')
   })
 })
