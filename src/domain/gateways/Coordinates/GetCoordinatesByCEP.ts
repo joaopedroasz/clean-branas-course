@@ -1,5 +1,5 @@
 import { Coordinates } from '@/domain/entities'
 
-export interface GetCoordinateByCEPGateway {
+export interface GetCoordinatesByCEPGateway {
   getByCEP: (CEP: string) => Promise<Coordinates>
 }

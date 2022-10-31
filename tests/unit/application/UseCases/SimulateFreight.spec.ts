@@ -1,6 +1,6 @@
 import { Coordinates, FreightCalculator, Item, ItemProps } from '@/domain/entities'
 import { GetItemByIdRepository } from '@/domain/repositories/Item'
-import { GetCoordinateByCEPGateway } from '@/domain/gateways/Coordinates'
+import { GetCoordinatesByCEPGateway } from '@/domain/gateways/Coordinates'
 import { SimulateFreight } from '@/application/contracts'
 import { SimulateFreightUseCase } from '@/application/UseCases'
 import { SimulateFreightInputDTO } from '@/application/DTOs'
@@ -20,7 +20,7 @@ const makeGetItemByIdRepository = (): GetItemByIdRepository => ({
   getById: async (id: string): Promise<Item> => makeItem({ id })
 })
 
-const makeGetCoordinateByCEPGateway = (): GetCoordinateByCEPGateway => ({
+const makeGetCoordinatesByCEPGateway = (): GetCoordinatesByCEPGateway => ({
   getByCEP: async (CEP: string): Promise<Coordinates> => new Coordinates({
     latitude: 0,
     longitude: 1
@@ -30,20 +30,20 @@ const makeGetCoordinateByCEPGateway = (): GetCoordinateByCEPGateway => ({
 type SutTypes = {
   sut: SimulateFreight
   getItemByIdRepository: GetItemByIdRepository
-  getCoordinateByCEPGateway: GetCoordinateByCEPGateway
+  getCoordinatesByCEPGateway: GetCoordinatesByCEPGateway
 }
 
 const makeSut = (): SutTypes => {
   const getItemByIdRepository = makeGetItemByIdRepository()
-  const getCoordinateByCEPGateway = makeGetCoordinateByCEPGateway()
+  const getCoordinatesByCEPGateway = makeGetCoordinatesByCEPGateway()
   const sut = new SimulateFreightUseCase(
     getItemByIdRepository,
-    getCoordinateByCEPGateway
+    getCoordinatesByCEPGateway
   )
   return {
     sut,
     getItemByIdRepository,
-    getCoordinateByCEPGateway
+    getCoordinatesByCEPGateway
   }
 }
 
@@ -116,8 +116,8 @@ describe('SimulateFreight Use Case', () => {
   })
 
   it('should call GetCoordinateByCEP correctly', async () => {
-    const { sut, getCoordinateByCEPGateway } = makeSut()
-    const getCoordinatesByCEPSpy = vi.spyOn(getCoordinateByCEPGateway, 'getByCEP')
+    const { sut, getCoordinatesByCEPGateway } = makeSut()
+    const getCoordinatesByCEPSpy = vi.spyOn(getCoordinatesByCEPGateway, 'getByCEP')
     const input: SimulateFreightInputDTO = {
       items: [
         {

@@ -1,19 +1,19 @@
 import { FreightCalculator } from '@/domain/entities'
-import { GetCoordinateByCEPGateway } from '@/domain/gateways/Coordinates'
+import { GetCoordinatesByCEPGateway } from '@/domain/gateways/Coordinates'
 import { GetItemByIdRepository } from '@/domain/repositories/Item'
 import { SimulateFreight } from '@/application/contracts'
 import { SimulateFreightInputDTO, SimulateFreightOutputDTO } from '@/application/DTOs'
 
 export class SimulateFreightUseCase implements SimulateFreight {
   private readonly getItemByIdRepository: GetItemByIdRepository
-  private readonly getCoordinateByCEPGateway: GetCoordinateByCEPGateway
+  private readonly getCoordinatesByCEPGateway: GetCoordinatesByCEPGateway
 
   constructor (
     getItemByIdRepository: GetItemByIdRepository,
-    getCoordinateByCEPGateway: GetCoordinateByCEPGateway
+    getCoordinatesByCEPGateway: GetCoordinatesByCEPGateway
   ) {
     this.getItemByIdRepository = getItemByIdRepository
-    this.getCoordinateByCEPGateway = getCoordinateByCEPGateway
+    this.getCoordinatesByCEPGateway = getCoordinatesByCEPGateway
   }
 
   public async execute (input: SimulateFreightInputDTO): Promise<SimulateFreightOutputDTO> {
@@ -26,7 +26,7 @@ export class SimulateFreightUseCase implements SimulateFreight {
       total += new FreightCalculator({ item, quantity }).calculate()
     }
 
-    await this.getCoordinateByCEPGateway.getByCEP(destinationCEP)
+    await this.getCoordinatesByCEPGateway.getByCEP(destinationCEP)
 
     return { total }
   }
