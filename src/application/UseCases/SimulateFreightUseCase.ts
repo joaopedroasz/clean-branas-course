@@ -5,7 +5,7 @@ import { SimulateFreight } from '@/application/contracts'
 import { SimulateFreightInputDTO, SimulateFreightOutputDTO } from '@/application/DTOs'
 
 export class SimulateFreightUseCase implements SimulateFreight {
-  private readonly defaultOriginCoordinates = new Coordinates({
+  private readonly DEFAULT_ORIGIN_COORDINATES = new Coordinates({
     latitude: -6.68491,
     longitude: -36.6566
   })
@@ -28,7 +28,7 @@ export class SimulateFreightUseCase implements SimulateFreight {
     const destinationCoordinates = await this.getCoordinatesByCEPGateway.getByCEP(destinationCEP)
 
     const distanceInKm = new DistanceCalculator({
-      origin: this.defaultOriginCoordinates,
+      origin: this.DEFAULT_ORIGIN_COORDINATES,
       destination: destinationCoordinates
     }).calculate()
 
