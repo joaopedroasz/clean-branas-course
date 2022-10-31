@@ -1,10 +1,15 @@
-import { FreightCalculator } from '@/domain/entities'
+import { Coordinates, DistanceCalculator, FreightCalculator } from '@/domain/entities'
 import { GetCoordinatesByCEPGateway } from '@/domain/gateways/Coordinates'
 import { GetItemByIdRepository } from '@/domain/repositories/Item'
 import { SimulateFreight } from '@/application/contracts'
 import { SimulateFreightInputDTO, SimulateFreightOutputDTO } from '@/application/DTOs'
 
 export class SimulateFreightUseCase implements SimulateFreight {
+  private readonly defaultOriginCoordinates = new Coordinates({
+    latitude: -6.68491,
+    longitude: -36.6566
+  })
+
   private readonly getItemByIdRepository: GetItemByIdRepository
   private readonly getCoordinatesByCEPGateway: GetCoordinatesByCEPGateway
 
@@ -20,13 +25,20 @@ export class SimulateFreightUseCase implements SimulateFreight {
     const { items, destinationCEP } = input
     let total = 0
 
+    const destinationCoordinates = await this.getCoordinatesByCEPGateway.getByCEP(destinationCEP)
+
+    const distanceInKm = new DistanceCalculator({
+      origin: this.defaultOriginCoordinates,
+      destination: destinationCoordinates
+    }).calculate()
+
     for (const { itemId, quantity } of items) {
       const item = await this.getItemByIdRepository.getById(itemId)
 
-      total += new FreightCalculator({ item, quantity }).calculate()
-    }
+      const freight = new FreightCalculator({ item, quantity, distanceInKm }).calculate()
 
-    await this.getCoordinatesByCEPGateway.getByCEP(destinationCEP)
+      total += freight
+    }
 
     return { total }
   }
