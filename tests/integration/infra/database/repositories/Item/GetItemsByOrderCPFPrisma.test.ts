@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import { Item, ItemProps, Order, OrderProps } from '@/domain/entities'
 import { GetItemsByOrderCPFRepository } from '@/domain/repositories/Item'
 import { GetItemsByOrderCPFPrismaRepository } from '@/infra/database'
+import { ItemNotFoundError } from '@/domain/errors'
 
 const makeItem = (props?: Partial<ItemProps>): Item => new Item({
   id: 'any_id',
@@ -87,5 +88,16 @@ describe('GetItemsByOrderCPFPrismaRepository', () => {
     expect(itemsByOrderCPF).toHaveLength(2)
     expect(itemsByOrderCPF[0]).toBeInstanceOf(Item)
     expect(itemsByOrderCPF[1]).toBeInstanceOf(Item)
+  })
+
+  it('should throw ItemNotFoundError if no items are found', async () => {
+    const { sut } = makeSut()
+
+    const promise = sut.getByOrderCPF('any_cpf')
+
+    await expect(promise).rejects.toThrowError(new ItemNotFoundError({
+      targetProperty: 'order CPF',
+      targetValue: 'any_cpf'
+    }))
   })
 })
