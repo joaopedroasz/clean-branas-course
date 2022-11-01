@@ -1,3 +1,4 @@
+import { Coordinates } from '@/domain/entities'
 import { GetCoordinatesByCEPGateway } from '@/domain/gateways/Coordinates'
 import { GetCoordinatesByCEPAdapter, HttpClient, RequestParams } from '@/infra/gateways'
 
@@ -46,5 +47,18 @@ describe('GetCoordinatesByCEPAdapter', () => {
     expect(httpClientSpy).toHaveBeenCalledWith({
       url: `${BASE_URL}/${CEP}`
     })
+  })
+
+  it('should return Coordinates on success', async () => {
+    const CEP = '89010025'
+    const { sut } = makeSut()
+
+    const coordinates = await sut.getByCEP(CEP)
+
+    expect(coordinates).toBeInstanceOf(Coordinates)
+    expect(coordinates).toEqual(new Coordinates({
+      longitude: -49.0629788,
+      latitude: -26.9244749
+    }))
   })
 })
