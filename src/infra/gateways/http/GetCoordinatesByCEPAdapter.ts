@@ -19,7 +19,7 @@ type Response = {
   }
 }
 
-export class GetCoordinatesByCEPAdapter implements GetCoordinatesByCEPGateway {
+export class GetCoordinatesByCEPGatewayBrasilAPIAdapter implements GetCoordinatesByCEPGateway {
   private readonly httpClient: HttpClient
   private readonly baseURL: string
 

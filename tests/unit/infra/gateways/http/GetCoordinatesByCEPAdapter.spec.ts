@@ -1,6 +1,6 @@
 import { Coordinates } from '@/domain/entities'
 import { GetCoordinatesByCEPGateway } from '@/domain/gateways/Coordinates'
-import { GetCoordinatesByCEPAdapter, HttpClient, RequestParams } from '@/infra/gateways'
+import { GetCoordinatesByCEPGatewayBrasilAPIAdapter, HttpClient, RequestParams } from '@/infra/gateways'
 
 const makeHttpClient = (): HttpClient => ({
   get: async (params: RequestParams): Promise<any> => ({
@@ -9,7 +9,7 @@ const makeHttpClient = (): HttpClient => ({
     city: 'Blumenau',
     neighborhood: 'Centro',
     street: 'Rua Doutor Luiz de Freitas Melro',
-    service: 'viacep',
+    service: 'brasil-api',
     location: {
       type: 'Point',
       coordinates: {
@@ -29,7 +29,7 @@ type SutType = {
 
 const makeSut = (): SutType => {
   const httpClient = makeHttpClient()
-  const sut = new GetCoordinatesByCEPAdapter(BASE_URL, httpClient)
+  const sut = new GetCoordinatesByCEPGatewayBrasilAPIAdapter(BASE_URL, httpClient)
   return {
     sut,
     httpClient
