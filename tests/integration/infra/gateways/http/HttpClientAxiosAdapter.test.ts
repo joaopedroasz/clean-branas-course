@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { ExternalBadRequestError, HttpClient, HttpClientAxiosAdapter } from '@/infra/gateways'
+import { ExternalBadRequestError, ExternalServerError, HttpClient, HttpClientAxiosAdapter } from '@/infra/gateways'
 
 vi.mock('axios', () => ({
   default: {
@@ -43,7 +43,7 @@ describe('HttpClientAxiosAdapter', () => {
     expect(response).toEqual('any_data')
   })
 
-  it('should rethrow ExternalBadRequestError if axios throws with status code 400', async () => {
+  it('should throw ExternalBadRequestError if axios throws with status code 400', async () => {
     const { sut } = makeSut()
     vi.mocked(axios.get).mockRejectedValueOnce({
       response: {
@@ -66,5 +66,34 @@ describe('HttpClientAxiosAdapter', () => {
     const promise = sut.get({ url: 'any_url' })
 
     await expect(promise).rejects.toThrow(new Error('any_error'))
+  })
+
+  it('should throw ExternalServerError if axios throws with status code 500', async () => {
+    const { sut } = makeSut()
+    vi.mocked(axios.get).mockRejectedValueOnce({
+      response: {
+        status: 500,
+        data: { errorProp: 'errorValue' }
+      }
+    })
+    vi.mocked(axios.isAxiosError).mockReturnValueOnce(true)
+
+    const promise = sut.get({ url: 'any_url' })
+
+    await expect(promise).rejects.toThrow(new ExternalServerError({ errorProp: 'errorValue' }))
+  })
+
+  it('should throw ExternalServerError by default if axios throw an AxiosError but not provide status code', async () => {
+    const { sut } = makeSut()
+    vi.mocked(axios.get).mockRejectedValueOnce({
+      response: {
+        data: { errorProp: 'errorValue' }
+      }
+    })
+    vi.mocked(axios.isAxiosError).mockReturnValueOnce(true)
+
+    const promise = sut.get({ url: 'any_url' })
+
+    await expect(promise).rejects.toThrow(new ExternalServerError({ errorProp: 'errorValue' }))
   })
 })
