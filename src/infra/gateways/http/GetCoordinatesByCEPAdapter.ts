@@ -3,7 +3,7 @@ import { GetCoordinatesByCEPGateway } from '@/domain/gateways/Coordinates'
 
 import { HttpClient } from '../contracts'
 
-type Response = {
+type BrasilAPIResponse = {
   cep: string
   state: string
   city: string
@@ -29,7 +29,7 @@ export class GetCoordinatesByCEPGatewayBrasilAPIAdapter implements GetCoordinate
   }
 
   public async getByCEP (CEP: string): Promise<Coordinates> {
-    const response = await this.httpClient.get<Response>({
+    const response = await this.httpClient.get<BrasilAPIResponse>({
       url: `${this.baseURL}/${CEP}`
     })
 
