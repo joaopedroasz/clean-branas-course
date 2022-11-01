@@ -29,13 +29,15 @@ export class GetCoordinatesByCEPAdapter implements GetCoordinatesByCEPGateway {
   }
 
   public async getByCEP (CEP: string): Promise<Coordinates> {
-    await this.httpClient.get<Response>({
+    const response = await this.httpClient.get<Response>({
       url: `${this.baseURL}/${CEP}`
     })
 
+    const { latitude, longitude } = response.location.coordinates
+
     return new Coordinates({
-      longitude: -49.0629788,
-      latitude: -26.9244749
+      longitude: Number(longitude),
+      latitude: Number(latitude)
     })
   }
 }
