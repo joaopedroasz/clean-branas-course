@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import { HttpClient, RequestParams } from '../contracts'
-import { ExternalBadRequestError } from '../errors'
+import { ExternalBadRequestError, ExternalServerError, HttpError } from '../errors'
 
 export class HttpClientAxiosAdapter implements HttpClient {
   public async get <Response>({ url, params }: RequestParams): Promise<Response> {
@@ -12,7 +12,14 @@ export class HttpClientAxiosAdapter implements HttpClient {
     } catch (error) {
       if (!axios.isAxiosError(error)) throw error
 
-      throw new ExternalBadRequestError(error.response?.data)
+      const httpErrors: Record<number, typeof HttpError> = {
+        400: ExternalBadRequestError,
+        500: ExternalServerError
+      }
+
+      const ErrorConstructor = httpErrors[error.response?.status ?? 500]
+
+      throw new ErrorConstructor(error.response?.data)
     }
   }
 }
