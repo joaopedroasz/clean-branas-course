@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client'
 
 import { Item } from '@/domain/entities'
 import { GetItemsByOrderCPFRepository } from '@/domain/repositories/Item'
+import { ItemNotFoundError } from '@/domain/errors'
 
 export class GetItemsByOrderCPFPrismaRepository implements GetItemsByOrderCPFRepository {
   private readonly connection: PrismaClient
@@ -22,6 +23,13 @@ export class GetItemsByOrderCPFPrismaRepository implements GetItemsByOrderCPFRep
         }
       }
     })
+
+    if (!items.length) {
+      throw new ItemNotFoundError({
+        targetProperty: 'order CPF',
+        targetValue: CPF
+      })
+    }
 
     return items.map(item => new Item({
       id: item.id,
