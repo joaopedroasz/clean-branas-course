@@ -1,4 +1,4 @@
-import { HttpResponse } from './http'
+import { HttpResponse } from '../http'
 
 type Default = Record<string, any>
 
