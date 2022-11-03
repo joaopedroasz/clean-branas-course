@@ -30,4 +30,17 @@ describe('SimulateFreightHttpController', () => {
     expect(response.statusCode).toBe(400)
     expect(response.body).toEqual(new MissingParamError('cep'))
   })
+
+  it('should return badRequest if no items provided', async () => {
+    const { sut } = makeSut()
+    const request: SimulateFreightHttpInputDTO = {
+      cep: 'any_cep',
+      items: []
+    }
+
+    const response = await sut.handle(request)
+
+    expect(response.statusCode).toBe(400)
+    expect(response.body).toEqual(new MissingParamError('items'))
+  })
 })
