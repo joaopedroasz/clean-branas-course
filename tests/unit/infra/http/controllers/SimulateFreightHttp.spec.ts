@@ -1,14 +1,24 @@
+import { SimulateFreight } from '@/application/contracts'
 import { SimulateFreightHttp, SimulateFreightHttpController, SimulateFreightHttpInputDTO } from '@/infra/http'
 import { MissingParamError } from '@/infra/http/errors'
 
 type SutType = {
   sut: SimulateFreightHttp
+  simulateFreight: SimulateFreight
 }
 
+const makeSimulateFreight = (): SimulateFreight => ({
+  execute: async () => ({
+    total: 10
+  })
+})
+
 const makeSut = (): SutType => {
-  const sut = new SimulateFreightHttpController()
+  const simulateFreight = makeSimulateFreight()
+  const sut = new SimulateFreightHttpController(simulateFreight)
   return {
-    sut
+    sut,
+    simulateFreight
   }
 }
 
@@ -42,5 +52,32 @@ describe('SimulateFreightHttpController', () => {
 
     expect(response.statusCode).toBe(400)
     expect(response.body).toEqual(new MissingParamError('items'))
+  })
+
+  it('should call SimulateFreight use case with correct values', async () => {
+    const { sut, simulateFreight } = makeSut()
+    const simulateFreightSpy = vi.spyOn(simulateFreight, 'execute')
+    const request: SimulateFreightHttpInputDTO = {
+      cep: 'any_cep',
+      items: [
+        {
+          item_id: 'any_item_id',
+          quantity: 1
+        }
+      ]
+    }
+
+    await sut.handle(request)
+
+    expect(simulateFreightSpy).toHaveBeenCalledTimes(1)
+    expect(simulateFreightSpy).toHaveBeenCalledWith({
+      destinationCEP: 'any_cep',
+      items: [
+        {
+          itemId: 'any_item_id',
+          quantity: 1
+        }
+      ]
+    })
   })
 })
