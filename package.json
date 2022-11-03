@@ -26,6 +26,9 @@
     "env:dev": "dotenv -e .env.development --"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.13.11",
+    "@graphql-codegen/typescript": "^2.8.1",
+    "@graphql-codegen/typescript-resolvers": "^2.7.6",
     "@types/axios": "^0.14.0",
     "@types/node": "^18.11.8",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
