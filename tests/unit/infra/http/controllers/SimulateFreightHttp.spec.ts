@@ -80,4 +80,24 @@ describe('SimulateFreightHttpController', () => {
       ]
     })
   })
+
+  it('should return calculated freight by SimulateFreight use case', async () => {
+    const { sut } = makeSut()
+    const request: SimulateFreightHttpInputDTO = {
+      cep: 'any_cep',
+      items: [
+        {
+          item_id: 'any_item_id',
+          quantity: 1
+        }
+      ]
+    }
+
+    const response = await sut.handle(request)
+
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toEqual({
+      freight: 10
+    })
+  })
 })
