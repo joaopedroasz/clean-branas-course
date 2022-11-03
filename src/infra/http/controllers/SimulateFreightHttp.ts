@@ -18,10 +18,10 @@ export class SimulateFreightHttpController implements SimulateFreightHttp {
     if (error) return badRequest(error)
 
     const simulateFreightInput = this.formatRequest(request)
-    await this.simulateFreight.execute(simulateFreightInput)
+    const { total } = await this.simulateFreight.execute(simulateFreightInput)
 
     return ok<SimulateFreightHttpOutputDTO>({
-      freight: 0
+      freight: total
     })
   }
 
