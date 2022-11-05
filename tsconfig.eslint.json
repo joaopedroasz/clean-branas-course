@@ -5,6 +5,7 @@
     "tests",
     "vite.config.ts",
     "vite-unit.config.ts",
-    "vite-integration.config.ts"
+    "vite-integration.config.ts",
+    "codegen.ts"
   ]
 }

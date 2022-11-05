@@ -23,10 +23,12 @@
     "db:test:up": "docker-compose --env-file .env.test up -d test-database",
     "db:down": "docker-compose down",
     "env:test": "dotenv -e .env.test --",
-    "env:dev": "dotenv -e .env.development --"
+    "env:dev": "dotenv -e .env.development --",
+    "graphql:types:generate": "graphql-codegen"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.13.11",
+    "@graphql-codegen/introspection": "^2.2.1",
     "@graphql-codegen/typescript": "^2.8.1",
     "@graphql-codegen/typescript-resolvers": "^2.7.6",
     "@types/axios": "^0.14.0",

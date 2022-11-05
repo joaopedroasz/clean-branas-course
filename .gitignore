@@ -7,3 +7,5 @@ coverage
 !.env.example
 
 postgres_data
+
+src/infra/http/graphql/generated
