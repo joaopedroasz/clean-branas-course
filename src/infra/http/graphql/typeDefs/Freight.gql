@@ -1,0 +1,12 @@
+type Freight {
+  total: Int
+}
+
+input SimulateFreightItems {
+  item_id: String!
+  quantity: Int!
+}
+
+type Query {
+  simulateFreight(cep: String!, items: [SimulateFreightItems!]!): Freight!
+}
