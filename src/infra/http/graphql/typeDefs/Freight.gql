@@ -1,5 +1,5 @@
 type Freight {
-  total: Int
+  freight: Int
 }
 
 input SimulateFreightItems {
