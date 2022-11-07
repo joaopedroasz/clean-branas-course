@@ -4,7 +4,7 @@ import { resolve } from 'node:path'
 const config: CodegenConfig = {
   schema: resolve(__dirname, 'src', 'infra', 'http', 'graphql', 'typeDefs', '*.gql'),
   generates: {
-    './src/infra/http/graphql/types/generated-resolvers.ts': {
+    './src/infra/http/graphql/generated/generated-resolvers.ts': {
       config: {
         useIndexSignature: true
       },
