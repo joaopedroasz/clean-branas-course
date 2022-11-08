@@ -15,7 +15,15 @@ export const baseConfig: UserConfig = {
     coverage: {
       provider: 'c8',
       reporter: ['text', 'html'],
-      exclude: ['**/node_modules/**', '**/tests/**', '**/dist/**', '**/coverage/**', '**/src/domain/errors/**', '**/src/**/DTOs/**']
+      exclude: [
+        '**/node_modules/**',
+        '**/tests/**',
+        '**/dist/**',
+        '**/coverage/**',
+        '**/src/domain/errors/**',
+        '**/src/**/DTOs/**',
+        '**/src/main.ts'
+      ]
     },
     clearMocks: true,
     mockReset: true,
