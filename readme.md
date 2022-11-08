@@ -31,6 +31,26 @@ In this project, the following topics will be covered:
 - Vitest;
 - Axios;
 - Docker;
+- GraphQL;
+- Apollo Server;
+
+### How to run:
+
+You only need to have Docker installed in your machine. Then, just run the following commands:
+
+- Run development database:
+
+```bash
+yarn db:dev:up
+```
+
+- Run development GraphQL server:
+
+```bash
+yarn dev:server
+```
+
+Your termal will show the GraphQL playground URL. Open it in your browser and start playing with the API. :smile:
 
 ---
 
