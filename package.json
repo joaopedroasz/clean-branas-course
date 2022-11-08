@@ -6,7 +6,8 @@
   "scripts": {
     "prepare": "husky install",
     "build": "tsc --p ./tsconfig.build.json",
-    "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules",
+    "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules -r tsconfig-paths/register",
+    "dev:server": "yarn env:dev yarn dev ./src/main.ts",
     "test": "yarn run:migrate:test && yarn env:test vitest --no-threads && yarn db:down",
     "test:coverage": "yarn run:migrate:test && yarn env:test vitest --coverage --no-threads && yarn db:down",
     "test:push": "yarn run:migrate:test && yarn env:test vitest --coverage --run --no-threads",
@@ -45,6 +46,7 @@
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.1.0",
     "typescript": "*",
     "vitest": "^0.24.4"
   },
