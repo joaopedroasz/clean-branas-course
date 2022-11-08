@@ -6,9 +6,7 @@ export class PrismaClientSingleton {
   private constructor() {}
 
   public static getInstance(): PrismaClient {
-    if (!PrismaClientSingleton.instance) {
-      PrismaClientSingleton.instance = new PrismaClient()
-    }
+    if (!PrismaClientSingleton.instance) PrismaClientSingleton.instance = new PrismaClient()
     return PrismaClientSingleton.instance
   }  
 }
