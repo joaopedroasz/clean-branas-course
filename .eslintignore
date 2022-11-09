@@ -1,6 +1,7 @@
 node_modules
 dist
-src/infra/database/prisma
+src/infra/database/prisma/migrations
+src/infra/database/prisma/schema.prisma
 src/**/generated-resolvers.ts
 src/**/*.graphql
 src/**/*.gql
