@@ -1,3 +1,7 @@
-import { freightResolvers } from './freight'
+import { simulateFreightQueryResolver } from './simulateFreight'
 
-export default [freightResolvers]
+export default {
+  Query: {
+    ...simulateFreightQueryResolver
+  }
+}
