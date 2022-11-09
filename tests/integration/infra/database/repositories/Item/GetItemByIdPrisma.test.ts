@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import { GetItemByIdRepository } from '@/domain/repositories/Item'
 import { ItemNotFoundError } from '@/domain/errors'
 import { GetItemByIdPrismaRepository, PrismaClientSingleton } from '@/infra/database'
+import { deleteAll } from '../../deleteAll'
 
 type SutTypes = {
   sut: GetItemByIdRepository
@@ -21,9 +22,7 @@ const makeSut = (): SutTypes => {
 describe('GetItemByIdPrismaRepository', () => {
   afterAll(async () => {
     const { connection } = makeSut()
-    const deleteItems = connection.item.deleteMany()
-    const deleteOrderItems = connection.orderItem.deleteMany()
-    await connection.$transaction([deleteItems, deleteOrderItems])
+    await deleteAll(connection)
     await connection.$disconnect()
   })
 

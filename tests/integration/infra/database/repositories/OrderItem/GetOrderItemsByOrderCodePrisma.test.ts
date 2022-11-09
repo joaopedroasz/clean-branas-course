@@ -4,6 +4,7 @@ import { Item, ItemProps, Order, OrderItem, OrderProps } from '@/domain/entities
 import { OrderItemNotFoundError } from '@/domain/errors'
 import { GetOrderItemsByOrderCodeRepository } from '@/domain/repositories/OrderItem'
 import { GetOrderItemsByOrderCodePrismaRepository, PrismaClientSingleton } from '@/infra/database'
+import { deleteAll } from '../../deleteAll'
 
 const makeItem = (props?: Partial<ItemProps>): Item => new Item({
   id: 'any_id',
@@ -38,10 +39,7 @@ const makeSut = (): SutType => {
 describe('GetOrderItemsByOrderCodePrismaRepository', () => {
   afterAll(async () => {
     const { connection } = makeSut()
-    const deleteOrderCode = connection.orderItem.deleteMany()
-    const deleteItems = connection.item.deleteMany()
-    const deleteOrder = connection.order.deleteMany()
-    await connection.$transaction([deleteOrderCode, deleteItems, deleteOrder])
+    await deleteAll(connection)
     await connection.$disconnect()
   })
 

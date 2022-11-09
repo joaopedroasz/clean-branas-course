@@ -4,6 +4,7 @@ import { Coupon, CouponProps, Item, ItemProps, Order } from '@/domain/entities'
 import { SaveOrderRepository } from '@/domain/repositories/Order'
 import { SaveOrderPrismaRepository } from '@/infra/database/repositories/Order'
 import { PrismaClientSingleton } from '@/infra/database'
+import { deleteAll } from '../../deleteAll'
 
 type SutType = {
   sut: SaveOrderRepository
@@ -40,16 +41,7 @@ const makeSut = (): SutType => {
 describe('SaveOrderPrismaRepository', () => {
   afterAll(async () => {
     const { connection } = makeSut()
-    const orderItemDeleteAll = connection.orderItem.deleteMany()
-    const itemDeleteAll = connection.item.deleteMany()
-    const orderDeleteAll = connection.order.deleteMany()
-    const couponDeleteAll = connection.coupon.deleteMany()
-    await connection.$transaction([
-      orderItemDeleteAll,
-      itemDeleteAll,
-      orderDeleteAll,
-      couponDeleteAll
-    ])
+    await deleteAll(connection)
     await connection.$disconnect()
   })
 

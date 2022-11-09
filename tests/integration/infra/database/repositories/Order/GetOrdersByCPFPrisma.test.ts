@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import { Item, ItemProps, Order, OrderProps } from '@/domain/entities'
 import { GetOrdersByCPFRepository } from '@/domain/repositories/Order'
 import { GetOrdersByCPFPrismaRepository, PrismaClientSingleton } from '@/infra/database'
+import { deleteAll } from '../../deleteAll'
 
 const makeItem = (props?: Partial<ItemProps>): Item => new Item({
   id: 'any_id',
@@ -40,14 +41,7 @@ const makeSut = (): SutType => {
 describe('GetOrdersByCPFPrismaRepository', () => {
   afterAll(async () => {
     const { connection } = makeSut()
-    const deleteOrderItems = connection.orderItem.deleteMany()
-    const deleteItems = connection.item.deleteMany()
-    const deleteOrders = connection.order.deleteMany()
-    await connection.$transaction([
-      deleteOrders,
-      deleteOrderItems,
-      deleteItems
-    ])
+    await deleteAll(connection)
     await connection.$disconnect()
   })
 
