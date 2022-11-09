@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import { Item, ItemProps, Order, OrderItem, OrderProps } from '@/domain/entities'
 import { OrderItemNotFoundError } from '@/domain/errors'
 import { GetOrderItemsByOrderCodeRepository } from '@/domain/repositories/OrderItem'
-import { GetOrderItemsByOrderCodePrismaRepository } from '@/infra/database'
+import { GetOrderItemsByOrderCodePrismaRepository, PrismaClientSingleton } from '@/infra/database'
 
 const makeItem = (props?: Partial<ItemProps>): Item => new Item({
   id: 'any_id',
@@ -28,7 +28,7 @@ type SutType = {
   connection: PrismaClient
 }
 
-const connection = new PrismaClient()
+const connection = PrismaClientSingleton.getInstance()
 const makeSut = (): SutType => {
   const sut = new GetOrderItemsByOrderCodePrismaRepository(connection)
 

@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 
 import { Order, OrderProps } from '@/domain/entities'
 import { CountOrdersRepository } from '@/domain/repositories/Order'
-import { CountOrdersPrismaRepository } from '@/infra/database'
+import { CountOrdersPrismaRepository, PrismaClientSingleton } from '@/infra/database'
 
 const makeOrder = (props?: Partial<OrderProps>): Order => new Order({
   buyerCPF: '25512268139',
@@ -16,7 +16,7 @@ type SutType = {
   connection: PrismaClient
 }
 
-const connection = new PrismaClient()
+const connection = PrismaClientSingleton.getInstance()
 const makeSut = (): SutType => {
   const sut = new CountOrdersPrismaRepository(connection)
   return {
@@ -26,11 +26,6 @@ const makeSut = (): SutType => {
 }
 
 describe('CountOrdersPrismaRepository', () => {
-  beforeAll(async () => {
-    const { connection } = makeSut()
-    await connection.$connect()
-  })
-
   afterAll(async () => {
     const { connection } = makeSut()
     const deleteOrderItems = connection.orderItem.deleteMany()

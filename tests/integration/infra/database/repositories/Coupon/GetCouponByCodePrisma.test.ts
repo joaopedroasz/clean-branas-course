@@ -2,14 +2,14 @@ import { PrismaClient } from '@prisma/client'
 
 import { CouponNotFoundError } from '@/domain/errors'
 import { GetCouponByCodeRepository } from '@/domain/repositories/Coupon'
-import { GetCouponByCodePrismaRepository } from '@/infra/database'
+import { GetCouponByCodePrismaRepository, PrismaClientSingleton } from '@/infra/database'
 
 type SutTypes = {
   connection: PrismaClient
   sut: GetCouponByCodeRepository
 }
 
-const connection = new PrismaClient()
+const connection = PrismaClientSingleton.getInstance()
 const makeSut = (): SutTypes => {
   const sut = new GetCouponByCodePrismaRepository(connection)
 

@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import { Order, OrderProps } from '@/domain/entities'
 import { OrderNotFoundError } from '@/domain/errors'
 import { GetOrderByCodeRepository } from '@/domain/repositories/Order'
-import { GetOrderByCodePrismaRepository } from '@/infra/database'
+import { GetOrderByCodePrismaRepository, PrismaClientSingleton } from '@/infra/database'
 
 const makeOrder = (props?: Partial<OrderProps>): Order => new Order({
   buyerCPF: '67440503112',
@@ -17,7 +17,7 @@ type SutType = {
   connection: PrismaClient
 }
 
-const connection = new PrismaClient()
+const connection = PrismaClientSingleton.getInstance()
 const makeSut = (): SutType => {
   const sut = new GetOrderByCodePrismaRepository(connection)
   return {

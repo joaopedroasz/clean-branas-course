@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import { Coupon, CouponProps, Item, ItemProps, Order } from '@/domain/entities'
 import { SaveOrderRepository } from '@/domain/repositories/Order'
 import { SaveOrderPrismaRepository } from '@/infra/database/repositories/Order'
+import { PrismaClientSingleton } from '@/infra/database'
 
 type SutType = {
   sut: SaveOrderRepository
@@ -27,7 +28,7 @@ const makeCoupon = (props?: Partial<CouponProps>): Coupon => new Coupon({
   ...props
 })
 
-const connection = new PrismaClient()
+const connection = PrismaClientSingleton.getInstance()
 const makeSut = (): SutType => {
   const sut = new SaveOrderPrismaRepository(connection)
   return {

@@ -2,14 +2,14 @@ import { PrismaClient } from '@prisma/client'
 
 import { GetItemByIdRepository } from '@/domain/repositories/Item'
 import { ItemNotFoundError } from '@/domain/errors'
-import { GetItemByIdPrismaRepository } from '@/infra/database'
+import { GetItemByIdPrismaRepository, PrismaClientSingleton } from '@/infra/database'
 
 type SutTypes = {
   sut: GetItemByIdRepository
   connection: PrismaClient
 }
 
-const connection = new PrismaClient()
+const connection = PrismaClientSingleton.getInstance()
 const makeSut = (): SutTypes => {
   const sut = new GetItemByIdPrismaRepository(connection)
   return {
