@@ -1,8 +1,9 @@
 import { PrismaClientSingleton } from './infra/database'
 import { setupGraphQLServer } from './infra/http'
 
+const prismaClient = PrismaClientSingleton.getInstance()
+
 async function main (): Promise<void> {
-  const prismaClient = PrismaClientSingleton.getInstance()
   await prismaClient.$connect()
 
   const { url } = await setupGraphQLServer(3000)
@@ -10,4 +11,8 @@ async function main (): Promise<void> {
   console.log(`Server is running at ${url} 🌵🚀`)
 }
 
-main().catch(console.error)
+main().catch(async error => {
+  await prismaClient.$disconnect()
+  console.error(error)
+  process.exit(1)
+})
