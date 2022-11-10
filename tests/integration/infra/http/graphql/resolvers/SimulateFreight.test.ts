@@ -5,7 +5,15 @@ import { setupGraphQLServer } from '@/infra/http'
 import { connection } from '@/infra/database'
 import { deleteAll } from '@/tests/utils'
 
-const makeQueryData = (id: string): Record<string, any> => ({
+type QueryVariables = {
+  cep: string
+  items: Array<{
+    item_id: string
+    quantity: number
+  }>
+}
+
+const makeQueryData = (variables?: Partial<QueryVariables>): Record<string, any> => ({
   query: `#graphql
     query ($cep: String!, $items: [SimulateFreightItems!]!) {
       simulateFreight(cep: $cep, items: $items) {
@@ -17,10 +25,11 @@ const makeQueryData = (id: string): Record<string, any> => ({
     cep: '59022390',
     items: [
       {
-        item_id: id,
+        item_id: 'any_item_id',
         quantity: 1
       }
-    ]
+    ],
+    ...variables
   }
 })
 
@@ -48,11 +57,20 @@ describe('SimulateFreightQueryResolver', () => {
         depth: 50
       }
     })
-    const query = makeQueryData(createdItemId)
+    const query = makeQueryData({ items: [{ item_id: createdItemId, quantity: 1 }] })
 
     const response = await request(url).post('/').send(query)
 
     expect(response.status).toBe(200)
     expect(response.body.data.simulateFreight.freight).toBe(74.9144193385723)
+  })
+
+  it('should return badRequest if cep is invalid', async () => {
+    const query = makeQueryData({ cep: 'invalid_cep' })
+
+    const response = await request(url).post('/').send(query)
+
+    expect(response.status).toBe(400)
+    expect(response.body.errors[0].message).toBe('HttpError: 400')
   })
 })
