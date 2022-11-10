@@ -4,8 +4,8 @@ import { defineConfig, UserConfig } from 'vitest/config'
 export const baseConfig: UserConfig = {
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src'),
-      '@/tests': resolve(__dirname, 'tests')
+      '@/tests': resolve(__dirname, 'tests'),
+      '@': resolve(__dirname, 'src')
     }
   },
   test: {

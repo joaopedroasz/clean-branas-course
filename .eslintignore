@@ -5,3 +5,4 @@ src/infra/database/prisma/schema.prisma
 src/**/generated-resolvers.ts
 src/**/*.graphql
 src/**/*.gql
+src/types/*
