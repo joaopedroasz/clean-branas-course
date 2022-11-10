@@ -5,8 +5,10 @@ import {
   SimulateFreightHttpInputDTO,
   MissingParamError,
   serverError,
-  unknownError
+  unknownError,
+  badRequest
 } from '@/infra/http'
+import { ExternalBadRequestError } from '@/infra/gateways'
 
 type SutType = {
   sut: SimulateFreightHttp
@@ -141,5 +143,23 @@ describe('SimulateFreightHttpController', () => {
     const response = await sut.handle(request)
 
     expect(response).toEqual(unknownError('any_error'))
+  })
+
+  it('should return badRequest if SimulateFreight use case throws an ExternalBadRequest', async () => {
+    const { sut, simulateFreight } = makeSut()
+    vi.spyOn(simulateFreight, 'execute').mockRejectedValueOnce(new ExternalBadRequestError('any_error'))
+    const request: SimulateFreightHttpInputDTO = {
+      cep: 'any_cep',
+      items: [
+        {
+          item_id: 'any_item_id',
+          quantity: 1
+        }
+      ]
+    }
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(badRequest(new ExternalBadRequestError('any_error')))
   })
 })
