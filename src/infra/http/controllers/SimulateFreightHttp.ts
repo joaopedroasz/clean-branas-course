@@ -1,5 +1,6 @@
 import { SimulateFreight } from '@/application/contracts'
 import { SimulateFreightInputDTO } from '@/application/DTOs'
+import { ExternalBadRequestError } from '@/infra/gateways'
 
 import { HttpResponse, SimulateFreightHttp } from '../contracts'
 import { SimulateFreightHttpInputDTO, SimulateFreightHttpOutputDTO } from '../DTOs'
@@ -28,6 +29,9 @@ export class SimulateFreightHttpController implements SimulateFreightHttp {
       const isError = error instanceof Error
       if (!isError) return unknownError(error)
 
+      const externalBadRequestError = this.externalBadRequestError(error)
+      if (externalBadRequestError) return badRequest(externalBadRequestError)
+
       return serverError(error)
     }
   }
@@ -47,6 +51,16 @@ export class SimulateFreightHttpController implements SimulateFreightHttp {
         itemId: item.item_id,
         quantity: item.quantity
       }))
+    }
+  }
+
+  private externalBadRequestError (error: Error): Error | undefined {
+    const badRequestErrors = [
+      ExternalBadRequestError
+    ]
+
+    for (const badRequestError of badRequestErrors) {
+      if (error instanceof badRequestError) return error
     }
   }
 }
