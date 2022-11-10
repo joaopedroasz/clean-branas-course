@@ -11,10 +11,15 @@ export const adaptResolver = async (controller: HttpController, args?: any): Pro
     case 200:
     case 204:
       return response.body
-    default:
+    case 400:
       throw new ApolloServerError({
         message: response.body.message,
         serverErrorCode: ApolloServerErrorCode.BAD_REQUEST
+      })
+    default:
+      throw new ApolloServerError({
+        message: response.body.message,
+        serverErrorCode: ApolloServerErrorCode.INTERNAL_SERVER_ERROR
       })
   }
 }
