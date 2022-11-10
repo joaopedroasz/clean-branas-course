@@ -1,9 +1,7 @@
-import { PrismaClient } from '@prisma/client'
-
 import { Item, ItemProps, Order, OrderProps } from '@/domain/entities'
 import { GetOrdersByCPFRepository } from '@/domain/repositories/Order'
-import { GetOrdersByCPFPrismaRepository, PrismaClientSingleton } from '@/infra/database'
-import { deleteAll } from '../../deleteAll'
+import { GetOrdersByCPFPrismaRepository, connection } from '@/infra/database'
+import { deleteAll } from '@/tests/utils'
 
 const makeItem = (props?: Partial<ItemProps>): Item => new Item({
   id: 'any_id',
@@ -25,24 +23,15 @@ const makeOrder = (props?: Partial<OrderProps>): Order => new Order({
 
 type SutType = {
   sut: GetOrdersByCPFRepository
-  connection: PrismaClient
 }
 
-const connection = PrismaClientSingleton.getInstance()
-const makeSut = (): SutType => {
-  const sut = new GetOrdersByCPFPrismaRepository(connection)
-
-  return {
-    sut,
-    connection
-  }
-}
+const makeSut = (): SutType => ({
+  sut: new GetOrdersByCPFPrismaRepository(connection)
+})
 
 describe('GetOrdersByCPFPrismaRepository', () => {
   afterAll(async () => {
-    const { connection } = makeSut()
     await deleteAll(connection)
-    await connection.$disconnect()
   })
 
   it('should return valid orders by CPF', async () => {

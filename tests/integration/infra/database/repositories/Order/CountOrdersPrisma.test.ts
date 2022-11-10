@@ -1,9 +1,7 @@
-import { PrismaClient } from '@prisma/client'
-
 import { Order, OrderProps } from '@/domain/entities'
 import { CountOrdersRepository } from '@/domain/repositories/Order'
-import { CountOrdersPrismaRepository, PrismaClientSingleton } from '@/infra/database'
-import { deleteAll } from '../../deleteAll'
+import { CountOrdersPrismaRepository, connection } from '@/infra/database'
+import { deleteAll } from '@/tests/utils'
 
 const makeOrder = (props?: Partial<OrderProps>): Order => new Order({
   buyerCPF: '25512268139',
@@ -14,23 +12,15 @@ const makeOrder = (props?: Partial<OrderProps>): Order => new Order({
 
 type SutType = {
   sut: CountOrdersRepository
-  connection: PrismaClient
 }
 
-const connection = PrismaClientSingleton.getInstance()
-const makeSut = (): SutType => {
-  const sut = new CountOrdersPrismaRepository(connection)
-  return {
-    sut,
-    connection
-  }
-}
+const makeSut = (): SutType => ({
+  sut: new CountOrdersPrismaRepository(connection)
+})
 
 describe('CountOrdersPrismaRepository', () => {
   afterAll(async () => {
-    const { connection } = makeSut()
     await deleteAll(connection)
-    await connection.$disconnect()
   })
 
   it('should return 0 if there are no orders', async () => {
@@ -42,8 +32,7 @@ describe('CountOrdersPrismaRepository', () => {
   })
 
   it('should return the amount of created orders', async () => {
-    const { sut, connection } = makeSut()
-
+    const { sut } = makeSut()
     const orders = [makeOrder({ sequence: 10 }), makeOrder({ sequence: 20 }), makeOrder({ sequence: 30 })]
     await connection.order.createMany({
       data: orders.map(order => ({

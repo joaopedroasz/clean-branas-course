@@ -2,7 +2,8 @@ import request from 'supertest'
 import { ApolloServer } from '@apollo/server'
 
 import { setupGraphQLServer } from '@/infra/http'
-import { PrismaClientSingleton } from '@/infra/database'
+import { connection } from '@/infra/database'
+import { deleteAll } from '@/tests/utils'
 
 const makeQueryData = (id: string): Record<string, any> => ({
   query: `#graphql
@@ -26,7 +27,6 @@ const makeQueryData = (id: string): Record<string, any> => ({
 describe('SimulateFreightQueryResolver', () => {
   let server: ApolloServer
   let url: string
-  const prismaClient = PrismaClientSingleton.getInstance()
 
   beforeAll(async () => {
     ({ url, server } = await setupGraphQLServer(0))
@@ -34,11 +34,11 @@ describe('SimulateFreightQueryResolver', () => {
 
   afterAll(async () => {
     await server.stop()
-    await prismaClient.$disconnect()
+    await deleteAll(connection)
   })
 
   it('should return total freight', async () => {
-    const { id: createdItemId } = await prismaClient.item.create({
+    const { id: createdItemId } = await connection.item.create({
       data: {
         description: 'Fridge',
         price: 1000,

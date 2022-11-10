@@ -1,10 +1,8 @@
-import { PrismaClient } from '@prisma/client'
-
+import { ItemNotFoundError } from '@/domain/errors'
 import { Item, ItemProps, Order, OrderProps } from '@/domain/entities'
 import { GetItemsByOrderCPFRepository } from '@/domain/repositories/Item'
-import { GetItemsByOrderCPFPrismaRepository, PrismaClientSingleton } from '@/infra/database'
-import { ItemNotFoundError } from '@/domain/errors'
-import { deleteAll } from '../../deleteAll'
+import { GetItemsByOrderCPFPrismaRepository, connection } from '@/infra/database'
+import { deleteAll } from '@/tests/utils'
 
 const makeItem = (props?: Partial<ItemProps>): Item => new Item({
   id: 'any_id',
@@ -26,28 +24,19 @@ const makeOrder = (props?: Partial<OrderProps>): Order => new Order({
 
 type SutType = {
   sut: GetItemsByOrderCPFRepository
-  connection: PrismaClient
 }
 
-const connection = PrismaClientSingleton.getInstance()
-const makeSut = (): SutType => {
-  const sut = new GetItemsByOrderCPFPrismaRepository(connection)
-
-  return {
-    sut,
-    connection
-  }
-}
+const makeSut = (): SutType => ({
+  sut: new GetItemsByOrderCPFPrismaRepository(connection)
+})
 
 describe('GetItemsByOrderCPFPrismaRepository', () => {
   afterAll(async () => {
-    const { connection } = makeSut()
     await deleteAll(connection)
-    await connection.$disconnect()
   })
 
   it('should return items by order CPF', async () => {
-    const { connection, sut } = makeSut()
+    const { sut } = makeSut()
     const itemsIds: string[] = ['any_id', 'other_id']
     const items: Item[] = itemsIds.map(id => makeItem({ id }))
     const order = makeOrder()

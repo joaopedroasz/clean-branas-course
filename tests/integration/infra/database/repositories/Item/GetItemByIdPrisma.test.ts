@@ -1,33 +1,23 @@
-import { PrismaClient } from '@prisma/client'
-
 import { GetItemByIdRepository } from '@/domain/repositories/Item'
 import { ItemNotFoundError } from '@/domain/errors'
-import { GetItemByIdPrismaRepository, PrismaClientSingleton } from '@/infra/database'
-import { deleteAll } from '../../deleteAll'
+import { GetItemByIdPrismaRepository, connection } from '@/infra/database'
+import { deleteAll } from '@/tests/utils'
 
 type SutTypes = {
   sut: GetItemByIdRepository
-  connection: PrismaClient
 }
 
-const connection = PrismaClientSingleton.getInstance()
-const makeSut = (): SutTypes => {
-  const sut = new GetItemByIdPrismaRepository(connection)
-  return {
-    sut,
-    connection
-  }
-}
+const makeSut = (): SutTypes => ({
+  sut: new GetItemByIdPrismaRepository(connection)
+})
 
 describe('GetItemByIdPrismaRepository', () => {
   afterAll(async () => {
-    const { connection } = makeSut()
     await deleteAll(connection)
-    await connection.$disconnect()
   })
 
   it('should return an item by id', async () => {
-    const { sut, connection } = makeSut()
+    const { sut } = makeSut()
     const { id: createdItemId } = await connection.item.create({
       data: {
         description: 'any_description',

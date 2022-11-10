@@ -1,15 +1,7 @@
-import { PrismaClient } from '@prisma/client'
-
 import { Coupon, CouponProps, Item, ItemProps, Order } from '@/domain/entities'
 import { SaveOrderRepository } from '@/domain/repositories/Order'
-import { SaveOrderPrismaRepository } from '@/infra/database/repositories/Order'
-import { PrismaClientSingleton } from '@/infra/database'
-import { deleteAll } from '../../deleteAll'
-
-type SutType = {
-  sut: SaveOrderRepository
-  connection: PrismaClient
-}
+import { SaveOrderPrismaRepository, connection } from '@/infra/database'
+import { deleteAll } from '@/tests/utils'
 
 const makeItem = (props?: Partial<ItemProps>): Item => new Item({
   id: 'any_id',
@@ -29,25 +21,32 @@ const makeCoupon = (props?: Partial<CouponProps>): Coupon => new Coupon({
   ...props
 })
 
-const connection = PrismaClientSingleton.getInstance()
-const makeSut = (): SutType => {
-  const sut = new SaveOrderPrismaRepository(connection)
-  return {
-    sut,
-    connection
-  }
-}
+// type SutType = {
+//   sut: SaveOrderRepository
+//   connection: PrismaClient
+// }
+
+// const makeSut = (): SutType => {
+//   const connection = PrismaClientSingleton.getInstance()
+//   const sut = new SaveOrderPrismaRepository(connection)
+//   return {
+//     sut,
+//     connection
+//   }
+// }
 
 describe('SaveOrderPrismaRepository', () => {
+  let sut: SaveOrderRepository
+
+  beforeAll(async () => {
+    sut = new SaveOrderPrismaRepository(connection)
+  })
+
   afterAll(async () => {
-    const { connection } = makeSut()
     await deleteAll(connection)
-    await connection.$disconnect()
   })
 
   it('should save an order', async () => {
-    const { sut } = makeSut()
-
     const order = await sut.save(new Order({
       buyerCPF: '74699434126',
       sequence: 1,
@@ -58,7 +57,6 @@ describe('SaveOrderPrismaRepository', () => {
   })
 
   it('should save an order and return order items', async () => {
-    const { sut, connection } = makeSut()
     const item1 = makeItem({ id: 'any_id_1' })
     await connection.item.create({
       data: {
@@ -98,7 +96,6 @@ describe('SaveOrderPrismaRepository', () => {
   })
 
   it('should save an order and return coupon if it provided', async () => {
-    const { sut, connection } = makeSut()
     const couponCode = 'any_code_coupon'
     const coupon = makeCoupon({ code: couponCode })
     await connection.coupon.create({
@@ -121,7 +118,6 @@ describe('SaveOrderPrismaRepository', () => {
   })
 
   it('should not return coupon if it not provided', async () => {
-    const { sut } = makeSut()
     const order = new Order({
       buyerCPF: '23411653701',
       sequence: 4,
@@ -134,7 +130,6 @@ describe('SaveOrderPrismaRepository', () => {
   })
 
   it('should save an order with coupon with no expired date', async () => {
-    const { sut, connection } = makeSut()
     const couponCode = 'any_code_coupon_no_expired_date'
     const coupon = makeCoupon({ code: couponCode, dueDate: undefined })
     await connection.coupon.create({

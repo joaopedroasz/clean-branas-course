@@ -1,9 +1,8 @@
-import { PrismaClient } from '@prisma/client'
-
 import { Order, OrderProps } from '@/domain/entities'
 import { OrderNotFoundError } from '@/domain/errors'
 import { GetOrderByCodeRepository } from '@/domain/repositories/Order'
-import { GetOrderByCodePrismaRepository, PrismaClientSingleton } from '@/infra/database'
+import { GetOrderByCodePrismaRepository, connection } from '@/infra/database'
+import { deleteAll } from '@/tests/utils'
 
 const makeOrder = (props?: Partial<OrderProps>): Order => new Order({
   buyerCPF: '67440503112',
@@ -14,28 +13,19 @@ const makeOrder = (props?: Partial<OrderProps>): Order => new Order({
 
 type SutType = {
   sut: GetOrderByCodeRepository
-  connection: PrismaClient
 }
 
-const connection = PrismaClientSingleton.getInstance()
-const makeSut = (): SutType => {
-  const sut = new GetOrderByCodePrismaRepository(connection)
-  return {
-    sut,
-    connection
-  }
-}
+const makeSut = (): SutType => ({
+  sut: new GetOrderByCodePrismaRepository(connection)
+})
 
 describe('GetOrderByCodePrismaRepository', () => {
   afterAll(async () => {
-    const { connection } = makeSut()
-    const deleteOrders = connection.order.deleteMany()
-    await connection.$transaction([deleteOrders])
-    await connection.$disconnect()
+    await deleteAll(connection)
   })
 
   it('should return an existent order by code', async () => {
-    const { sut, connection } = makeSut()
+    const { sut } = makeSut()
     const sequence = 0
     const order = makeOrder({ sequence })
 
@@ -66,7 +56,7 @@ describe('GetOrderByCodePrismaRepository', () => {
   })
 
   it('should return an order with same properties as the created order', async () => {
-    const { sut, connection } = makeSut()
+    const { sut } = makeSut()
     const sequence = 1
     const order = makeOrder({ sequence })
 

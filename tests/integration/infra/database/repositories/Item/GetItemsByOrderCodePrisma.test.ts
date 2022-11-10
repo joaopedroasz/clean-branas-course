@@ -1,9 +1,7 @@
-import { PrismaClient } from '@prisma/client'
-
 import { ItemProps, Item, OrderProps, Order, OrderItem } from '@/domain/entities'
 import { GetItemsByOrderCodeRepository } from '@/domain/repositories/Item'
-import { GetItemsByOrderCodePrismaRepository, PrismaClientSingleton } from '@/infra/database'
-import { deleteAll } from '../../deleteAll'
+import { GetItemsByOrderCodePrismaRepository, connection } from '@/infra/database'
+import { deleteAll } from '@/tests/utils'
 
 const makeItem = (props?: Partial<ItemProps>): Item => new Item({
   id: 'any_id',
@@ -25,27 +23,19 @@ const makeOrder = (props?: Partial<OrderProps>): Order => new Order({
 
 type SutType = {
   sut: GetItemsByOrderCodeRepository
-  connection: PrismaClient
 }
 
-const connection = PrismaClientSingleton.getInstance()
-const makeSut = (): SutType => {
-  const sut = new GetItemsByOrderCodePrismaRepository(connection)
-  return {
-    sut,
-    connection
-  }
-}
+const makeSut = (): SutType => ({
+  sut: new GetItemsByOrderCodePrismaRepository(connection)
+})
 
 describe('GetItemsByOrderCodePrismaRepository', () => {
   afterAll(async () => {
-    const { connection } = makeSut()
     await deleteAll(connection)
-    await connection.$disconnect()
   })
 
   it('should return an array of items', async () => {
-    const { sut, connection } = makeSut()
+    const { sut } = makeSut()
     const items: Item[] = [makeItem({ id: 'first_item' }), makeItem({ id: 'second_item' })]
     const createItems = connection.item.createMany({
       data: items.map(item => ({

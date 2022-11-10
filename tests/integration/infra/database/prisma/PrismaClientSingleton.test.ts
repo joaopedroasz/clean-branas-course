@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 
-import { PrismaClientSingleton } from '@/infra/database/prisma'
+import { PrismaClientSingleton } from '@/infra/database'
 
 describe('PrismaClientSingleton', () => {
   let sut: PrismaClient
