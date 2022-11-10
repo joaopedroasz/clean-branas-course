@@ -1,6 +1,12 @@
 import { SimulateFreight } from '@/application/contracts'
-import { SimulateFreightHttp, SimulateFreightHttpController, SimulateFreightHttpInputDTO } from '@/infra/http'
-import { MissingParamError } from '@/infra/http/errors'
+import {
+  SimulateFreightHttp,
+  SimulateFreightHttpController,
+  SimulateFreightHttpInputDTO,
+  MissingParamError,
+  serverError,
+  unknownError
+} from '@/infra/http'
 
 type SutType = {
   sut: SimulateFreightHttp
@@ -99,5 +105,41 @@ describe('SimulateFreightHttpController', () => {
     expect(response.body).toEqual({
       freight: 10
     })
+  })
+
+  it('should return serverError if SimulateFreight use case throws', async () => {
+    const { sut, simulateFreight } = makeSut()
+    vi.spyOn(simulateFreight, 'execute').mockRejectedValueOnce(new Error())
+    const request: SimulateFreightHttpInputDTO = {
+      cep: 'any_cep',
+      items: [
+        {
+          item_id: 'any_item_id',
+          quantity: 1
+        }
+      ]
+    }
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(serverError(new Error()))
+  })
+
+  it('should return unknownServerError if SimulateFreight use case throws an unknown error', async () => {
+    const { sut, simulateFreight } = makeSut()
+    vi.spyOn(simulateFreight, 'execute').mockRejectedValueOnce('any_error')
+    const request: SimulateFreightHttpInputDTO = {
+      cep: 'any_cep',
+      items: [
+        {
+          item_id: 'any_item_id',
+          quantity: 1
+        }
+      ]
+    }
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(unknownError('any_error'))
   })
 })
