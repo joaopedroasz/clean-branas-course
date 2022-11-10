@@ -4,7 +4,7 @@ import { SimulateFreightInputDTO } from '@/application/DTOs'
 import { HttpResponse, SimulateFreightHttp } from '../contracts'
 import { SimulateFreightHttpInputDTO, SimulateFreightHttpOutputDTO } from '../DTOs'
 import { MissingParamError } from '../errors'
-import { badRequest, ok } from '../helpers'
+import { badRequest, ok, serverError, unknownError } from '../helpers'
 
 export class SimulateFreightHttpController implements SimulateFreightHttp {
   private readonly simulateFreight: SimulateFreight
@@ -14,15 +14,22 @@ export class SimulateFreightHttpController implements SimulateFreightHttp {
   }
 
   public async handle (request: SimulateFreightHttpInputDTO): Promise<HttpResponse<SimulateFreightHttpOutputDTO | Error>> {
-    const error = this.validateRequest(request)
-    if (error) return badRequest(error)
+    try {
+      const error = this.validateRequest(request)
+      if (error) return badRequest(error)
 
-    const simulateFreightInput = this.formatRequest(request)
-    const { total } = await this.simulateFreight.execute(simulateFreightInput)
+      const simulateFreightInput = this.formatRequest(request)
+      const { total } = await this.simulateFreight.execute(simulateFreightInput)
 
-    return ok<SimulateFreightHttpOutputDTO>({
-      freight: total
-    })
+      return ok<SimulateFreightHttpOutputDTO>({
+        freight: total
+      })
+    } catch (error) {
+      const isError = error instanceof Error
+      if (!isError) return unknownError(error)
+
+      return serverError(error)
+    }
   }
 
   private validateRequest (request: SimulateFreightHttpInputDTO): Error | undefined {
