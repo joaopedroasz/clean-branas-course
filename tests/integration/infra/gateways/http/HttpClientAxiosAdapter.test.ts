@@ -96,4 +96,19 @@ describe('HttpClientAxiosAdapter', () => {
 
     await expect(promise).rejects.toThrow(new ExternalServerError({ errorProp: 'errorValue' }))
   })
+
+  it('should throw ExternalBadRequest if axios throws with code 404', async () => {
+    const { sut } = makeSut()
+    vi.mocked(axios.get).mockRejectedValueOnce({
+      response: {
+        status: 404,
+        data: { errorProp: 'errorValue' }
+      }
+    })
+    vi.mocked(axios.isAxiosError).mockReturnValueOnce(true)
+
+    const promise = sut.get({ url: 'any_url' })
+
+    await expect(promise).rejects.toThrow(new ExternalBadRequestError({ errorProp: 'errorValue' }))
+  })
 })
