@@ -14,6 +14,7 @@ export class HttpClientAxiosAdapter implements HttpClient {
 
       const httpErrors: Record<number, typeof HttpError> = {
         400: ExternalBadRequestError,
+        404: ExternalBadRequestError,
         500: ExternalServerError
       }
 
