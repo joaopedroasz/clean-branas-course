@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "./src/main.ts",
   "license": "MIT",
+  "scripts": {
+    "prepare": "cd .. && husky install"
+  },
   "devDependencies": {
     "@types/node": "^18.11.9",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
@@ -12,6 +15,8 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
+    "husky": "^8.0.2",
+    "lint-staged": "^13.0.3",
     "typescript": "*",
     "vitest": "^0.25.2"
   }
