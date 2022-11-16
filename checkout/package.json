@@ -1,7 +1,7 @@
 {
   "name": "clean-branas-course",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./src/main.ts",
   "license": "MIT",
   "scripts": {
     "prepare": "cd .. && husky install",
