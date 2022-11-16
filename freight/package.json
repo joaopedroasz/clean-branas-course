@@ -4,7 +4,7 @@
   "main": "./src/main.ts",
   "license": "MIT",
   "scripts": {
-    "prepare": "cd .. && husky install",
+    "prepare": "cd .. && husky install ./freight/.husky",
     "build": "tsc --p ./tsconfig.build.json",
     "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules -r tsconfig-paths/register",
     "dev:server": "yarn env:dev yarn dev ./src/main.ts",
