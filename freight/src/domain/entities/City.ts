@@ -8,9 +8,9 @@ export type CityProps = {
 }
 
 export class City {
-  readonly id: string
-  readonly name: string
-  readonly coordinates: Coordinates
+  private readonly id: string
+  private readonly name: string
+  private readonly coordinates: Coordinates
 
   constructor ({
     id,
@@ -21,5 +21,9 @@ export class City {
     this.id = id
     this.name = name
     this.coordinates = new Coordinates({ latitude, longitude })
+  }
+
+  public getCoordinates (): Coordinates {
+    return this.coordinates
   }
 }
