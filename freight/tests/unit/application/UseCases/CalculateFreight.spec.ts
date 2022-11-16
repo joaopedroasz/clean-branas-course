@@ -1,4 +1,4 @@
-import { City } from '@/domain/entities'
+import { City, DistanceCalculator } from '@/domain/entities'
 import { GetCityByZipCodeRepository } from '@/domain/repositories/City'
 import { CalculateFreight } from '@/application/contracts'
 import { CalculateFreightUseCase } from '@/application/UseCases'
@@ -46,5 +46,23 @@ describe('CalculateFreight Use Case', () => {
     expect(getCityByZipCodeSpy).toHaveBeenCalledTimes(2)
     expect(getCityByZipCodeSpy).toHaveBeenCalledWith('11111-111')
     expect(getCityByZipCodeSpy).toHaveBeenCalledWith('22222-222')
+  })
+
+  it('should call DistanceCalculator with the results from GetCityByZipCode', async () => {
+    const { sut } = makeSut()
+    const calculateFreightSpy = vitest.spyOn(DistanceCalculator.prototype, 'calculate')
+    await sut.execute({
+      from: '11111-111',
+      to: '22222-222',
+      orderItems: [
+        {
+          volume: 1,
+          density: 2,
+          quantity: 3
+        }
+      ]
+    })
+
+    expect(calculateFreightSpy).toHaveBeenCalledTimes(1)
   })
 })
