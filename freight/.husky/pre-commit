@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
-
-cd .. && yarn lint-staged
+cd ./freight
+yarn lint-staged
