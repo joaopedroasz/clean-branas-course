@@ -66,11 +66,7 @@ export class Order {
 
   public addItem ({ item, quantity }: AddItemProps): void {
     if (this.alreadyHasItem(item.getId())) throw new ForbiddenAddDuplicatedItemError(item.getId())
-    this.orderItems.push(new OrderItem({
-      itemId: item.getId(),
-      price: item.getPrice(),
-      quantity
-    }))
+    this.orderItems.push(item.createOrderItem(quantity))
   }
 
   private alreadyHasItem (itemId: string): boolean {
