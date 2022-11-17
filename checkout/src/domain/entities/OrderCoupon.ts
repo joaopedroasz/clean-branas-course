@@ -19,4 +19,17 @@ export class OrderCoupon {
   private isValidPercentage (): boolean {
     return this.percentage >= 0
   }
+
+  public getCode (): string {
+    return this.code
+  }
+
+  public calculatePriceDiscount (price: number): number {
+    const discount = this.getPercentageDiscount(price)
+    return price - discount
+  }
+
+  public getPercentageDiscount (price: number): number {
+    return price * (this.percentage / 100)
+  }
 }
