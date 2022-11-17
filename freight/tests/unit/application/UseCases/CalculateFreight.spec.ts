@@ -1,14 +1,14 @@
 import { City, DistanceCalculator, FreightCalculator } from '@/domain/entities'
-import { GetCityByZipCodeRepository } from '@/domain/repositories/City'
+import { GetCityByZipCodeGateway } from '@/domain/gateways/City'
 import { CalculateFreight } from '@/application/contracts'
 import { CalculateFreightUseCase } from '@/application/UseCases'
 
 type SutType = {
   sut: CalculateFreight
-  getCityByZipCodeRepository: GetCityByZipCodeRepository
+  getCityByZipCodeGateway: GetCityByZipCodeGateway
 }
 
-const makeGetCityByZipCodeRepository = (): GetCityByZipCodeRepository => ({
+const makeGetCityByZipCodeRepository = (): GetCityByZipCodeGateway => ({
   getByZipCode: async (zipCode: string) => new City({
     id: 'any_id',
     name: 'any_name',
@@ -18,11 +18,11 @@ const makeGetCityByZipCodeRepository = (): GetCityByZipCodeRepository => ({
 })
 
 const makeSut = (): SutType => {
-  const getCityByZipCodeRepository = makeGetCityByZipCodeRepository()
-  const sut = new CalculateFreightUseCase(getCityByZipCodeRepository)
+  const getCityByZipCodeGateway = makeGetCityByZipCodeRepository()
+  const sut = new CalculateFreightUseCase(getCityByZipCodeGateway)
   return {
     sut,
-    getCityByZipCodeRepository
+    getCityByZipCodeGateway
   }
 }
 
@@ -36,8 +36,8 @@ describe('CalculateFreight Use Case', () => {
   })
 
   it('should call GetCityByZipCode twice with correct params', async () => {
-    const { sut, getCityByZipCodeRepository } = makeSut()
-    const getCityByZipCodeSpy = vitest.spyOn(getCityByZipCodeRepository, 'getByZipCode')
+    const { sut, getCityByZipCodeGateway } = makeSut()
+    const getCityByZipCodeSpy = vitest.spyOn(getCityByZipCodeGateway, 'getByZipCode')
 
     await sut.execute({
       from: '11111-111',
