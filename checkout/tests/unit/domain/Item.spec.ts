@@ -1,4 +1,4 @@
-import { Item, ItemProps } from '@/domain/entities'
+import { Item, ItemProps, OrderItem } from '@/domain/entities'
 import { InvalidPriceError, InvalidWeightError } from '@/domain/errors'
 
 const makeSut = (props?: Partial<ItemProps>): Item => new Item({
@@ -117,5 +117,14 @@ describe('Item', () => {
     const sut = makeSut({ depthInCm })
 
     expect(sut.getDepth()).toBe(depthInCm)
+  })
+
+  it('should create an instance of OrderItem', () => {
+    const sut = makeSut()
+
+    const orderItem = sut.createOrderItem(1)
+
+    expect(orderItem).toBeDefined()
+    expect(orderItem).toBeInstanceOf(OrderItem)
   })
 })
