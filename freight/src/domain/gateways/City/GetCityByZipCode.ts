@@ -1,5 +1,5 @@
 import { City } from '@/domain/entities'
 
-export interface GetCityByZipCodeRepository {
+export interface GetCityByZipCodeGateway {
   getByZipCode: (zipCode: string) => Promise<City>
 }

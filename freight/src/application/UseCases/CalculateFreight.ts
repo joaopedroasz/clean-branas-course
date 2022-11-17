@@ -1,17 +1,17 @@
 import { DistanceCalculator, FreightCalculator } from '@/domain/entities'
-import { GetCityByZipCodeRepository } from '@/domain/repositories/City'
+import { GetCityByZipCodeGateway } from '@/domain/gateways/City'
 import { CalculateFreight, CalculateFreightInput, CalculateFreightOutput } from '../contracts'
 
 export class CalculateFreightUseCase implements CalculateFreight {
-  private readonly getCityByZipCodeRepository: GetCityByZipCodeRepository
+  private readonly getCityByZipCodeGateway: GetCityByZipCodeGateway
 
-  constructor (getCityByZipCodeRepository: GetCityByZipCodeRepository) {
-    this.getCityByZipCodeRepository = getCityByZipCodeRepository
+  constructor (getCityByZipCodeGateway: GetCityByZipCodeGateway) {
+    this.getCityByZipCodeGateway = getCityByZipCodeGateway
   }
 
   public async execute (request: CalculateFreightInput): Promise<CalculateFreightOutput> {
-    const from = await this.getCityByZipCodeRepository.getByZipCode(request.from)
-    const to = await this.getCityByZipCodeRepository.getByZipCode(request.to)
+    const from = await this.getCityByZipCodeGateway.getByZipCode(request.from)
+    const to = await this.getCityByZipCodeGateway.getByZipCode(request.to)
     const distance = new DistanceCalculator({
       origin: from.getCoordinates(),
       destination: to.getCoordinates()
