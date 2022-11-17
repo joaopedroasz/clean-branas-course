@@ -16,7 +16,8 @@ export class SaveOrderPrismaRepository implements SaveOrderRepository {
       issue_date: issueDate,
       sequence,
       order_items: orderItems,
-      coupon
+      coupon,
+      freight
     } = await this.connection.order.create({
       data: {
         cpf: order.getCPF(),
@@ -24,7 +25,7 @@ export class SaveOrderPrismaRepository implements SaveOrderRepository {
         total: order.getTotalPrice(),
         coupon_code: order.getCouponCode(),
         issue_date: order.getPurchaseDate(),
-        freight: order.getFreightPrice(),
+        freight: order.getFreight(),
         order_items: {
           createMany: {
             data: order.getOrderItems().map(orderItem => ({
@@ -48,14 +49,13 @@ export class SaveOrderPrismaRepository implements SaveOrderRepository {
     const createdOrder = new Order({
       buyerCPF: cpf,
       purchaseDate: issueDate,
-      sequence
+      sequence,
+      freight: freight ?? 0
     })
-
-    let loadedCoupon: Coupon | undefined
 
     if (coupon) {
       const dueDate = coupon.expires_at ?? undefined
-      loadedCoupon = new Coupon({
+      const loadedCoupon = new Coupon({
         code: coupon.code,
         percentage: coupon.percentage,
         dueDate
