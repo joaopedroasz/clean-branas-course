@@ -88,7 +88,7 @@ describe('PlaceOrder use case', () => {
 
     const result = await sut.execute(input)
 
-    expect(result.total).toBe(330)
+    expect(result.total).toBe(30)
   })
 
   it('should return total value with coupon discount if coupon code provided', async () => {
@@ -105,7 +105,7 @@ describe('PlaceOrder use case', () => {
 
     const result = await sut.execute(input)
 
-    expect(result.total).toBe(297)
+    expect(result.total).toBe(27)
   })
 
   it('should call GetItemByIdRepository correctly', async () => {
