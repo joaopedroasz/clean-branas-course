@@ -10,14 +10,17 @@ export class CalculateFreightUseCase implements CalculateFreight {
   }
 
   public async execute (request: CalculateFreightInput): Promise<CalculateFreightOutput> {
-    const from = await this.getCityByZipCodeGateway.getByZipCode(request.from)
-    const to = await this.getCityByZipCodeGateway.getByZipCode(request.to)
+    const [from, to] = await Promise.all([
+      this.getCityByZipCodeGateway.getByZipCode(request.from),
+      this.getCityByZipCodeGateway.getByZipCode(request.to)
+    ])
     const distance = new DistanceCalculator({
       origin: from.getCoordinates(),
       destination: to.getCoordinates()
     }).calculate()
+    let total = 0
     for (const item of request.orderItems) {
-      new FreightCalculator({
+      total += new FreightCalculator({
         volume: item.volume,
         density: item.density,
         distanceInKm: distance,
@@ -26,7 +29,7 @@ export class CalculateFreightUseCase implements CalculateFreight {
     }
 
     return {
-      freight: 0
+      freight: total
     }
   }
 }
