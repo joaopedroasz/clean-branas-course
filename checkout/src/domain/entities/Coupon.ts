@@ -1,4 +1,5 @@
 import { InvalidPercentageError } from '@/domain/errors'
+import { OrderCoupon } from './OrderCoupon'
 
 export type CouponProps = {
   code: string
@@ -51,5 +52,12 @@ export class Coupon {
 
   public getPercentageDiscount (price: number): number {
     return price * (this.percentage / 100)
+  }
+
+  public createOrderCoupon (): OrderCoupon {
+    return new OrderCoupon({
+      code: this.code,
+      percentage: this.percentage
+    })
   }
 }
