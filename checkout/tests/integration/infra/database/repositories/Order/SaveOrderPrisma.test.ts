@@ -21,20 +21,6 @@ const makeCoupon = (props?: Partial<CouponProps>): Coupon => new Coupon({
   ...props
 })
 
-// type SutType = {
-//   sut: SaveOrderRepository
-//   connection: PrismaClient
-// }
-
-// const makeSut = (): SutType => {
-//   const connection = PrismaClientSingleton.getInstance()
-//   const sut = new SaveOrderPrismaRepository(connection)
-//   return {
-//     sut,
-//     connection
-//   }
-// }
-
 describe('SaveOrderPrismaRepository', () => {
   let sut: SaveOrderRepository
 
@@ -149,5 +135,31 @@ describe('SaveOrderPrismaRepository', () => {
     const createdOrder = await sut.save(order)
 
     expect(createdOrder.getCouponCode()).toBe(couponCode)
+  })
+
+  it('should return order with freight', async () => {
+    const freight = 10
+    const order = new Order({
+      buyerCPF: '64836366364',
+      sequence: 6,
+      purchaseDate: new Date('2022-10-20T14:00:00'),
+      freight
+    })
+
+    const createdOrder = await sut.save(order)
+
+    expect(createdOrder.getFreight()).toBe(freight)
+  })
+
+  it('should return order with freight equals 0 if not exists', async () => {
+    const order = new Order({
+      buyerCPF: '64836366364',
+      sequence: 7,
+      purchaseDate: new Date('2022-10-20T14:00:00')
+    })
+
+    const createdOrder = await sut.save(order)
+
+    expect(createdOrder.getFreight()).toBe(0)
   })
 })
