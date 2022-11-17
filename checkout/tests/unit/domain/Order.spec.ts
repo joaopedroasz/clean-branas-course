@@ -66,7 +66,7 @@ describe('Order', () => {
     sut.addItem({ item: item2, quantity: 2 })
     sut.addItem({ item: item3, quantity: 3 })
 
-    expect(sut.getTotalPrice()).toBe(2540)
+    expect(sut.getTotalPrice()).toBe(140)
   })
 
   it('should add coupon into order', () => {
@@ -87,7 +87,7 @@ describe('Order', () => {
     const coupon = new Coupon({ code: 'VALE20', percentage: 20 })
     sut.addCoupon(coupon)
 
-    expect(sut.getTotalPrice()).toBe(2032)
+    expect(sut.getTotalPrice()).toBe(112)
   })
 
   it('should not add same item more than once', () => {
@@ -99,17 +99,6 @@ describe('Order', () => {
     const errorAddItem = (): void => sut.addItem({ item: sameItem, quantity: 4 })
 
     expect(errorAddItem).toThrowError(new ForbiddenAddDuplicatedItemError(sameItemId))
-  })
-
-  it('should calculate price with freight', () => {
-    const guitar = makeItem({ id: 'guitar', price: 1000, heightInCm: 100, widthInCm: 30, depthInCm: 10, weightInKg: 3 })
-    const amplifier = makeItem({ id: 'amplifier', price: 5000, heightInCm: 50, widthInCm: 50, depthInCm: 50, weightInKg: 20 })
-    const cable = makeItem({ id: 'cable', price: 30, heightInCm: 10, widthInCm: 10, depthInCm: 10, weightInKg: 1 })
-    sut.addItem({ item: guitar, quantity: 1 })
-    sut.addItem({ item: amplifier, quantity: 1 })
-    sut.addItem({ item: cable, quantity: 3 })
-
-    expect(sut.getTotalPrice()).toBe(6350)
   })
 
   it('should not apply an expired coupon', () => {
@@ -152,14 +141,7 @@ describe('Order', () => {
     expect(sut.getCouponCode()).toBe('VALE20')
   })
 
-  it('should return freight price', () => {
-    const guitar = makeItem({ id: 'guitar', price: 1000, heightInCm: 100, widthInCm: 30, depthInCm: 10, weightInKg: 3 })
-    const amplifier = makeItem({ id: 'amplifier', price: 5000, heightInCm: 50, widthInCm: 50, depthInCm: 50, weightInKg: 20 })
-    const cable = makeItem({ id: 'cable', price: 30, heightInCm: 10, widthInCm: 10, depthInCm: 10, weightInKg: 1 })
-    sut.addItem({ item: guitar, quantity: 1 })
-    sut.addItem({ item: amplifier, quantity: 1 })
-    sut.addItem({ item: cable, quantity: 3 })
-
-    expect(sut.getFreightPrice()).toBe(260)
+  it('should get freight', () => {
+    expect(sut.getFreight()).toBe(0)
   })
 })
