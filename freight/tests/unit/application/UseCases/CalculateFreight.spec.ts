@@ -96,4 +96,27 @@ describe('CalculateFreight Use Case', () => {
 
     expect(freightCalculatorSpy).toHaveBeenCalledTimes(2)
   })
+
+  it('should return the sum of FreightCalculator results', async () => {
+    const { sut } = makeSut()
+    vitest.spyOn(FreightCalculator.prototype, 'calculate').mockReturnValueOnce(10).mockReturnValueOnce(20)
+    const result = await sut.execute({
+      from: '11111-111',
+      to: '22222-222',
+      orderItems: [
+        {
+          volume: 1,
+          density: 2,
+          quantity: 3
+        },
+        {
+          volume: 4,
+          density: 5,
+          quantity: 6
+        }
+      ]
+    })
+
+    expect(result.freight).toBe(30)
+  })
 })
