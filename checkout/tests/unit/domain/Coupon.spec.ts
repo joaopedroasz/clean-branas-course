@@ -1,4 +1,4 @@
-import { Coupon, CouponProps } from '@/domain/entities'
+import { Coupon, CouponProps, OrderCoupon } from '@/domain/entities'
 import { InvalidPercentageError } from '@/domain/errors'
 
 const makeSut = (props: CouponProps): Coupon => new Coupon(props)
@@ -178,5 +178,17 @@ describe('Coupon', () => {
     })
 
     expect(sut.isExpired()).toBe(false)
+  })
+
+  it('should create an instance of order coupon', () => {
+    const sut = makeSut({
+      code: 'any_code',
+      percentage: 10,
+      dueDate: new Date('2022-10-10')
+    })
+
+    const orderCoupon = sut.createOrderCoupon()
+
+    expect(orderCoupon).toBeInstanceOf(OrderCoupon)
   })
 })
