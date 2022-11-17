@@ -1,5 +1,6 @@
 import { Dimensions } from './Dimensions'
 import { InvalidPriceError, InvalidWeightError } from '@/domain/errors'
+import { OrderItem } from './OrderItem'
 
 export type ItemProps = {
   id: string
@@ -84,5 +85,13 @@ export class Item {
 
   public calculateVolumeInCubicMeter (): number {
     return this.dimensions.calculateVolumeInCubicMeter()
+  }
+
+  public createOrderItem (quantity: number): OrderItem {
+    return new OrderItem({
+      itemId: this.id,
+      price: this.price,
+      quantity
+    })
   }
 }
