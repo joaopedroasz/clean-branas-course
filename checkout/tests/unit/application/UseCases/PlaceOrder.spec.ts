@@ -2,7 +2,7 @@ import { Coupon, CouponProps, Item, ItemProps, Order, OrderProps } from '@/domai
 import { CountOrdersRepository, SaveOrderRepository } from '@/domain/repositories/Order'
 import { GetCouponByCodeRepository } from '@/domain/repositories/Coupon'
 import { GetItemByIdRepository } from '@/domain/repositories/Item'
-import { PlaceOrder } from '@/application/contracts'
+import { CalculateFreightGateway, CalculateFreightOutput, PlaceOrder } from '@/application/contracts'
 import { PlaceOrderInputDTO } from '@/application/DTOs'
 import { PlaceOrderUseCase } from '@/application/UseCases'
 
@@ -47,12 +47,19 @@ const makeCountOrdersRepository = (): CountOrdersRepository => ({
   count: async (): Promise<number> => 1
 })
 
+const makeCalculateFreightGateway = (): CalculateFreightGateway => ({
+  calculate: async (): Promise<CalculateFreightOutput> => ({
+    freight: 10
+  })
+})
+
 type SutType = {
   sut: PlaceOrder
   getItemByIdRepository: GetItemByIdRepository
   getCouponByCodeRepository: GetCouponByCodeRepository
   saveOrderRepository: SaveOrderRepository
   countOrdersRepository: CountOrdersRepository
+  calculateFreightGateway: CalculateFreightGateway
 }
 
 const makeSut = (): SutType => {
@@ -60,18 +67,21 @@ const makeSut = (): SutType => {
   const getCouponByCodeRepository = makeGetCouponByCodeRepository()
   const saveOrderRepository = makeSaveOrderRepository()
   const countOrdersRepository = makeCountOrdersRepository()
+  const calculateFreightGateway = makeCalculateFreightGateway()
   const sut = new PlaceOrderUseCase(
     getItemByIdRepository,
     getCouponByCodeRepository,
     saveOrderRepository,
-    countOrdersRepository
+    countOrdersRepository,
+    calculateFreightGateway
   )
   return {
     sut,
     getItemByIdRepository,
     getCouponByCodeRepository,
     saveOrderRepository,
-    countOrdersRepository
+    countOrdersRepository,
+    calculateFreightGateway
   }
 }
 
@@ -82,7 +92,9 @@ describe('PlaceOrder use case', () => {
       orderItems: [
         { itemId: 'any_id', quantity: 1 },
         { itemId: 'other_id', quantity: 2 }
-      ]
+      ],
+      from: 'any_from',
+      to: 'any_to'
     }
     const { sut } = makeSut()
 
@@ -99,7 +111,9 @@ describe('PlaceOrder use case', () => {
         { itemId: 'any_id', quantity: 1 },
         { itemId: 'other_id', quantity: 2 }
       ],
-      couponCode: 'any_coupon_with_10_percent_discount'
+      couponCode: 'any_coupon_with_10_percent_discount',
+      from: 'any_from',
+      to: 'any_to'
     }
     const { sut } = makeSut()
 
@@ -114,7 +128,9 @@ describe('PlaceOrder use case', () => {
       orderItems: [
         { itemId: 'any_id', quantity: 1 },
         { itemId: 'other_id', quantity: 2 }
-      ]
+      ],
+      from: 'any_from',
+      to: 'any_to'
     }
     const { sut, getItemByIdRepository } = makeSut()
     const getItemByIdRepositorySpy = vi.spyOn(getItemByIdRepository, 'getById')
@@ -133,7 +149,9 @@ describe('PlaceOrder use case', () => {
         { itemId: 'any_id', quantity: 1 },
         { itemId: 'other_id', quantity: 2 }
       ],
-      couponCode: 'any_coupon_with_10_percent_discount'
+      couponCode: 'any_coupon_with_10_percent_discount',
+      from: 'any_from',
+      to: 'any_to'
     }
     const { sut, getCouponByCodeRepository } = makeSut()
     const getCouponByCodeRepositorySpy = vi.spyOn(getCouponByCodeRepository, 'getByCode')
@@ -150,7 +168,9 @@ describe('PlaceOrder use case', () => {
     const input: PlaceOrderInputDTO = {
       buyerCPF: '607.109.010-54',
       orderItems: [],
-      purchaseDate: new Date('2022-10-01')
+      purchaseDate: new Date('2022-10-01'),
+      from: 'any_from',
+      to: 'any_to'
     }
 
     await sut.execute(input)
@@ -169,7 +189,9 @@ describe('PlaceOrder use case', () => {
     const input: PlaceOrderInputDTO = {
       buyerCPF: '607.109.010-54',
       orderItems: [],
-      purchaseDate: new Date('2022-10-01')
+      purchaseDate: new Date('2022-10-01'),
+      from: 'any_from',
+      to: 'any_to'
     }
 
     await sut.execute(input)
@@ -182,7 +204,9 @@ describe('PlaceOrder use case', () => {
     const input: PlaceOrderInputDTO = {
       buyerCPF: '607.109.010-54',
       orderItems: [],
-      purchaseDate: new Date('2022-10-01')
+      purchaseDate: new Date('2022-10-01'),
+      from: 'any_from',
+      to: 'any_to'
     }
     vi.spyOn(saveOrderRepository, 'save').mockResolvedValueOnce(makeOrder({
       buyerCPF: '607.109.010-54',
@@ -196,6 +220,40 @@ describe('PlaceOrder use case', () => {
       CPF: '607.109.010-54',
       purchaseDate: new Date('2022-10-01'),
       code: '202200000002'
+    })
+  })
+
+  it('should call CalculateFreightGateway with correct params', async () => {
+    const { sut, calculateFreightGateway } = makeSut()
+    const calculateFreightGatewaySpy = vi.spyOn(calculateFreightGateway, 'calculate')
+    const input: PlaceOrderInputDTO = {
+      buyerCPF: '607.109.010-54',
+      orderItems: [
+        { itemId: 'any_id', quantity: 1 },
+        { itemId: 'other_id', quantity: 2 }
+      ],
+      purchaseDate: new Date('2022-12-02'),
+      from: 'any_from',
+      to: 'any_to'
+    }
+
+    await sut.execute(input)
+
+    expect(calculateFreightGatewaySpy).toHaveBeenCalledTimes(1)
+    expect(calculateFreightGatewaySpy).toHaveBeenCalledWith({
+      from: 'any_from',
+      to: 'any_to',
+      items: [
+        {
+          quantity: 1,
+          density: 10000,
+          volume: 0.001
+        }, {
+          quantity: 2,
+          density: 10000,
+          volume: 0.001
+        }
+      ]
     })
   })
 })
