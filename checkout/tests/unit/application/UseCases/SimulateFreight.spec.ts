@@ -1,7 +1,6 @@
-import { Coordinates, FreightCalculator, Item, ItemProps } from '@/domain/entities'
+import { Item, ItemProps } from '@/domain/entities'
 import { GetItemByIdRepository } from '@/domain/repositories/Item'
-import { GetCoordinatesByCEPGateway } from '@/domain/gateways/Coordinates'
-import { SimulateFreight } from '@/application/contracts'
+import { CalculateFreightGateway, CalculateFreightInput, CalculateFreightOutput, SimulateFreight } from '@/application/contracts'
 import { SimulateFreightUseCase } from '@/application/UseCases'
 import { SimulateFreightInputDTO } from '@/application/DTOs'
 
@@ -20,30 +19,29 @@ const makeGetItemByIdRepository = (): GetItemByIdRepository => ({
   getById: async (id: string): Promise<Item> => makeItem({ id })
 })
 
-const makeGetCoordinatesByCEPGateway = (): GetCoordinatesByCEPGateway => ({
-  getByCEP: async (CEP: string): Promise<Coordinates> => new Coordinates({
-    latitude: 0,
-    longitude: 1
+const makeCalculateFreightGateway = (): CalculateFreightGateway => ({
+  calculate: async (input: CalculateFreightInput): Promise<CalculateFreightOutput> => ({
+    freight: 10
   })
 })
 
 type SutTypes = {
   sut: SimulateFreight
   getItemByIdRepository: GetItemByIdRepository
-  getCoordinatesByCEPGateway: GetCoordinatesByCEPGateway
+  calculateFreightGateway: CalculateFreightGateway
 }
 
 const makeSut = (): SutTypes => {
   const getItemByIdRepository = makeGetItemByIdRepository()
-  const getCoordinatesByCEPGateway = makeGetCoordinatesByCEPGateway()
+  const calculateFreightGateway = makeCalculateFreightGateway()
   const sut = new SimulateFreightUseCase(
     getItemByIdRepository,
-    getCoordinatesByCEPGateway
+    calculateFreightGateway
   )
   return {
     sut,
     getItemByIdRepository,
-    getCoordinatesByCEPGateway
+    calculateFreightGateway
   }
 }
 
@@ -61,12 +59,13 @@ describe('SimulateFreight Use Case', () => {
           quantity: 1
         }
       ],
-      destinationCEP: 'any_cep'
+      destinationCEP: 'any_cep',
+      originCEP: 'any_cep'
     }
 
     const output = await sut.execute(input)
 
-    expect(output.total).toBe(848.5665084067638)
+    expect(output.total).toBe(10)
   })
 
   it('should call GetItemByIdRepository correctly', async () => {
@@ -83,7 +82,8 @@ describe('SimulateFreight Use Case', () => {
           quantity: 2
         }
       ],
-      destinationCEP: 'any_cep'
+      destinationCEP: 'any_cep',
+      originCEP: 'any_cep'
     }
 
     await sut.execute(input)
@@ -91,25 +91,6 @@ describe('SimulateFreight Use Case', () => {
     expect(getItemByIdRepositorySpy).toBeCalledTimes(2)
     expect(getItemByIdRepositorySpy).toBeCalledWith('1')
     expect(getItemByIdRepositorySpy).toBeCalledWith('2')
-  })
-
-  it('should call GetCoordinateByCEP correctly', async () => {
-    const { sut, getCoordinatesByCEPGateway } = makeSut()
-    const getCoordinatesByCEPSpy = vi.spyOn(getCoordinatesByCEPGateway, 'getByCEP')
-    const input: SimulateFreightInputDTO = {
-      items: [
-        {
-          itemId: '1',
-          quantity: 1
-        }
-      ],
-      destinationCEP: 'any_cep'
-    }
-
-    await sut.execute(input)
-
-    expect(getCoordinatesByCEPSpy).toBeCalledTimes(1)
-    expect(getCoordinatesByCEPSpy).toBeCalledWith('any_cep')
   })
 
   it('should calculate freight with distance between origin and provided destination', async () => {
@@ -121,33 +102,42 @@ describe('SimulateFreight Use Case', () => {
           quantity: 1
         }
       ],
-      destinationCEP: 'any_cep'
+      destinationCEP: 'any_cep',
+      originCEP: 'any_cep'
     }
 
     const output = await sut.execute(input)
 
-    expect(output.total).toBe(424.2832542033819)
+    expect(output.total).toBe(10)
   })
 
-  it('should call FreightCalculator correctly', async () => {
-    const { sut } = makeSut()
-    const freightCalculatorSpy = vi.spyOn(FreightCalculator.prototype, 'calculate')
+  it('should call CalculateFreightGateway with loaded items', async () => {
+    const { sut, calculateFreightGateway } = makeSut()
+    const calculateFreightGatewaySpy = vi.spyOn(calculateFreightGateway, 'calculate')
     const input: SimulateFreightInputDTO = {
       items: [
         {
           itemId: '1',
           quantity: 1
-        },
-        {
-          itemId: '2',
-          quantity: 2
         }
       ],
-      destinationCEP: 'any_cep'
+      destinationCEP: 'any_cep',
+      originCEP: 'any_cep'
     }
 
     await sut.execute(input)
 
-    expect(freightCalculatorSpy).toBeCalledTimes(2)
+    expect(calculateFreightGatewaySpy).toBeCalledTimes(1)
+    expect(calculateFreightGatewaySpy).toBeCalledWith({
+      items: [
+        {
+          volume: 0.001,
+          density: 10000,
+          quantity: 1
+        }
+      ],
+      from: 'any_cep',
+      to: 'any_cep'
+    })
   })
 })

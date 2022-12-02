@@ -1,45 +1,37 @@
-import { Coordinates, DistanceCalculator, FreightCalculator } from '@/domain/entities'
-import { GetCoordinatesByCEPGateway } from '@/domain/gateways/Coordinates'
 import { GetItemByIdRepository } from '@/domain/repositories/Item'
-import { SimulateFreight } from '@/application/contracts'
+import { CalculateFreightGateway, CalculateFreightInput, CalculateFreightItem, SimulateFreight } from '@/application/contracts'
 import { SimulateFreightInputDTO, SimulateFreightOutputDTO } from '@/application/DTOs'
 
 export class SimulateFreightUseCase implements SimulateFreight {
-  private readonly DEFAULT_ORIGIN_COORDINATES = new Coordinates({
-    latitude: -6.68491,
-    longitude: -36.6566
-  })
-
   private readonly getItemByIdRepository: GetItemByIdRepository
-  private readonly getCoordinatesByCEPGateway: GetCoordinatesByCEPGateway
+  private readonly calculateFreightGateway: CalculateFreightGateway
 
   constructor (
     getItemByIdRepository: GetItemByIdRepository,
-    getCoordinatesByCEPGateway: GetCoordinatesByCEPGateway
+    calculateFreightGateway: CalculateFreightGateway
   ) {
     this.getItemByIdRepository = getItemByIdRepository
-    this.getCoordinatesByCEPGateway = getCoordinatesByCEPGateway
+    this.calculateFreightGateway = calculateFreightGateway
   }
 
   public async execute (input: SimulateFreightInputDTO): Promise<SimulateFreightOutputDTO> {
-    const { items, destinationCEP } = input
-    let total = 0
-
-    const destinationCoordinates = await this.getCoordinatesByCEPGateway.getByCEP(destinationCEP)
-
-    const distanceInKm = new DistanceCalculator({
-      origin: this.DEFAULT_ORIGIN_COORDINATES,
-      destination: destinationCoordinates
-    }).calculate()
-
+    const { items, destinationCEP, originCEP } = input
+    const calculateFreightItems: CalculateFreightItem[] = []
     for (const { itemId, quantity } of items) {
       const item = await this.getItemByIdRepository.getById(itemId)
-
-      const freight = new FreightCalculator({ item, quantity, distanceInKm }).calculate()
-
-      total += freight
+      calculateFreightItems.push({
+        density: item.calculateDensity(),
+        quantity,
+        volume: item.calculateVolumeInCubicMeter()
+      })
     }
+    const calculateFreightInput: CalculateFreightInput = {
+      from: originCEP,
+      to: destinationCEP,
+      items: calculateFreightItems
+    }
+    const { freight } = await this.calculateFreightGateway.calculate(calculateFreightInput)
 
-    return { total }
+    return { total: freight }
   }
 }
