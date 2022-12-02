@@ -17,7 +17,8 @@ const makeHttpClient = (): HttpClient => ({
         latitude: '-26.9244749'
       }
     }
-  })
+  }),
+  post: vi.fn()
 })
 
 const BASE_URL = 'https://brasilapi.com.br/api/cep/v2/'

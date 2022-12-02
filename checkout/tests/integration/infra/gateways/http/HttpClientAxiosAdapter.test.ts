@@ -6,7 +6,8 @@ vi.mock('axios', () => ({
   default: {
     get: vi.fn(),
     create: vi.fn(),
-    isAxiosError: vi.fn()
+    isAxiosError: vi.fn(),
+    post: vi.fn()
   }
 }))
 
@@ -24,6 +25,7 @@ const makeSut = (): SutType => {
 describe('HttpClientAxiosAdapter', () => {
   beforeEach(() => {
     vi.mocked(axios.get).mockResolvedValue({ data: {} })
+    vi.mocked(axios.post).mockResolvedValue({ data: {} })
   })
 
   it('should call axios with correct values', async () => {
@@ -110,5 +112,13 @@ describe('HttpClientAxiosAdapter', () => {
     const promise = sut.get({ url: 'any_url' })
 
     await expect(promise).rejects.toThrow(new ExternalBadRequestError({ errorProp: 'errorValue' }))
+  })
+
+  it('should call axios.post with correct values', async () => {
+    const { sut } = makeSut()
+
+    await sut.post({ url: 'any_url', body: { anyProp: 'anyValue' }, params: { anyParam: 'anyValue' } })
+
+    expect(axios.post).toHaveBeenCalledWith('any_url', { anyProp: 'anyValue' }, { params: { anyParam: 'anyValue' } })
   })
 })
