@@ -156,4 +156,11 @@ describe('Order', () => {
 
     expect(sut.getTotalPrice()).toBe(150)
   })
+
+  it('should set freight', () => {
+    const sut = makeSut({ freight: 0 })
+    sut.setFreight(10)
+
+    expect(sut.getFreight()).toBe(10)
+  })
 })
