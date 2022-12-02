@@ -24,7 +24,7 @@ export class Order {
   private readonly purchaseDate: Date
   private coupon?: OrderCoupon
   private readonly code: OrderCode
-  private readonly freight: number
+  private freight: number
 
   constructor ({
     buyerCPF,
@@ -62,6 +62,10 @@ export class Order {
 
   public getPurchaseDate (): Date {
     return this.purchaseDate
+  }
+
+  public setFreight (freight: number): void {
+    this.freight = freight
   }
 
   public addItem ({ item, quantity }: AddItemProps): void {
