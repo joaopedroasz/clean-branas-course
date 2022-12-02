@@ -47,11 +47,12 @@ export class PlaceOrderUseCase implements PlaceOrder {
         volume: item.calculateVolumeInCubicMeter()
       })
     }
-    await this.calculateFreightGateway.calculate({
+    const { freight } = await this.calculateFreightGateway.calculate({
       from,
       to,
       items: calculateFreightItems
     })
+    order.setFreight(freight)
     if (couponCode) {
       const coupon = await this.getCouponByCodeRepository.getByCode(couponCode)
       order.addCoupon(coupon)
@@ -63,7 +64,8 @@ export class PlaceOrderUseCase implements PlaceOrder {
         code: createdOrder.getCode(),
         purchaseDate: createdOrder.getPurchaseDate(),
         CPF: createdOrder.getCPF()
-      }
+      },
+      freight: order.getFreight()
     }
   }
 }

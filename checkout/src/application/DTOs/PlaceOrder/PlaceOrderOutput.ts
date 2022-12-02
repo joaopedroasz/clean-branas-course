@@ -7,17 +7,21 @@ type OrderOutput = {
 type PlaceOrderOutputProps = {
   total: number
   order: OrderOutput
+  freight: number
 }
 
 export class PlaceOrderOutputDTO {
   public readonly total: number
   public readonly order: OrderOutput
+  public readonly freight: number
 
   constructor ({
     total,
-    order
+    order,
+    freight
   }: PlaceOrderOutputProps) {
     this.total = total
     this.order = order
+    this.freight = freight
   }
 }
