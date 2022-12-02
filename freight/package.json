@@ -7,7 +7,7 @@
     "prepare": "cd .. && husky install ./freight/.husky",
     "build": "tsc --p ./tsconfig.build.json",
     "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules -r tsconfig-paths/register",
-    "dev:server": "yarn dev ./src/main.ts",
+    "dev:server": "yarn dev ./src/infra/http/rest/main.ts",
     "test": "vitest --no-threads && yarn db:down",
     "test:coverage": "vitest --coverage --no-threads && yarn db:down",
     "test:push": "vitest --coverage --run --no-threads",
@@ -32,6 +32,7 @@
     "husky": "^8.0.2",
     "lint-staged": "^13.0.3",
     "supertest": "^6.3.1",
+    "ts-node-dev": "^2.0.0",
     "typescript": "*",
     "vitest": "^0.25.2"
   },
