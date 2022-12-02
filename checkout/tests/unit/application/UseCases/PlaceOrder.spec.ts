@@ -100,7 +100,7 @@ describe('PlaceOrder use case', () => {
 
     const result = await sut.execute(input)
 
-    expect(result.total).toBe(30)
+    expect(result.total).toBe(40)
   })
 
   it('should return total value with coupon discount if coupon code provided', async () => {
@@ -119,7 +119,7 @@ describe('PlaceOrder use case', () => {
 
     const result = await sut.execute(input)
 
-    expect(result.total).toBe(27)
+    expect(result.total).toBe(36)
   })
 
   it('should call GetItemByIdRepository correctly', async () => {
@@ -179,7 +179,8 @@ describe('PlaceOrder use case', () => {
     expect(saveOrderRepositorySpy).toHaveBeenCalledWith(new Order({
       buyerCPF: '607.109.010-54',
       purchaseDate: new Date('2022-10-01'),
-      sequence: 1
+      sequence: 1,
+      freight: 10
     }))
   })
 
@@ -255,5 +256,22 @@ describe('PlaceOrder use case', () => {
         }
       ]
     })
+  })
+
+  it('should return freight calculated by CalculateFreightGateway', async () => {
+    const { sut } = makeSut()
+
+    const result = await sut.execute({
+      buyerCPF: '607.109.010-54',
+      orderItems: [
+        { itemId: 'any_id', quantity: 1 },
+        { itemId: 'other_id', quantity: 2 }
+      ],
+      purchaseDate: new Date('2022-12-02'),
+      from: 'any_from',
+      to: 'any_to'
+    })
+
+    expect(result.freight).toBe(10)
   })
 })
