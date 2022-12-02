@@ -1,6 +1,6 @@
 import { SimulateFreightUseCase } from '@/application/UseCases'
 import { GetItemByIdPrismaRepository, PrismaClientSingleton } from '@/infra/database'
-import { GetCoordinatesByCEPGatewayBrasilAPIAdapter, HttpClientAxiosAdapter } from '@/infra/gateways'
+import { CalculateFreightExternalAPIAdapter, HttpClientAxiosAdapter } from '@/infra/gateways'
 import { SimulateFreightHttpController } from '../../controllers'
 import { adaptResolver } from '../adapters'
 import { QueryResolvers } from '../generated/generated-resolvers'
@@ -8,7 +8,7 @@ import { QueryResolvers } from '../generated/generated-resolvers'
 export const simulateFreightQueryResolver: QueryResolvers = {
   simulateFreight: async (_, args) => {
     const httpClient = new HttpClientAxiosAdapter()
-    const getCoordinatesByCEPHttpClient = new GetCoordinatesByCEPGatewayBrasilAPIAdapter('https://brasilapi.com.br/api/cep/v2', httpClient)
+    const getCoordinatesByCEPHttpClient = new CalculateFreightExternalAPIAdapter('http://localhost:4001/calculate-freight', httpClient)
 
     const prismaClient = PrismaClientSingleton.getInstance()
     const getItemByIdPrismRepository = new GetItemByIdPrismaRepository(prismaClient)

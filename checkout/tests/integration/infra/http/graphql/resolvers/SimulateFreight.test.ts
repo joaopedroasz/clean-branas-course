@@ -6,7 +6,8 @@ import { connection } from '@/infra/database'
 import { deleteAll } from '@/tests/utils'
 
 type QueryVariables = {
-  cep: string
+  fromCEP: string
+  toCEP: string
   items: Array<{
     item_id: string
     quantity: number
@@ -15,14 +16,15 @@ type QueryVariables = {
 
 const makeQueryData = (variables?: Partial<QueryVariables>): Record<string, any> => ({
   query: `#graphql
-    query ($cep: String!, $items: [SimulateFreightItems!]!) {
-      simulateFreight(cep: $cep, items: $items) {
+    query ($fromCEP: String!, $toCEP: String!, $items: [SimulateFreightItems!]!) {
+      simulateFreight(from_cep: $fromCEP, to_cep: $toCEP, items: $items) {
         freight
       }
     }
   `,
   variables: {
-    cep: '89010025',
+    fromCEP: '89010025',
+    toCEP: '03978340',
     items: [
       {
         item_id: 'any_item_id',
@@ -62,11 +64,21 @@ describe('SimulateFreightQueryResolver', () => {
     const response = await request(url).post('/').send(query)
 
     expect(response.status).toBe(200)
-    expect(response.body.data.simulateFreight.freight).toBe(1041.8612481049593)
+    expect(response.body.data.simulateFreight.freight).toBe(200.75334659010213)
   })
 
-  it('should return badRequest if cep is invalid', async () => {
-    const query = makeQueryData({ cep: 'invalid_cep' })
+  it('should return badRequest if from_cep is invalid', async () => {
+    const { id: createdItemId } = await connection.item.create({
+      data: {
+        description: 'Fridge',
+        price: 1000,
+        weight: 40,
+        height: 40,
+        width: 100,
+        depth: 50
+      }
+    })
+    const query = makeQueryData({ items: [{ item_id: createdItemId, quantity: 1 }], fromCEP: 'invalid_cep' })
 
     const response = await request(url).post('/').send(query)
 

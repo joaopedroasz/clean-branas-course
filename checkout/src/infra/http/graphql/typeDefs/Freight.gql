@@ -8,5 +8,9 @@ input SimulateFreightItems {
 }
 
 type Query {
-  simulateFreight(cep: String!, items: [SimulateFreightItems!]!): Freight!
+  simulateFreight(
+    from_cep: String!
+    to_cep: String!
+    items: [SimulateFreightItems!]!
+  ): Freight!
 }
