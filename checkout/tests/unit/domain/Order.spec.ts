@@ -144,4 +144,16 @@ describe('Order', () => {
   it('should get freight', () => {
     expect(sut.getFreight()).toBe(0)
   })
+
+  it('should return total price with freight if it is more than zero', () => {
+    const sut = makeSut({ freight: 10 })
+    const item1 = makeItem({ id: 'any_item_id1', price: 10 })
+    const item2 = makeItem({ id: 'any_item_id2', price: 20 })
+    const item3 = makeItem({ id: 'any_item_id3', price: 30 })
+    sut.addItem({ item: item1, quantity: 1 })
+    sut.addItem({ item: item2, quantity: 2 })
+    sut.addItem({ item: item3, quantity: 3 })
+
+    expect(sut.getTotalPrice()).toBe(150)
+  })
 })
