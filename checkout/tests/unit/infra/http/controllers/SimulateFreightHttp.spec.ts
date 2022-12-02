@@ -31,10 +31,11 @@ const makeSut = (): SutType => {
 }
 
 describe('SimulateFreightHttpController', () => {
-  it('should return badRequest if no CEP provided', async () => {
+  it('should return badRequest if no from_CEP provided', async () => {
     const { sut } = makeSut()
     const request: SimulateFreightHttpInputDTO = {
-      cep: '',
+      from_cep: '',
+      to_cep: 'any_cep',
       items: [
         {
           item_id: 'any_item_id',
@@ -46,13 +47,33 @@ describe('SimulateFreightHttpController', () => {
     const response = await sut.handle(request)
 
     expect(response.statusCode).toBe(400)
-    expect(response.body).toEqual(new MissingParamError('cep'))
+    expect(response.body).toEqual(new MissingParamError('from_cep'))
+  })
+
+  it('should return badRequest if no to_CEP provided', async () => {
+    const { sut } = makeSut()
+    const request: SimulateFreightHttpInputDTO = {
+      from_cep: 'any_cep',
+      to_cep: '',
+      items: [
+        {
+          item_id: 'any_item_id',
+          quantity: 1
+        }
+      ]
+    }
+
+    const response = await sut.handle(request)
+
+    expect(response.statusCode).toBe(400)
+    expect(response.body).toEqual(new MissingParamError('to_cep'))
   })
 
   it('should return badRequest if no items provided', async () => {
     const { sut } = makeSut()
     const request: SimulateFreightHttpInputDTO = {
-      cep: 'any_cep',
+      from_cep: 'any_cep',
+      to_cep: 'any_cep',
       items: []
     }
 
@@ -66,7 +87,8 @@ describe('SimulateFreightHttpController', () => {
     const { sut, simulateFreight } = makeSut()
     const simulateFreightSpy = vi.spyOn(simulateFreight, 'execute')
     const request: SimulateFreightHttpInputDTO = {
-      cep: 'any_cep',
+      from_cep: 'any_from_cep',
+      to_cep: 'any_to_cep',
       items: [
         {
           item_id: 'any_item_id',
@@ -79,7 +101,8 @@ describe('SimulateFreightHttpController', () => {
 
     expect(simulateFreightSpy).toHaveBeenCalledTimes(1)
     expect(simulateFreightSpy).toHaveBeenCalledWith({
-      destinationCEP: 'any_cep',
+      destinationCEP: 'any_to_cep',
+      originCEP: 'any_from_cep',
       items: [
         {
           itemId: 'any_item_id',
@@ -92,7 +115,8 @@ describe('SimulateFreightHttpController', () => {
   it('should return calculated freight by SimulateFreight use case', async () => {
     const { sut } = makeSut()
     const request: SimulateFreightHttpInputDTO = {
-      cep: 'any_cep',
+      from_cep: 'any_cep',
+      to_cep: 'any_cep',
       items: [
         {
           item_id: 'any_item_id',
@@ -113,7 +137,8 @@ describe('SimulateFreightHttpController', () => {
     const { sut, simulateFreight } = makeSut()
     vi.spyOn(simulateFreight, 'execute').mockRejectedValueOnce(new Error())
     const request: SimulateFreightHttpInputDTO = {
-      cep: 'any_cep',
+      from_cep: 'any_cep',
+      to_cep: 'any_cep',
       items: [
         {
           item_id: 'any_item_id',
@@ -131,7 +156,8 @@ describe('SimulateFreightHttpController', () => {
     const { sut, simulateFreight } = makeSut()
     vi.spyOn(simulateFreight, 'execute').mockRejectedValueOnce('any_error')
     const request: SimulateFreightHttpInputDTO = {
-      cep: 'any_cep',
+      from_cep: 'any_cep',
+      to_cep: 'any_cep',
       items: [
         {
           item_id: 'any_item_id',
@@ -149,7 +175,8 @@ describe('SimulateFreightHttpController', () => {
     const { sut, simulateFreight } = makeSut()
     vi.spyOn(simulateFreight, 'execute').mockRejectedValueOnce(new ExternalBadRequestError('any_error'))
     const request: SimulateFreightHttpInputDTO = {
-      cep: 'any_cep',
+      from_cep: 'any_cep',
+      to_cep: 'any_cep',
       items: [
         {
           item_id: 'any_item_id',

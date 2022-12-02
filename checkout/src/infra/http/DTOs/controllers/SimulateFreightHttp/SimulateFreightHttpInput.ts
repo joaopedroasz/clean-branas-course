@@ -4,16 +4,23 @@ export type SimulateFreightHttpInputPropsItems = {
 }
 
 type SimulateFreightHttpInputProps = {
-  cep: string
   items: SimulateFreightHttpInputPropsItems[]
+  from_cep: string
+  to_cep: string
 }
 
 export class SimulateFreightHttpInputDTO {
   public readonly items: SimulateFreightHttpInputPropsItems[]
-  public readonly cep: string
+  public readonly from_cep: string
+  public readonly to_cep: string
 
-  constructor ({ items, cep }: SimulateFreightHttpInputProps) {
+  constructor ({
+    items,
+    from_cep: fromCEP,
+    to_cep: toCEP
+  }: SimulateFreightHttpInputProps) {
     this.items = items
-    this.cep = cep
+    this.from_cep = fromCEP
+    this.to_cep = toCEP
   }
 }

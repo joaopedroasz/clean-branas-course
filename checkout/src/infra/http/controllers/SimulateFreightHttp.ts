@@ -37,16 +37,26 @@ export class SimulateFreightHttpController implements SimulateFreightHttp {
   }
 
   private validateRequest (request: SimulateFreightHttpInputDTO): Error | undefined {
-    const { cep, items } = request
-    if (!cep) return new MissingParamError('cep')
+    const {
+      from_cep: fromCEP,
+      to_cep: toCEP,
+      items
+    } = request
+    if (!fromCEP) return new MissingParamError('from_cep')
+    if (!toCEP) return new MissingParamError('to_cep')
     if (!items.length) return new MissingParamError('items')
   }
 
   private formatRequest (request: SimulateFreightHttpInputDTO): SimulateFreightInputDTO {
-    const { cep, items } = request
+    const {
+      from_cep: fromCEP,
+      to_cep: toCEP,
+      items
+    } = request
 
     return {
-      destinationCEP: cep,
+      destinationCEP: toCEP,
+      originCEP: fromCEP,
       items: items.map(item => ({
         itemId: item.item_id,
         quantity: item.quantity
