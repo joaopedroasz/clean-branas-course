@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "typeRoots": ["./node_modules/@types", "./src/types"]
+  },
+  "include": [
+    "src",
+    "tests",
+    "vite.config.ts",
+    "vite-unit.config.ts",
+    "vite-integration.config.ts"
+  ]
+}
