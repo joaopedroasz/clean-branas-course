@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 
-import { Coupon, Item, Order } from '@/domain/entities'
+import { Order } from '@/domain/entities'
 import { SaveOrderRepository } from '@/domain/repositories/Order'
 
 export class SaveOrderPrismaRepository implements SaveOrderRepository {
@@ -16,8 +16,9 @@ export class SaveOrderPrismaRepository implements SaveOrderRepository {
       issue_date: issueDate,
       sequence,
       order_items: orderItems,
-      coupon,
-      freight
+      freight,
+      coupon_code: couponCode,
+      coupon_percentage: couponPercentage
     } = await this.connection.order.create({
       data: {
         cpf: order.getCPF(),
@@ -34,52 +35,24 @@ export class SaveOrderPrismaRepository implements SaveOrderRepository {
               price: orderItem.calculatePrice()
             }))
           }
-        }
+        },
+        coupon_percentage: order.getCouponPercentage()
       },
       include: {
-        coupon: true,
-        order_items: {
-          include: {
-            item: true
-          }
-        }
+        order_items: true
       }
     })
 
-    const createdOrder = new Order({
+    return Order.build({
       buyerCPF: cpf,
+      freight: freight ?? 0,
+      orderItems: orderItems.map(orderItem => ({ itemId: orderItem.item_id, quantity: orderItem.quantity, price: orderItem.price })),
       purchaseDate: issueDate,
       sequence,
-      freight: freight ?? 0
+      coupon: {
+        code: couponCode ?? undefined,
+        percentage: couponPercentage ?? undefined
+      }
     })
-
-    if (coupon) {
-      const dueDate = coupon.expires_at ?? undefined
-      const loadedCoupon = new Coupon({
-        code: coupon.code,
-        percentage: coupon.percentage,
-        dueDate
-      })
-      createdOrder.addCoupon(loadedCoupon)
-    }
-
-    for (const orderItem of orderItems) {
-      const item = new Item({
-        id: orderItem.item.id,
-        depthInCm: orderItem.item.depth,
-        description: orderItem.item.description,
-        heightInCm: orderItem.item.height,
-        price: orderItem.item.price,
-        weightInKg: orderItem.item.weight,
-        widthInCm: orderItem.item.width
-      })
-
-      createdOrder.addItem({
-        item,
-        quantity: orderItem.quantity
-      })
-    }
-
-    return createdOrder
   }
 }

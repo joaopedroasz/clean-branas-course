@@ -84,6 +84,10 @@ export class Order {
     return this.coupon?.getCode()
   }
 
+  public getCouponPercentage (): number | undefined {
+    return this.coupon?.getPercentage()
+  }
+
   public getCode (): string {
     return this.code.getCode()
   }
