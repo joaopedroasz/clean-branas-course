@@ -1,3 +1,5 @@
+import { InvalidQuantityError } from '../errors'
+
 export type StockEntryOperation = 'add' | 'remove'
 
 export type StockEntryProps = {
@@ -23,5 +25,11 @@ export class StockEntry {
     this.itemId = itemId
     this.quantity = quantity
     this.operation = operation
+
+    if (!this.isValidNumber(quantity)) throw new InvalidQuantityError(quantity)
+  }
+
+  private isValidNumber (value: number): boolean {
+    return value > 0
   }
 }
