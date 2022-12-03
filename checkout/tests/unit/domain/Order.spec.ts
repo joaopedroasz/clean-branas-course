@@ -163,4 +163,27 @@ describe('Order', () => {
 
     expect(sut.getFreight()).toBe(10)
   })
+
+  it('should create self instance with static method', () => {
+    const sut = Order.build({
+      buyerCPF: '858.620.912-03',
+      freight: 5,
+      orderItems: [
+        {
+          itemId: 'any_item_id',
+          price: 10,
+          quantity: 1
+        }
+      ],
+      purchaseDate: new Date('2022-10-18'),
+      coupon: {
+        code: 'VALE20',
+        percentage: 20
+      },
+      sequence: 0
+    })
+
+    expect(sut).toBeInstanceOf(Order)
+    expect(sut.getTotalPrice()).toBe(12)
+  })
 })
