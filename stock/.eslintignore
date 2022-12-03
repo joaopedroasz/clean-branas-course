@@ -1,0 +1,5 @@
+node_modules
+dist
+src/infra/database/prisma/migrations
+src/infra/database/prisma/schema.prisma
+src/types/*
