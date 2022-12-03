@@ -36,4 +36,8 @@ export class StockEntry {
   public isIncrease (): boolean {
     return this.operation === 'add'
   }
+
+  public isDecrease (): boolean {
+    return this.operation === 'remove'
+  }
 }
