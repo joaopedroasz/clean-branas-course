@@ -42,6 +42,7 @@ export class StockEntry {
   }
 
   public calculateAmount (amount: number): number {
+    if (this.isIncrease()) return amount + this.quantity
     return amount - this.quantity
   }
 }
