@@ -34,16 +34,17 @@ model Coupon {
 }
 
 model Order {
-  id          String      @id @default(uuid())
-  coupon      Coupon?     @relation(fields: [coupon_code], references: [code], onDelete: SetNull)
-  coupon_code String?
-  code        String      @unique
-  cpf         String
-  issue_date  DateTime    @default(now())
-  freight     Int?
-  sequence    Int         @unique @default(autoincrement())
-  total       Int
-  order_items OrderItem[]
+  id                String      @id @default(uuid())
+  coupon            Coupon?     @relation(fields: [coupon_code], references: [code], onDelete: SetNull)
+  coupon_code       String?
+  coupon_percentage Int?
+  code              String      @unique
+  cpf               String
+  issue_date        DateTime    @default(now())
+  freight           Int?
+  sequence          Int         @unique @default(autoincrement())
+  total             Int
+  order_items       OrderItem[]
 
   @@map("orders")
 }
