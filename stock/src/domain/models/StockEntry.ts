@@ -1,4 +1,4 @@
-import { InvalidQuantityError } from '../errors'
+import { InsufficientStockError, InvalidQuantityError } from '../errors'
 
 export type StockEntryOperation = 'add' | 'remove'
 
@@ -43,6 +43,17 @@ export class StockEntry {
 
   public calculateAmount (amount: number): number {
     if (this.isIncrease()) return amount + this.quantity
+    if (!this.canIncrease(amount)) {
+      throw new InsufficientStockError({
+        itemId: this.itemId,
+        removingQuantity: this.quantity,
+        amount
+      })
+    }
     return amount - this.quantity
+  }
+
+  private canIncrease (amount: number): boolean {
+    return this.quantity <= amount
   }
 }
