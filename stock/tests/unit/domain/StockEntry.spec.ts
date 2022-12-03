@@ -51,4 +51,10 @@ describe('StockEntry Entity', () => {
 
     expect(sut.isDecrease()).toBeFalsy()
   })
+
+  it('should remove quantity from a amount if operation is remove', () => {
+    const sut = makeSut({ operation: 'remove', quantity: 2 })
+
+    expect(sut.calculateAmount(10)).toBe(8)
+  })
 })
