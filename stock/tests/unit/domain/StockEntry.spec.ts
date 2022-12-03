@@ -57,4 +57,10 @@ describe('StockEntry Entity', () => {
 
     expect(sut.calculateAmount(10)).toBe(8)
   })
+
+  it('should add quantity to a amount if operation is add', () => {
+    const sut = makeSut({ operation: 'add', quantity: 2 })
+
+    expect(sut.calculateAmount(10)).toBe(12)
+  })
 })
