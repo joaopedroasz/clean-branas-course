@@ -4,7 +4,7 @@ import { CPF } from './CPF'
 import { Item } from './Item'
 import { OrderCode } from './OrderCode'
 import { OrderCoupon } from './OrderCoupon'
-import { OrderItem } from './OrderItem'
+import { OrderItem, OrderItemProps } from './OrderItem'
 
 export type OrderProps = {
   buyerCPF: string
@@ -18,12 +18,24 @@ export type AddItemProps = {
   quantity: number
 }
 
+export type BuildProps = {
+  coupon?: {
+    code: string
+    percentage: number
+  }
+  orderItems: OrderItemProps[]
+  buyerCPF: string
+  purchaseDate: Date
+  freight: number
+  sequence: number
+}
+
 export class Order {
   private readonly buyerCPF: CPF
-  private readonly orderItems: OrderItem[]
+  private orderItems: OrderItem[]
   private readonly purchaseDate: Date
   private coupon?: OrderCoupon
-  private readonly code: OrderCode
+  private code: OrderCode
   private freight: number
 
   constructor ({
@@ -38,6 +50,26 @@ export class Order {
     this.purchaseDate = purchaseDate
     this.code = new OrderCode({ date: purchaseDate, sequence })
     this.freight = freight
+  }
+
+  public static build ({
+    buyerCPF,
+    freight,
+    orderItems,
+    purchaseDate,
+    coupon,
+    sequence
+  }: BuildProps): Order {
+    const order = new Order({
+      buyerCPF,
+      sequence,
+      freight,
+      purchaseDate
+    })
+    order.code = new OrderCode({ date: purchaseDate, sequence })
+    order.orderItems = orderItems.map(orderItem => new OrderItem(orderItem))
+    if (coupon) order.coupon = new OrderCoupon(coupon)
+    return order
   }
 
   public getFreight (): number {
