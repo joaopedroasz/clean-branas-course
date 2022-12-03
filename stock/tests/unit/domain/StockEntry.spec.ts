@@ -27,4 +27,16 @@ describe('StockEntry Entity', () => {
 
     expect(sut).toThrowError(new InvalidQuantityError(0))
   })
+
+  it('should return true to isIncrease if operation is add', () => {
+    const sut = makeSut({ operation: 'add' })
+
+    expect(sut.isIncrease()).toBeTruthy()
+  })
+
+  it('should return false to isIncrease if operation is remove', () => {
+    const sut = makeSut({ operation: 'remove' })
+
+    expect(sut.isIncrease()).toBeFalsy()
+  })
 })
