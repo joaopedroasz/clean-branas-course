@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
+import { Order } from '@/domain/entities'
 import { GetOrdersByCPFRepository } from '@/domain/repositories/Order'
-import { Item, Order } from '@/domain/entities'
 
 export class GetOrdersByCPFPrismaRepository implements GetOrdersByCPFRepository {
   private readonly connection: PrismaClient
@@ -16,38 +16,23 @@ export class GetOrdersByCPFPrismaRepository implements GetOrdersByCPFRepository 
         cpf: CPF
       },
       include: {
-        order_items: {
-          include: {
-            item: true
-          }
-        }
+        order_items: true
       }
     })
 
     const formattedOrders: Order[] = []
 
     orders.forEach(order => {
-      const formattedOrder = new Order({
+      const formattedOrder = Order.build({
         buyerCPF: order.cpf,
+        freight: order.freight ?? 0,
+        orderItems: order.order_items.map(orderItem => ({ itemId: orderItem.item_id, quantity: orderItem.quantity, price: orderItem.price })),
         purchaseDate: order.issue_date,
-        sequence: order.sequence
-      })
-
-      order.order_items.forEach(orderItem => {
-        const item = new Item({
-          id: orderItem.item.id,
-          description: orderItem.item.description,
-          price: orderItem.item.price,
-          depthInCm: orderItem.item.depth,
-          heightInCm: orderItem.item.height,
-          weightInKg: orderItem.item.weight,
-          widthInCm: orderItem.item.width
-        })
-
-        formattedOrder.addItem({
-          item,
-          quantity: orderItem.quantity
-        })
+        sequence: order.sequence,
+        coupon: {
+          code: order.coupon_code ?? undefined,
+          percentage: order.coupon_percentage ?? undefined
+        }
       })
 
       formattedOrders.push(formattedOrder)
