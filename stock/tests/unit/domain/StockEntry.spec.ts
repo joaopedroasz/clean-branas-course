@@ -73,4 +73,11 @@ describe('StockEntry Entity', () => {
       amount: 1
     }))
   })
+
+  it('should not throw InsufficientStockError when calculateAmount if operation is remove and amount is equal to quantity', () => {
+    const sut = makeSut({ operation: 'remove', quantity: 2 })
+
+    expect(sut.calculateAmount(2)).toBe(0)
+    expect(() => sut.calculateAmount(2)).not.toThrowError()
+  })
 })
