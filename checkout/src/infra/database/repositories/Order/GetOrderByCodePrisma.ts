@@ -11,6 +11,9 @@ export class GetOrderByCodePrismaRepository implements GetOrderByCodeRepository 
     const order = await this.connection.order.findUnique({
       where: {
         code
+      },
+      include: {
+        order_items: true
       }
     })
 
@@ -21,10 +24,26 @@ export class GetOrderByCodePrismaRepository implements GetOrderByCodeRepository 
       })
     }
 
-    return new Order({
-      buyerCPF: order.cpf,
-      sequence: order.sequence,
-      purchaseDate: order.issue_date
+    const {
+      sequence,
+      order_items: orderItems,
+      cpf,
+      freight,
+      issue_date: issueDate,
+      coupon_code: couponCode,
+      coupon_percentage: couponPercentage
+    } = order
+
+    return Order.build({
+      buyerCPF: cpf,
+      freight: freight ?? 0,
+      orderItems: orderItems.map(({ quantity, price, item_id: itemId }) => ({ quantity, price, itemId })),
+      purchaseDate: issueDate,
+      sequence,
+      coupon: {
+        code: couponCode ?? undefined,
+        percentage: couponPercentage ?? undefined
+      }
     })
   }
 }

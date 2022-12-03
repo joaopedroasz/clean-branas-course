@@ -20,8 +20,8 @@ export type AddItemProps = {
 
 export type BuildProps = {
   coupon?: {
-    code: string
-    percentage: number
+    code?: string
+    percentage?: number
   }
   orderItems: OrderItemProps[]
   buyerCPF: string
@@ -68,7 +68,7 @@ export class Order {
     })
     order.code = new OrderCode({ date: purchaseDate, sequence })
     order.orderItems = orderItems.map(orderItem => new OrderItem(orderItem))
-    if (coupon) order.coupon = new OrderCoupon(coupon)
+    if (coupon?.code && coupon?.percentage) order.coupon = new OrderCoupon({ code: coupon.code, percentage: coupon.percentage })
     return order
   }
 
