@@ -21,4 +21,10 @@ describe('StockEntry Entity', () => {
 
     expect(sut).toThrowError(new InvalidQuantityError(-1))
   })
+
+  it('should throw InvalidQuantityError if quantity is equal to 0', () => {
+    const sut = (): StockEntry => makeSut({ quantity: 0 })
+
+    expect(sut).toThrowError(new InvalidQuantityError(0))
+  })
 })
