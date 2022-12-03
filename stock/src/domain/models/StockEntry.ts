@@ -40,4 +40,8 @@ export class StockEntry {
   public isDecrease (): boolean {
     return this.operation === 'remove'
   }
+
+  public calculateAmount (amount: number): number {
+    return amount - this.quantity
+  }
 }
