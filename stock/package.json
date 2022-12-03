@@ -20,6 +20,7 @@
     "vitest": "^0.25.3"
   },
   "scripts": {
+    "prepare": "cd .. && husky install ./stock/.husky",
     "build": "tsc --p ./tsconfig.build.json",
     "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules -r tsconfig-paths/register",
     "test": "vitest --no-threads",
