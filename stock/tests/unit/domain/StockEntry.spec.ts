@@ -1,4 +1,5 @@
 import { StockEntry, StockEntryProps } from '@/domain/models'
+import { InvalidQuantityError } from '@/domain/errors'
 
 const makeSut = (props?: Partial<StockEntryProps>): StockEntry => new StockEntry({
   id: 'any_id',
@@ -13,5 +14,11 @@ describe('StockEntry Entity', () => {
     const sut = makeSut()
 
     expect(sut).toBeTruthy()
+  })
+
+  it('should throw InvalidQuantityError if quantity is less than 0', () => {
+    const sut = (): StockEntry => makeSut({ quantity: -1 })
+
+    expect(sut).toThrowError(new InvalidQuantityError(-1))
   })
 })
