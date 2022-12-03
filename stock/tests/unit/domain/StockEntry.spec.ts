@@ -1,5 +1,5 @@
 import { StockEntry, StockEntryProps } from '@/domain/models'
-import { InvalidQuantityError } from '@/domain/errors'
+import { InsufficientStockError, InvalidQuantityError } from '@/domain/errors'
 
 const makeSut = (props?: Partial<StockEntryProps>): StockEntry => new StockEntry({
   id: 'any_id',
@@ -62,5 +62,15 @@ describe('StockEntry Entity', () => {
     const sut = makeSut({ operation: 'add', quantity: 2 })
 
     expect(sut.calculateAmount(10)).toBe(12)
+  })
+
+  it('should throw InsufficientStockError if operation is remove and amount is less than quantity', () => {
+    const sut = makeSut({ operation: 'remove', quantity: 2 })
+
+    expect(() => sut.calculateAmount(1)).toThrowError(new InsufficientStockError({
+      itemId: 'any_item_id',
+      removingQuantity: 2,
+      amount: 1
+    }))
   })
 })
