@@ -8,10 +8,10 @@ export type StockEntryProps = {
 }
 
 export class StockEntry {
-  readonly id: string
-  readonly itemId: string
-  readonly quantity: number
-  readonly operation: StockEntryOperation
+  private readonly id: string
+  private readonly itemId: string
+  private readonly quantity: number
+  private readonly operation: StockEntryOperation
 
   constructor ({
     id,
