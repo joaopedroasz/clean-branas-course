@@ -32,4 +32,8 @@ export class StockEntry {
   private isValidNumber (value: number): boolean {
     return value > 0
   }
+
+  public isIncrease (): boolean {
+    return this.operation === 'add'
+  }
 }
