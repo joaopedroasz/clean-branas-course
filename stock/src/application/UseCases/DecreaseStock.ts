@@ -1,13 +1,18 @@
 import { StockCalculator, StockEntry } from '@/domain/models'
-import { GetStockEntriesByItemIdRepository } from '@/domain/repositories'
+import { GetStockEntriesByItemIdRepository, SaveStockEntryRepository } from '@/domain/repositories'
 import { DecreaseStock, DecreaseStockInput, DecreaseStockOutput } from '../contracts'
 import { EmptyStockError } from '../errors'
 
 export class DecreaseStockUseCase implements DecreaseStock {
   private readonly getStockEntriesByItemIdRepository: GetStockEntriesByItemIdRepository
+  private readonly saveStockEntryRepository: SaveStockEntryRepository
 
-  constructor (getStockEntriesByItemIdRepository: GetStockEntriesByItemIdRepository) {
+  constructor (
+    getStockEntriesByItemIdRepository: GetStockEntriesByItemIdRepository,
+    saveStockEntryRepository: SaveStockEntryRepository
+  ) {
     this.getStockEntriesByItemIdRepository = getStockEntriesByItemIdRepository
+    this.saveStockEntryRepository = saveStockEntryRepository
   }
 
   async execute ({ itemId, decreaseQuantity }: DecreaseStockInput): Promise<DecreaseStockOutput> {
@@ -15,7 +20,7 @@ export class DecreaseStockUseCase implements DecreaseStock {
     if (!stockEntries.length) throw new EmptyStockError(itemId)
     const removingStockEntry = new StockEntry({ itemId, quantity: decreaseQuantity, operation: 'remove' })
     new StockCalculator([...stockEntries, removingStockEntry]).calculate()
-
+    await this.saveStockEntryRepository.save(removingStockEntry)
     return {
       amountInStock: 0,
       itemId: ''
