@@ -1,5 +1,5 @@
 import { StockEntry } from '@/domain/models'
 
-export interface GetStockEntriesByItemId {
+export interface GetStockEntriesByItemIdRepository {
   getByItemId: (itemId: string) => Promise<StockEntry[]>
 }
