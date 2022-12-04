@@ -2,6 +2,7 @@ import { StockEntry, StockEntryProps } from '@/domain/models'
 import { GetStockEntriesByItemId } from '@/domain/repositories'
 import { DecreaseStock } from '@/application/contracts'
 import { DecreaseStockUseCase } from '@/application/UseCases'
+import { EmptyStockError } from '@/application/errors'
 
 const makeStockEntry = (props?: Partial<StockEntryProps>): StockEntry => new StockEntry({
   id: 'any_id',
@@ -40,5 +41,14 @@ describe('DecreaseStockUseCase', () => {
     })
 
     expect(getStockEntriesByItemIdSpy).toHaveBeenCalledWith('any_item_id')
+  })
+
+  it('should throw EmptyStockError if there is no stock entries for the given itemId', async () => {
+    const { sut, getStockEntriesByItemId } = makeSut()
+    vi.spyOn(getStockEntriesByItemId, 'getByItemId').mockResolvedValueOnce([])
+
+    const error = sut.execute({ decreaseQuantity: 1, itemId: 'item_no_stock' })
+
+    await expect(error).rejects.toThrow(new EmptyStockError('item_no_stock'))
   })
 })
