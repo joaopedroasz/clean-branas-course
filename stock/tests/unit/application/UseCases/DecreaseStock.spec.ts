@@ -1,11 +1,10 @@
 import { StockCalculator, StockEntry, StockEntryProps } from '@/domain/models'
-import { GetStockEntriesByItemIdRepository } from '@/domain/repositories'
+import { GetStockEntriesByItemIdRepository, SaveStockEntryRepository } from '@/domain/repositories'
 import { DecreaseStock } from '@/application/contracts'
 import { DecreaseStockUseCase } from '@/application/UseCases'
 import { EmptyStockError } from '@/application/errors'
 
 const makeStockEntry = (props?: Partial<StockEntryProps>): StockEntry => new StockEntry({
-  id: 'any_id',
   itemId: 'any_item_id',
   quantity: 1,
   operation: 'remove',
@@ -19,17 +18,27 @@ const makeGetStockEntriesByItemId = (): GetStockEntriesByItemIdRepository => ({
   ])
 })
 
+const makeSaveStockEntry = (): SaveStockEntryRepository => ({
+  save: async (stockEntry: StockEntry): Promise<StockEntry> => stockEntry
+})
+
 type SutType = {
   sut: DecreaseStock
   getStockEntriesByItemIdRepository: GetStockEntriesByItemIdRepository
+  saveStockEntryRepository: SaveStockEntryRepository
 }
 
 const makeSut = (): SutType => {
   const getStockEntriesByItemIdRepository = makeGetStockEntriesByItemId()
-  const sut = new DecreaseStockUseCase(getStockEntriesByItemIdRepository)
+  const saveStockEntryRepository = makeSaveStockEntry()
+  const sut = new DecreaseStockUseCase(
+    getStockEntriesByItemIdRepository,
+    saveStockEntryRepository
+  )
   return {
     sut,
-    getStockEntriesByItemIdRepository
+    getStockEntriesByItemIdRepository,
+    saveStockEntryRepository
   }
 }
 
@@ -64,5 +73,14 @@ describe('DecreaseStockUseCase', () => {
     await sut.execute({ decreaseQuantity: 1, itemId: 'any_item_id' })
 
     expect(stockCalculatorSpy).toHaveBeenCalled()
+  })
+
+  it('should call SaveStockEntry with correct values', async () => {
+    const { sut, saveStockEntryRepository } = makeSut()
+    const saveStockEntrySpy = vi.spyOn(saveStockEntryRepository, 'save')
+
+    await sut.execute({ decreaseQuantity: 1, itemId: 'any_item_id' })
+
+    expect(saveStockEntrySpy).toHaveBeenCalledWith(makeStockEntry({ operation: 'remove', quantity: 1, itemId: 'any_item_id' }))
   })
 })
