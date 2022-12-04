@@ -43,6 +43,14 @@ const makeSut = (): SutType => {
 }
 
 describe('DecreaseStockUseCase', () => {
+  it('should return correct values', async () => {
+    const { sut } = makeSut()
+
+    const result = await sut.execute({ decreaseQuantity: 1, itemId: 'any_item_id' })
+
+    expect(result).toEqual({ amountInStock: 6, itemId: 'any_item_id' })
+  })
+
   it('should call GetStockEntriesByItemId with correct itemId', async () => {
     const { sut, getStockEntriesByItemIdRepository } = makeSut()
     const getStockEntriesByItemIdSpy = vi.spyOn(getStockEntriesByItemIdRepository, 'getByItemId')
@@ -65,9 +73,7 @@ describe('DecreaseStockUseCase', () => {
   })
 
   it('should call StockCalculator.calculate', async () => {
-    const { sut, getStockEntriesByItemIdRepository } = makeSut()
-    const stockEntries = [makeStockEntry({ operation: 'add', quantity: 10 }), makeStockEntry({ operation: 'remove', quantity: 2 })]
-    vi.spyOn(getStockEntriesByItemIdRepository, 'getByItemId').mockResolvedValueOnce(stockEntries)
+    const { sut } = makeSut()
     const stockCalculatorSpy = vi.spyOn(StockCalculator.prototype, 'calculate')
 
     await sut.execute({ decreaseQuantity: 1, itemId: 'any_item_id' })
