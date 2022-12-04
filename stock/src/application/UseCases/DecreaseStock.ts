@@ -19,11 +19,9 @@ export class DecreaseStockUseCase implements DecreaseStock {
     const stockEntries = await this.getStockEntriesByItemIdRepository.getByItemId(itemId)
     if (!stockEntries.length) throw new EmptyStockError(itemId)
     const removingStockEntry = new StockEntry({ itemId, quantity: decreaseQuantity, operation: 'remove' })
-    new StockCalculator([...stockEntries, removingStockEntry]).calculate()
+    const amountInStock = new StockCalculator([...stockEntries, removingStockEntry]).calculate()
     await this.saveStockEntryRepository.save(removingStockEntry)
-    return {
-      amountInStock: 0,
-      itemId: ''
-    }
+
+    return { amountInStock, itemId }
   }
 }
