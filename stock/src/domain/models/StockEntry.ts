@@ -3,14 +3,14 @@ import { InsufficientStockError, InvalidQuantityError } from '../errors'
 export type StockEntryOperation = 'add' | 'remove'
 
 export type StockEntryProps = {
-  id: string
+  id?: string
   itemId: string
   quantity: number
   operation: StockEntryOperation
 }
 
 export class StockEntry {
-  private readonly id: string
+  private readonly id?: string
   private readonly itemId: string
   private readonly quantity: number
   private readonly operation: StockEntryOperation
@@ -43,7 +43,7 @@ export class StockEntry {
 
   public calculateAmount (amount: number): number {
     if (this.isIncrease()) return amount + this.quantity
-    if (!this.canIncrease(amount)) {
+    if (!this.canDecrease(amount)) {
       throw new InsufficientStockError({
         itemId: this.itemId,
         removingQuantity: this.quantity,
@@ -53,7 +53,7 @@ export class StockEntry {
     return amount - this.quantity
   }
 
-  private canIncrease (amount: number): boolean {
+  private canDecrease (amount: number): boolean {
     return this.quantity <= amount
   }
 }
