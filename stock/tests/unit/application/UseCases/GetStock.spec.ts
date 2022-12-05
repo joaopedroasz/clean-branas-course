@@ -1,4 +1,4 @@
-import { StockEntry, StockEntryProps } from '@/domain/models'
+import { StockCalculator, StockEntry, StockEntryProps } from '@/domain/models'
 import { GetStockEntriesByItemIdRepository } from '@/domain/repositories'
 import { GetStock } from '@/application/contracts'
 import { GetStockUseCase } from '@/application/UseCases'
@@ -40,5 +40,14 @@ describe('GetStock UseCase', () => {
     )
     await sut.execute({ itemId: 'any_id' })
     expect(getStockEntriesByItemIdRepositorySpy).toHaveBeenCalledWith('any_id')
+  })
+
+  it('should call StockCalculator', async () => {
+    const { sut } = makeSut()
+    const stockCalculatorSpy = vi.spyOn(StockCalculator.prototype, 'calculate')
+
+    await sut.execute({ itemId: 'any_id' })
+
+    expect(stockCalculatorSpy).toHaveBeenCalled()
   })
 })
