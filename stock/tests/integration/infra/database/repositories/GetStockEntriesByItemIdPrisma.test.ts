@@ -2,22 +2,18 @@ import { PrismaClient } from '@prisma/client'
 
 import { StockEntry } from '@/domain/models'
 import { GetStockEntriesByItemIdRepository } from '@/domain/repositories'
-import { GetStockEntriesByItemIdPrismaRepository, PrismaConnectionSingleton } from '@/infra/database'
+import { GetStockEntriesByItemIdPrismaRepository } from '@/infra/database'
+import { connection } from '@/tests/utils'
 
 type SutType = {
   sut: GetStockEntriesByItemIdRepository
   connection: PrismaClient
 }
 
-const makeSut = (): SutType => {
-  const connection = PrismaConnectionSingleton.getInstance().getClient()
-  const sut = new GetStockEntriesByItemIdPrismaRepository(connection)
-
-  return {
-    sut,
-    connection
-  }
-}
+const makeSut = (): SutType => ({
+  sut: new GetStockEntriesByItemIdPrismaRepository(connection),
+  connection
+})
 
 describe('GetStockEntriesByItemIdPrismaRepository', () => {
   it('should return an array of stock entries', async () => {
