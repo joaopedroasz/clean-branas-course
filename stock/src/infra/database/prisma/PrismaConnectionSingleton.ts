@@ -1,5 +1,9 @@
+import { PrismaClient } from '@prisma/client'
+
 export class PrismaConnectionSingleton {
-  private static instance: PrismaConnectionSingleton
+  private static instance?: PrismaConnectionSingleton
+
+  private client?: PrismaClient
 
   private constructor () {}
 
@@ -9,5 +13,11 @@ export class PrismaConnectionSingleton {
     }
 
     return PrismaConnectionSingleton.instance
+  }
+
+  public getClient (): PrismaClient {
+    if (!this.client) this.client = new PrismaClient()
+
+    return this.client
   }
 }
