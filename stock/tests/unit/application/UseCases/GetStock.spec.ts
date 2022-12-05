@@ -32,6 +32,14 @@ const makeSut = (): SutType => {
 }
 
 describe('GetStock UseCase', () => {
+  it('should return the correct quantity', async () => {
+    const { sut } = makeSut()
+
+    const result = await sut.execute({ itemId: 'any_id' })
+
+    expect(result).toEqual({ quantity: 7 })
+  })
+
   it('should call GetStockEntriesByItemIdRepository with correct values', async () => {
     const { sut, getStockEntriesByItemIdRepository } = makeSut()
     const getStockEntriesByItemIdRepositorySpy = vi.spyOn(
