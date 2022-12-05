@@ -80,4 +80,34 @@ describe('StockEntry Entity', () => {
     expect(sut.calculateAmount(2)).toBe(0)
     expect(() => sut.calculateAmount(2)).not.toThrowError()
   })
+
+  it('should return id', () => {
+    const sut = makeSut()
+
+    expect(sut.getId()).toBe('any_id')
+  })
+
+  it('should return undefined if id is not set', () => {
+    const sut = makeSut({ id: undefined })
+
+    expect(sut.getId()).toBeUndefined()
+  })
+
+  it('should return itemId', () => {
+    const sut = makeSut()
+
+    expect(sut.getItemId()).toBe('any_item_id')
+  })
+
+  it('should return quantity', () => {
+    const sut = makeSut()
+
+    expect(sut.getQuantity()).toBe(1)
+  })
+
+  it('should return operation', () => {
+    const sut = makeSut()
+
+    expect(sut.getOperation()).toBe('add')
+  })
 })
