@@ -6,3 +6,15 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum StockOperation {
+  add
+  remove
+}
+
+model StockEntry {
+  id        String         @id @default(uuid())
+  itemId    String
+  operation StockOperation
+  quantity  Int
+}

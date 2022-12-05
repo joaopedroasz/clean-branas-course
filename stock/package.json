@@ -35,9 +35,13 @@
     "env:test": "dotenv -e .env.test --",
     "env:dev": "dotenv -e .env.development --",
     "db:dev:up": "docker-compose --env-file .env.development up -d development-database",
-    "db:test:up": "docker-compose --env-file .env.test up -d test-database"
+    "db:test:up": "docker-compose --env-file .env.test up -d test-database",
+    "create:migrate:dev": "yarn env:dev prisma migrate dev --name",
+    "run:migrate:test": "yarn env:test prisma migrate deploy",
+    "run:migrate:dev": "yarn env:dev prisma migrate deploy"
   },
   "dependencies": {
+    "@prisma/client": "^4.7.1",
     "dotenv-cli": "^6.0.0",
     "prisma": "^4.7.1"
   },
