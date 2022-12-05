@@ -11,7 +11,7 @@ export class GetStockUseCase implements GetStock {
 
   public async execute ({ itemId }: GetStockInput): Promise<GetStockOutput> {
     const stockEntries = await this.getStockEntriesByItemIdRepository.getByItemId(itemId)
-    new StockCalculator(stockEntries).calculate()
-    return { quantity: 0 }
+    const quantity = new StockCalculator(stockEntries).calculate()
+    return { quantity }
   }
 }
