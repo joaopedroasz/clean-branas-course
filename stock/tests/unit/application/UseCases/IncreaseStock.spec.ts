@@ -1,5 +1,5 @@
 import { StockCalculator, StockEntry, StockEntryProps } from '@/domain/models'
-import { GetStockEntriesByItemIdRepository } from '@/domain/repositories'
+import { GetStockEntriesByItemIdRepository, SaveStockEntryRepository } from '@/domain/repositories'
 import { IncreaseStock } from '@/application/contracts'
 import { IncreaseStockUseCase } from '@/application/UseCases'
 
@@ -14,17 +14,27 @@ const makeGetStockEntriesByItemIdRepository = (): GetStockEntriesByItemIdReposit
   getByItemId: async () => [makeStockEntry()]
 })
 
+const makeSaveStockEntryRepository = (): SaveStockEntryRepository => ({
+  save: async (stockEntry: StockEntry) => stockEntry
+})
+
 type SutType = {
   sut: IncreaseStock
   getStockEntriesByItemIdRepository: GetStockEntriesByItemIdRepository
+  saveStockEntryRepository: SaveStockEntryRepository
 }
 
 const makeSut = (): SutType => {
   const getStockEntriesByItemIdRepository = makeGetStockEntriesByItemIdRepository()
-  const sut = new IncreaseStockUseCase(getStockEntriesByItemIdRepository)
+  const saveStockEntryRepository = makeSaveStockEntryRepository()
+  const sut = new IncreaseStockUseCase(
+    getStockEntriesByItemIdRepository,
+    saveStockEntryRepository
+  )
   return {
     sut,
-    getStockEntriesByItemIdRepository
+    getStockEntriesByItemIdRepository,
+    saveStockEntryRepository
   }
 }
 
@@ -41,5 +51,14 @@ describe('IncreaseStock UseCase', () => {
     const stockCalculatorSpy = vi.spyOn(StockCalculator.prototype, 'calculate')
     await sut.execute({ itemId: 'any_id', quantity: 1 })
     expect(stockCalculatorSpy).toHaveBeenCalledWith()
+  })
+
+  it('should call SaveStockEntryRepository with correct params', async () => {
+    const { sut, saveStockEntryRepository } = makeSut()
+    const saveStockRepositorySpy = vi.spyOn(saveStockEntryRepository, 'save')
+
+    await sut.execute({ itemId: 'any_id', quantity: 1 })
+
+    expect(saveStockRepositorySpy).toHaveBeenCalledWith(new StockEntry({ itemId: 'any_id', quantity: 1, operation: 'add' }))
   })
 })
