@@ -38,6 +38,7 @@
     "db:test:up": "docker-compose --env-file .env.test up -d test-database"
   },
   "dependencies": {
-    "dotenv-cli": "^6.0.0"
+    "dotenv-cli": "^6.0.0",
+    "prisma": "^4.7.1"
   }
 }
