@@ -17,11 +17,8 @@ export class IncreaseStockUseCase implements IncreaseStock {
   public async execute ({ itemId, quantity }: IncreaseStockInput): Promise<IncreaseStockOutput> {
     const stockEntries = await this.getStockEntriesByItemIdRepository.getByItemId(itemId)
     const addingStock = new StockEntry({ itemId, quantity, operation: 'add' })
-    new StockCalculator([...stockEntries, addingStock]).calculate()
+    const amountInStock = new StockCalculator([...stockEntries, addingStock]).calculate()
     await this.saveStockEntryRepository.save(addingStock)
-    return {
-      amountInStock: 0,
-      itemId: ''
-    }
+    return { amountInStock, itemId }
   }
 }
