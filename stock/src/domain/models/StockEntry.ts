@@ -29,6 +29,22 @@ export class StockEntry {
     if (!this.isValidNumber(quantity)) throw new InvalidQuantityError(quantity)
   }
 
+  public getId (): string | undefined {
+    return this.id
+  }
+
+  public getItemId (): string {
+    return this.itemId
+  }
+
+  public getQuantity (): number {
+    return this.quantity
+  }
+
+  public getOperation (): StockEntryOperation {
+    return this.operation
+  }
+
   private isValidNumber (value: number): boolean {
     return value > 0
   }
