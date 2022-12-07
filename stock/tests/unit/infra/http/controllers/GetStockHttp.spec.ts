@@ -5,7 +5,9 @@ import {
   GetStockHttpController,
   GetStockHttpInput,
   MissingParamError,
-  success
+  serverError,
+  success,
+  unknownServerError
 } from '@/infra/http'
 
 const makeRequest = (props?: Partial<GetStockHttpInput>): GetStockHttpInput => ({
@@ -61,5 +63,26 @@ describe('GetStockEntriesHttpController', () => {
       itemId: request.itemId,
       stockQuantity: 10
     }))
+  })
+
+  it('should return unknownServerError if GetStock throws non error instance', async () => {
+    const { sut, getStock } = makeSut()
+    const request = makeRequest()
+    vi.spyOn(getStock, 'execute').mockRejectedValueOnce('any_error')
+
+    const httpResponse = await sut.handle(request)
+
+    expect(httpResponse).toEqual(unknownServerError('any_error'))
+  })
+
+  it('should return serverError if GetStock throws error instance', async () => {
+    const { sut, getStock } = makeSut()
+    const request = makeRequest()
+    const error = new Error('any_error')
+    vi.spyOn(getStock, 'execute').mockRejectedValueOnce(error)
+
+    const httpResponse = await sut.handle(request)
+
+    expect(httpResponse).toEqual(serverError(error))
   })
 })
