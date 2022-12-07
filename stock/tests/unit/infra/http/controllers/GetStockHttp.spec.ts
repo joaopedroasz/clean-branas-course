@@ -4,7 +4,8 @@ import {
   GetStockHttp,
   GetStockHttpController,
   GetStockHttpInput,
-  MissingParamError
+  MissingParamError,
+  success
 } from '@/infra/http'
 
 const makeRequest = (props?: Partial<GetStockHttpInput>): GetStockHttpInput => ({
@@ -49,5 +50,16 @@ describe('GetStockEntriesHttpController', () => {
     await sut.handle(request)
 
     expect(executeSpy).toHaveBeenCalledWith({ itemId: request.itemId })
+  })
+
+  it('should return GetStock result on success', async () => {
+    const { sut } = makeSut()
+    const request = makeRequest()
+    const httpResponse = await sut.handle(request)
+
+    expect(httpResponse).toEqual(success({
+      itemId: request.itemId,
+      stockQuantity: 10
+    }))
   })
 })
