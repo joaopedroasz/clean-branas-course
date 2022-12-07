@@ -1,7 +1,7 @@
 import { GetStock } from '@/application/contracts'
 import { GetStockHttp, GetStockHttpInput, GetStockHttpOutput, HttpResponse } from '../contracts'
 import { MissingParamError } from '../errors'
-import { badRequest, success } from '../helpers'
+import { badRequest, serverError, success, unknownServerError } from '../helpers'
 
 export class GetStockHttpController implements GetStockHttp {
   private readonly getStock: GetStock
@@ -11,13 +11,20 @@ export class GetStockHttpController implements GetStockHttp {
   }
 
   public async handle (request: GetStockHttpInput): Promise<HttpResponse<GetStockHttpOutput | Error >> {
-    const errorInRequest = this.validateRequest(request)
-    if (errorInRequest) return badRequest(errorInRequest)
+    try {
+      const errorInRequest = this.validateRequest(request)
+      if (errorInRequest) return badRequest(errorInRequest)
 
-    const { itemId } = request
-    const { quantity } = await this.getStock.execute({ itemId })
+      const { itemId } = request
+      const { quantity } = await this.getStock.execute({ itemId })
 
-    return success<GetStockHttpOutput>({ stockQuantity: quantity, itemId })
+      return success<GetStockHttpOutput>({ stockQuantity: quantity, itemId })
+    } catch (error) {
+      const isError = error instanceof Error
+      if (!isError) return unknownServerError(error)
+
+      return serverError(error)
+    }
   }
 
   private validateRequest (request: GetStockHttpInput): MissingParamError | undefined {
