@@ -32,4 +32,13 @@ describe('DecreaseStockHttpController', () => {
 
     expect(response).toEqual(badRequest(new MissingParamError('itemId')))
   })
+
+  it('should return badRequest if quantity not provided', async () => {
+    const { sut } = makeSut()
+    const request = makeRequest({ quantity: undefined })
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(badRequest(new MissingParamError('quantity')))
+  })
 })
