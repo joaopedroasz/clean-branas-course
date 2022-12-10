@@ -17,7 +17,7 @@ export class DecreaseStockHttpController implements DecreaseStockHttp {
   }
 
   private validateRequest (request: DecreaseStockHttpInput): MissingParamError | undefined {
-    const requiredFields: ['itemId'] = ['itemId']
+    const requiredFields: ['itemId', 'quantity'] = ['itemId', 'quantity']
 
     for (const field of requiredFields) {
       const fieldExists = !!request[field]
