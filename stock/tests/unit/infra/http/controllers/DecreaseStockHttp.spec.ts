@@ -1,3 +1,4 @@
+import { DecreaseStock } from '@/application/contracts'
 import {
   badRequest,
   DecreaseStockHttp,
@@ -12,14 +13,24 @@ const makeRequest = (props?: Partial<DecreaseStockHttpInput>): DecreaseStockHttp
   ...props
 })
 
+const makeDecreaseStock = (): DecreaseStock => ({
+  execute: async () => ({
+    itemId: 'any_id',
+    amountInStock: 1
+  })
+})
+
 type SutType = {
   sut: DecreaseStockHttp
+  decreaseStock: DecreaseStock
 }
 
 const makeSut = (): SutType => {
-  const sut = new DecreaseStockHttpController()
+  const decreaseStock = makeDecreaseStock()
+  const sut = new DecreaseStockHttpController(decreaseStock)
   return {
-    sut
+    sut,
+    decreaseStock
   }
 }
 
@@ -40,5 +51,18 @@ describe('DecreaseStockHttpController', () => {
     const response = await sut.handle(request)
 
     expect(response).toEqual(badRequest(new MissingParamError('quantity')))
+  })
+
+  it('should call decreaseStock with correct values', async () => {
+    const { sut, decreaseStock } = makeSut()
+    const request = makeRequest()
+    const decreaseStockSpy = vi.spyOn(decreaseStock, 'execute')
+
+    await sut.handle(request)
+
+    expect(decreaseStockSpy).toHaveBeenCalledWith({
+      itemId: request.itemId,
+      decreaseQuantity: request.quantity
+    })
   })
 })
