@@ -4,7 +4,8 @@ import {
   DecreaseStockHttp,
   DecreaseStockHttpController,
   DecreaseStockHttpInput,
-  MissingParamError
+  MissingParamError,
+  success
 } from '@/infra/http'
 
 const makeRequest = (props?: Partial<DecreaseStockHttpInput>): DecreaseStockHttpInput => ({
@@ -64,5 +65,17 @@ describe('DecreaseStockHttpController', () => {
       itemId: request.itemId,
       decreaseQuantity: request.quantity
     })
+  })
+
+  it('should return decreaseStock result on success', async () => {
+    const { sut } = makeSut()
+    const request = makeRequest()
+
+    const response = await sut.handle(request)
+
+    expect(response).toEqual(success({
+      itemId: 'any_id',
+      amount: 1
+    }))
   })
 })
