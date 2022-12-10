@@ -1,7 +1,7 @@
 import { DecreaseStock } from '@/application/contracts'
 import { DecreaseStockHttp, DecreaseStockHttpInput, DecreaseStockHttpOutput, HttpResponse } from '../contracts'
 import { MissingParamError } from '../errors'
-import { badRequest } from '../helpers'
+import { badRequest, success } from '../helpers'
 
 export class DecreaseStockHttpController implements DecreaseStockHttp {
   private readonly decreaseStock: DecreaseStock
@@ -15,15 +15,9 @@ export class DecreaseStockHttpController implements DecreaseStockHttp {
     if (requestError) return badRequest(requestError)
 
     const { itemId, quantity } = request
-    await this.decreaseStock.execute({ itemId, decreaseQuantity: quantity })
+    const { amountInStock } = await this.decreaseStock.execute({ itemId, decreaseQuantity: quantity })
 
-    return {
-      statusCode: 0,
-      body: {
-        itemId: '',
-        amount: 0
-      }
-    }
+    return success<DecreaseStockHttpOutput>({ itemId, amount: amountInStock })
   }
 
   private validateRequest (request: DecreaseStockHttpInput): MissingParamError | undefined {
