@@ -23,7 +23,7 @@ const makeQueryData = (variables?: Partial<QueryVariables>): Record<string, any>
     }
   `,
   variables: {
-    fromCEP: '89010025',
+    fromCEP: '20091020',
     toCEP: '03978340',
     items: [
       {
@@ -64,7 +64,7 @@ describe('SimulateFreightQueryResolver', () => {
     const response = await request(url).post('/').send(query)
 
     expect(response.status).toBe(200)
-    expect(response.body.data.simulateFreight.freight).toBe(200.75334659010213)
+    expect(response.body.data.simulateFreight.freight).toBe(168.59499338125664)
   })
 
   it('should return badRequest if from_cep is invalid', async () => {
