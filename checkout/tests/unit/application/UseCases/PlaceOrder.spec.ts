@@ -2,7 +2,7 @@ import { Coupon, CouponProps, Item, ItemProps, Order, OrderProps } from '@/domai
 import { CountOrdersRepository, SaveOrderRepository } from '@/domain/repositories/Order'
 import { GetCouponByCodeRepository } from '@/domain/repositories/Coupon'
 import { GetItemByIdRepository } from '@/domain/repositories/Item'
-import { CalculateFreightGateway, CalculateFreightOutput, PlaceOrder } from '@/application/contracts'
+import { CalculateFreightGateway, CalculateFreightOutput, DecreaseStockGateway, DecreaseStockOutput, PlaceOrder } from '@/application/contracts'
 import { PlaceOrderInputDTO } from '@/application/DTOs'
 import { PlaceOrderUseCase } from '@/application/UseCases'
 
@@ -53,6 +53,13 @@ const makeCalculateFreightGateway = (): CalculateFreightGateway => ({
   })
 })
 
+const makeDecreaseStockGateway = (): DecreaseStockGateway => ({
+  decrease: async (): Promise<DecreaseStockOutput> => ({
+    itemId: 'any_id',
+    availableQuantity: 1
+  })
+})
+
 type SutType = {
   sut: PlaceOrder
   getItemByIdRepository: GetItemByIdRepository
@@ -60,6 +67,7 @@ type SutType = {
   saveOrderRepository: SaveOrderRepository
   countOrdersRepository: CountOrdersRepository
   calculateFreightGateway: CalculateFreightGateway
+  decreaseStockGateway: DecreaseStockGateway
 }
 
 const makeSut = (): SutType => {
@@ -68,12 +76,14 @@ const makeSut = (): SutType => {
   const saveOrderRepository = makeSaveOrderRepository()
   const countOrdersRepository = makeCountOrdersRepository()
   const calculateFreightGateway = makeCalculateFreightGateway()
+  const decreaseStockGateway = makeDecreaseStockGateway()
   const sut = new PlaceOrderUseCase(
     getItemByIdRepository,
     getCouponByCodeRepository,
     saveOrderRepository,
     countOrdersRepository,
-    calculateFreightGateway
+    calculateFreightGateway,
+    decreaseStockGateway
   )
   return {
     sut,
@@ -81,7 +91,8 @@ const makeSut = (): SutType => {
     getCouponByCodeRepository,
     saveOrderRepository,
     countOrdersRepository,
-    calculateFreightGateway
+    calculateFreightGateway,
+    decreaseStockGateway
   }
 }
 
@@ -273,5 +284,26 @@ describe('PlaceOrder use case', () => {
     })
 
     expect(result.freight).toBe(10)
+  })
+
+  it('should call DecreaseStockGateway with correct params', async () => {
+    const { sut, decreaseStockGateway } = makeSut()
+    const decreaseStockGatewaySpy = vi.spyOn(decreaseStockGateway, 'decrease')
+    const input: PlaceOrderInputDTO = {
+      buyerCPF: '607.109.010-54',
+      orderItems: [
+        { itemId: 'any_id', quantity: 1 },
+        { itemId: 'other_id', quantity: 2 }
+      ],
+      purchaseDate: new Date('2022-12-02'),
+      from: 'any_from',
+      to: 'any_to'
+    }
+
+    await sut.execute(input)
+
+    expect(decreaseStockGatewaySpy).toHaveBeenCalledTimes(2)
+    expect(decreaseStockGatewaySpy).toHaveBeenCalledWith({ itemId: 'any_id', quantity: 1 })
+    expect(decreaseStockGatewaySpy).toHaveBeenCalledWith({ itemId: 'other_id', quantity: 2 })
   })
 })
