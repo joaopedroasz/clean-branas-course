@@ -3,10 +3,8 @@ import { DecreaseStockHttpGatewayAdapter, HttpClient } from '@/infra/gateways'
 
 const makeHttpClient = (): HttpClient => ({
   get: async (): Promise<any> => ({
-    data: {
-      itemId: 'any_id',
-      amount: 1
-    }
+    itemId: 'any_id',
+    amount: 1
   }),
   post: vi.fn()
 })
@@ -41,6 +39,20 @@ describe('DecreaseStockHttpGatewayAdapter', () => {
         itemId: 'any_id',
         quantity: 1
       }
+    })
+  })
+
+  it('should return converted values from httpClient response', async () => {
+    const { sut } = makeSut()
+
+    const result = await sut.decrease({
+      itemId: 'any_id',
+      quantity: 1
+    })
+
+    expect(result).toEqual({
+      availableQuantity: 1,
+      itemId: 'any_id'
     })
   })
 })
