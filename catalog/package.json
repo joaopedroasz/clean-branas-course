@@ -15,5 +15,8 @@
     "lint-staged": "^13.1.0",
     "typescript": "*",
     "vitest": "^0.26.2"
+  },
+  "dependencies": {
+    "dotenv-cli": "^6.0.0"
   }
 }
