@@ -1,6 +1,11 @@
 import { DecreaseStockGateway, DecreaseStockInput, DecreaseStockOutput } from '@/application/contracts'
 import { HttpClient } from '../contracts'
 
+type DecreaseStockResponse = {
+  itemId: string
+  amount: number
+}
+
 export class DecreaseStockHttpGatewayAdapter implements DecreaseStockGateway {
   private readonly httpClient: HttpClient
 
@@ -9,13 +14,13 @@ export class DecreaseStockHttpGatewayAdapter implements DecreaseStockGateway {
   }
 
   public async decrease ({ itemId, quantity }: DecreaseStockInput): Promise<DecreaseStockOutput> {
-    await this.httpClient.get({
+    const { amount, itemId: itemID } = await this.httpClient.get<DecreaseStockResponse>({
       url: 'decrease-stock',
       params: { itemId, quantity }
     })
     return {
-      availableQuantity: 0,
-      itemId: ''
+      availableQuantity: amount,
+      itemId: itemID
     }
   }
 }
