@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "prepare": "cd .. && husky install ./catalog/.husky",
     "build": "tsc --p ./tsconfig.build.json",
     "test": "vitest --no-threads",
     "test:coverage": "yarn test --coverage",
@@ -31,6 +32,8 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
+    "git-commit-msg-linter": "^4.5.0",
+    "husky": "^8.0.2",
     "lint-staged": "^13.1.0",
     "typescript": "*",
     "vitest": "^0.26.2"
