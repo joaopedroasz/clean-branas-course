@@ -7,5 +7,6 @@ export const makeItem = (overrides?: Partial<ItemProps>): Item => new Item({
   heightInCm: 10,
   price: 10,
   weightInKg: 10,
-  widthInCm: 10
+  widthInCm: 10,
+  ...overrides
 })

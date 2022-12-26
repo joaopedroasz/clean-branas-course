@@ -9,9 +9,17 @@ export class GetItemsByIdsUseCase implements GetItemsByIds {
   }
 
   public async execute ({ ids }: GetItemsByIdsInput): Promise<GetItemsByIdsOutput> {
-    await this.getItemsByIdsRepository.getByIds(ids)
+    const items = await this.getItemsByIdsRepository.getByIds(ids)
     return {
-      items: []
+      items: items.map(item => ({
+        id: item.getId(),
+        depth: item.getDepth(),
+        description: item.getDescription(),
+        height: item.getHeight(),
+        price: item.getPrice(),
+        weight: item.getWeight(),
+        width: item.getWidth()
+      }))
     }
   }
 }
