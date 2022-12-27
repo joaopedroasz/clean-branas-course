@@ -13,11 +13,13 @@ datasource db {
 model Item {
   id          String      @id @default(uuid())
   description String
-  price       Int
-  weight      Int
-  width       Int
-  height      Int
-  depth       Int
+  price       Float
+  weight      Float
+  width       Float
+  height      Float
+  depth       Float
+  volume      Float       @default(0)
+  density     Float       @default(0)
   order_items OrderItem[]
 
   @@map("items")

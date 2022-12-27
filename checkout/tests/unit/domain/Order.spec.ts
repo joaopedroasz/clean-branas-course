@@ -16,6 +16,8 @@ const makeItem = (props?: Partial<ItemProps>): Item => new Item({
   depthInCm: 50,
   weightInKg: 40,
   widthInCm: 100,
+  density: 0.5,
+  volumeInCubicMeter: 1,
   ...props
 })
 

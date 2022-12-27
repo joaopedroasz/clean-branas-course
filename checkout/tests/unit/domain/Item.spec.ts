@@ -9,6 +9,8 @@ const makeSut = (props?: Partial<ItemProps>): Item => new Item({
   heightInCm: 1,
   weightInKg: 1,
   widthInCm: 1,
+  density: 1,
+  volumeInCubicMeter: 1,
   ...props
 })
 
@@ -62,24 +64,17 @@ describe('Item', () => {
   })
 
   it('should calculate density', () => {
-    const weightInKg = 1
-    const heightInCm = 20
-    const widthInCm = 15
-    const depthInCm = 10
-    const sut = makeSut({ weightInKg, heightInCm, widthInCm, depthInCm })
+    const sut = makeSut({ density: 1 })
 
-    const density = sut.calculateDensity()
+    const density = sut.getDensity()
 
-    expect(density).toBe(333)
+    expect(density).toBe(1)
   })
 
   it('should return calculated volume', () => {
-    const heightInCm = 20
-    const widthInCm = 15
-    const depthInCm = 10
-    const sut = makeSut({ heightInCm, widthInCm, depthInCm })
+    const sut = makeSut({ volumeInCubicMeter: 0.003 })
 
-    const volume = sut.calculateVolumeInCubicMeter()
+    const volume = sut.getVolume()
 
     expect(volume).toBe(0.003)
   })

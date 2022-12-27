@@ -45,9 +45,9 @@ export class PlaceOrderUseCase implements PlaceOrder {
       const item = await this.getItemByIdRepository.getById(orderItem.itemId)
       order.addItem({ item, quantity: orderItem.quantity })
       calculateFreightItems.push({
-        density: item.calculateDensity(),
+        density: item.getDensity(),
         quantity: orderItem.quantity,
-        volume: item.calculateVolumeInCubicMeter()
+        volume: item.getVolume()
       })
       await this.decreaseStockGateway.decrease({
         itemId: orderItem.itemId,

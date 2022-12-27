@@ -56,7 +56,9 @@ describe('SimulateFreightQueryResolver', () => {
         weight: 40,
         height: 40,
         width: 100,
-        depth: 50
+        depth: 50,
+        density: 0.5,
+        volume: 0.5
       }
     })
     const query = makeQueryData({ items: [{ item_id: createdItemId, quantity: 1 }] })
@@ -64,7 +66,7 @@ describe('SimulateFreightQueryResolver', () => {
     const response = await request(url).post('/').send(query)
 
     expect(response.status).toBe(200)
-    expect(response.body.data.simulateFreight.freight).toBe(168.59499338125664)
+    expect(response.body.data.simulateFreight.freight).toBe(10)
   })
 
   it('should return badRequest if from_cep is invalid', async () => {

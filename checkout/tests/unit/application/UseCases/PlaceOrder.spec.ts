@@ -21,6 +21,8 @@ const makeItem = (props?: Partial<ItemProps>): Item => new Item({
   heightInCm: 10,
   weightInKg: 10,
   widthInCm: 10,
+  density: 10,
+  volumeInCubicMeter: 10,
   ...props
 })
 
@@ -96,7 +98,7 @@ const makeSut = (): SutType => {
   }
 }
 
-describe('PlaceOrder use case', () => {
+describe.only('PlaceOrder use case', () => {
   it('should return total value from placed order', async () => {
     const input: PlaceOrderInputDTO = {
       buyerCPF: '607.109.010-54',
@@ -258,12 +260,12 @@ describe('PlaceOrder use case', () => {
       items: [
         {
           quantity: 1,
-          density: 10000,
-          volume: 0.001
+          density: 10,
+          volume: 10
         }, {
           quantity: 2,
-          density: 10000,
-          volume: 0.001
+          density: 10,
+          volume: 10
         }
       ]
     })

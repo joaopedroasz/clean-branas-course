@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "items" ADD COLUMN     "density" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "volume" INTEGER NOT NULL DEFAULT 0;

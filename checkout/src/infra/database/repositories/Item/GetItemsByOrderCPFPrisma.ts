@@ -38,7 +38,9 @@ export class GetItemsByOrderCPFPrismaRepository implements GetItemsByOrderCPFRep
       depthInCm: item.depth,
       heightInCm: item.height,
       weightInKg: item.weight,
-      widthInCm: item.width
+      widthInCm: item.width,
+      density: item.density,
+      volumeInCubicMeter: item.volume
     }))
   }
 }

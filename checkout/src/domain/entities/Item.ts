@@ -1,4 +1,3 @@
-import { Dimensions } from './Dimensions'
 import { InvalidPriceError, InvalidWeightError } from '@/domain/errors'
 import { OrderItem } from './OrderItem'
 
@@ -10,14 +9,20 @@ export type ItemProps = {
   widthInCm: number
   depthInCm: number
   weightInKg: number
+  volumeInCubicMeter: number
+  density: number
 }
 
 export class Item {
   private readonly id: string
   private readonly description: string
   private readonly price: number
+  private readonly heightInCm: number
+  private readonly widthInCm: number
+  private readonly depthInCm: number
   private readonly weightInKg: number
-  private readonly dimensions: Dimensions
+  private readonly volumeInCubicMeter: number
+  private readonly density: number
 
   constructor ({
     id,
@@ -26,17 +31,19 @@ export class Item {
     heightInCm,
     widthInCm,
     depthInCm,
-    weightInKg
+    weightInKg,
+    density,
+    volumeInCubicMeter
   }: ItemProps) {
     this.id = id
     this.description = description
     this.price = price
+    this.heightInCm = heightInCm
+    this.widthInCm = widthInCm
+    this.depthInCm = depthInCm
     this.weightInKg = weightInKg
-    this.dimensions = new Dimensions({
-      heightInCm,
-      widthInCm,
-      depthInCm
-    })
+    this.volumeInCubicMeter = volumeInCubicMeter
+    this.density = density
 
     if (!this.isValidPrice()) throw new InvalidPriceError(price)
     if (!this.isValidWeight()) throw new InvalidWeightError(weightInKg)
@@ -67,24 +74,23 @@ export class Item {
   }
 
   public getHeight (): number {
-    return this.dimensions.getHeight()
+    return this.heightInCm
   }
 
   public getWidth (): number {
-    return this.dimensions.getWidth()
+    return this.widthInCm
   }
 
   public getDepth (): number {
-    return this.dimensions.getDepth()
+    return this.depthInCm
   }
 
-  public calculateDensity (): number {
-    const density = this.weightInKg / this.dimensions.calculateVolumeInCubicMeter()
-    return Math.round(density)
+  public getDensity (): number {
+    return Math.round(this.density)
   }
 
-  public calculateVolumeInCubicMeter (): number {
-    return this.dimensions.calculateVolumeInCubicMeter()
+  public getVolume (): number {
+    return this.volumeInCubicMeter
   }
 
   public createOrderItem (quantity: number): OrderItem {

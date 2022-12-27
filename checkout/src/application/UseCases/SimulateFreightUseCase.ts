@@ -19,10 +19,12 @@ export class SimulateFreightUseCase implements SimulateFreight {
     const calculateFreightItems: CalculateFreightItem[] = []
     for (const { itemId, quantity } of items) {
       const item = await this.getItemByIdRepository.getById(itemId)
+      console.log(item)
+
       calculateFreightItems.push({
-        density: item.calculateDensity(),
+        density: item.getDensity(),
         quantity,
-        volume: item.calculateVolumeInCubicMeter()
+        volume: item.getVolume()
       })
     }
     const calculateFreightInput: CalculateFreightInput = {

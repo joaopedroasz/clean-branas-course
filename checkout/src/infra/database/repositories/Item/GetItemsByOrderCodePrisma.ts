@@ -30,7 +30,9 @@ export class GetItemsByOrderCodePrismaRepository implements GetItemsByOrderCodeR
       heightInCm: item.height,
       price: item.price,
       weightInKg: item.weight,
-      widthInCm: item.width
+      widthInCm: item.width,
+      density: item.density,
+      volumeInCubicMeter: item.volume
     }))
   }
 }

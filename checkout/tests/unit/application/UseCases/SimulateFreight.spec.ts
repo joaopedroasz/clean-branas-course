@@ -12,6 +12,8 @@ const makeItem = (props?: Partial<ItemProps>): Item => new Item({
   heightInCm: 10,
   weightInKg: 10,
   widthInCm: 10,
+  density: 10,
+  volumeInCubicMeter: 10,
   ...props
 })
 
@@ -131,8 +133,8 @@ describe('SimulateFreight Use Case', () => {
     expect(calculateFreightGatewaySpy).toBeCalledWith({
       items: [
         {
-          volume: 0.001,
-          density: 10000,
+          volume: 10,
+          density: 10,
           quantity: 1
         }
       ],
