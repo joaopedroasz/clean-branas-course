@@ -5,7 +5,9 @@ import {
   GetItemsByIdsHttpInput,
   MissingParamError,
   badRequest,
-  ok
+  ok,
+  serverError,
+  unknownError
 } from '@/infra/http'
 
 const makeHttpRequest = (overrides?: Partial<GetItemsByIdsHttpInput>): GetItemsByIdsHttpInput => ({
@@ -84,5 +86,25 @@ describe('GetItemsByIdsHttpController', () => {
         }
       ]
     }))
+  })
+
+  it('should return unknownServerError if GetItemsByIds throws non error instance', async () => {
+    const { sut, getItemsByIds } = makeSut()
+    const input = makeHttpRequest()
+    vi.spyOn(getItemsByIds, 'execute').mockRejectedValueOnce('any_error')
+
+    const httpResponse = await sut.handle(input)
+
+    expect(httpResponse).toEqual(unknownError('any_error'))
+  })
+
+  it('should return serverError if GetItemsByIds throws error instance', async () => {
+    const { sut, getItemsByIds } = makeSut()
+    const input = makeHttpRequest()
+    vi.spyOn(getItemsByIds, 'execute').mockRejectedValueOnce(new Error('any_error'))
+
+    const httpResponse = await sut.handle(input)
+
+    expect(httpResponse).toEqual(serverError(new Error('any_error')))
   })
 })
