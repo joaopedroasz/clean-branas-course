@@ -11,7 +11,23 @@ export class ItemPrismaRepository implements ItemRepository {
   }
 
   public async getByIds (ids: string[]): Promise<Item[]> {
-    return []
+    const items = await this.prisma.item.findMany({
+      where: {
+        id: {
+          in: ids
+        }
+      }
+    })
+
+    return items.map(item => new Item({
+      description: item.description,
+      depthInCm: item.depth,
+      heightInCm: item.height,
+      price: item.price,
+      weightInKg: item.weight,
+      widthInCm: item.width,
+      id: item.id
+    }))
   }
 
   public async save (item: Item): Promise<void> {
