@@ -1,7 +1,7 @@
 import { Item } from '@/domain/entities'
-import { GetItemsByIdsRepository } from '@/domain/repositories/Item'
+import { ItemRepository } from '@/domain/repositories/Item'
 
-export class GetItemsByIdsInMemoryRepository implements GetItemsByIdsRepository {
+export class ItemInMemoryRepository implements ItemRepository {
   public readonly items: Item[] = []
 
   public async getByIds (ids: string[]): Promise<Item[]> {

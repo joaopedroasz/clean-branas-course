@@ -1,1 +1,1 @@
-export * from './GetItemsByIds'
+export * from './Item'
