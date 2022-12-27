@@ -42,5 +42,8 @@
   "dependencies": {
     "@prisma/client": "^4.8.0",
     "dotenv-cli": "^6.0.0"
+  },
+  "prisma": {
+    "schema": "./src/infra/database/prisma/schema.prisma"
   }
 }
