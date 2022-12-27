@@ -11,7 +11,6 @@ export type GetItemsByIdsHttpItem = {
   weight: number
   width: number
   height: number
-  length: number
   depth: number
 }
 
@@ -19,4 +18,4 @@ export type GetItemsByIdsHttpOutput = {
   items: GetItemsByIdsHttpItem[]
 }
 
-export interface GetItemsByIdsHttp extends HttpController<GetItemsByIdsHttpInput, GetItemsByIdsHttpOutput> {}
+export interface GetItemsByIdsHttp extends HttpController<GetItemsByIdsHttpInput, GetItemsByIdsHttpOutput | Error> {}

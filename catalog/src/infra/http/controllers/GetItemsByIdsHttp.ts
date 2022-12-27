@@ -1,7 +1,7 @@
 import { GetItemsByIds } from '@/application/contracts'
-import { GetItemsByIdsHttp, GetItemsByIdsHttpInput, GetItemsByIdsHttpOutput } from '../contracts'
+import { GetItemsByIdsHttp, GetItemsByIdsHttpInput, GetItemsByIdsHttpOutput, HttpResponse } from '../contracts'
 import { MissingParamError } from '../errors'
-import { badRequest } from '../helpers'
+import { badRequest, ok } from '../helpers'
 
 export class GetItemsByIdsHttpController implements GetItemsByIdsHttp {
   private readonly getItemsByIds: GetItemsByIds
@@ -10,13 +10,11 @@ export class GetItemsByIdsHttpController implements GetItemsByIdsHttp {
     this.getItemsByIds = getItemsByIds
   }
 
-  public async handle ({ itemsIds }: GetItemsByIdsHttpInput): Promise<GetItemsByIdsHttpOutput> {
+  public async handle ({ itemsIds }: GetItemsByIdsHttpInput): Promise<HttpResponse<GetItemsByIdsHttpOutput | Error>> {
     if (!itemsIds) return badRequest(new MissingParamError('itemsIds'))
 
-    await this.getItemsByIds.execute({ ids: itemsIds.split(',') })
+    const output = await this.getItemsByIds.execute({ ids: itemsIds.split(',') })
 
-    return {
-      items: []
-    }
+    return ok<GetItemsByIdsHttpOutput>(output)
   }
 }
