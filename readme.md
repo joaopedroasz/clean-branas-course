@@ -21,6 +21,10 @@ In this project, the following topics will be covered:
 - Strongly Typed Code (Typescript);
 - DDD (Domain Driven Design);
 - Hexagonal Architecture;
+- Microservices;
+- REST API;
+- Queueing;
+- Message Broker;
 
 ### Technologies:
 
@@ -33,10 +37,24 @@ In this project, the following topics will be covered:
 - Docker;
 - GraphQL;
 - Apollo Server;
+- AMQPLib;
+- RabbitMQ;
+- Express;
+- Supertest;
+
+### TO DO:
+
+You can see the TO DO list in [this file](./docs/to-do.md).
 
 ### How to run:
 
-You only need to have Docker installed in your machine. Then, just run the following commands:
+As you can see, we have some microservices in this project. So, to run the project, you will need to run each service separately. Each service has its own database, so you will need to run each database too.
+
+You only need to have NodeJS, Docker and Docker Compose installed in your machine. Then, just run the following commands:
+
+### Checkout Service:
+
+The `Checkout` is the service responsible to handle the checkout process. It has all the `Order` logic.
 
 - Run development database:
 
@@ -51,6 +69,54 @@ yarn dev:server
 ```
 
 Your termal will show the GraphQL playground URL. Open it in your browser and start playing with the API. :smile:
+
+### Catalog Service:
+
+The `Catalog` is the service responsible to handle the products. It has all the `Item` logic.
+
+- Run development database:
+
+```bash
+yarn db:dev:up
+```
+
+- Run development express server:
+
+```bash
+yarn dev:server
+```
+
+### Freight Service:
+
+The `Freight` is the service responsible to handle the freight calculation. It has all the `Freight` logic.
+
+- Run development database:
+
+```bash
+yarn db:dev:up
+```
+
+- Run development express server:
+
+```bash
+yarn dev:server
+```
+
+### Stock Service:
+
+The `Stock` is the service responsible to handle the stock. It has all the `StockEntry` logic.
+
+- Run development database:
+
+```bash
+yarn db:dev:up
+```
+
+- Run development express server:
+
+```bash
+yarn dev:server
+```
 
 ---
 
