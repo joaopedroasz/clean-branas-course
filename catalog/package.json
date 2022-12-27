@@ -8,7 +8,7 @@
     "build": "tsc --p ./tsconfig.build.json",
     "test": "vitest --no-threads",
     "test:coverage": "yarn test --coverage",
-    "test:push": "vitest --coverage --run --no-threads",
+    "test:push": "yarn run:migrate:test && yarn env:test vitest --coverage --run --no-threads",
     "test:unit": "vitest --config vite-unit.config.ts --run",
     "test:unit:watch": "vitest --config vite-unit.config.ts",
     "test:integration": "yarn run:migrate:test && yarn env:test vitest --config vite-integration.config.ts --run --no-threads",
