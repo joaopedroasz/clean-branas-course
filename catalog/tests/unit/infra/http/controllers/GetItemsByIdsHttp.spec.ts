@@ -25,7 +25,9 @@ const makeGetItemsByIds = (): GetItemsByIds => ({
         height: 1,
         price: 1,
         weight: 1,
-        width: 1
+        width: 1,
+        density: 1,
+        volume: 1
       }
     ]
   })
@@ -82,7 +84,9 @@ describe('GetItemsByIdsHttpController', () => {
           height: 1,
           price: 1,
           weight: 1,
-          width: 1
+          width: 1,
+          density: 1,
+          volume: 1
         }
       ]
     }))

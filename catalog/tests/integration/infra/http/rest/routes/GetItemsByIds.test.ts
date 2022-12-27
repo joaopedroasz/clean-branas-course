@@ -36,12 +36,14 @@ describe('GetItemsByIds Route', () => {
     expect(response.body).toEqual({
       items: [{
         id: createdItems.id,
-        description: createdItems.description,
-        depth: createdItems.depth,
-        height: createdItems.height,
-        price: createdItems.price,
-        weight: createdItems.weight,
-        width: createdItems.width
+        description: 'Item 1',
+        depth: 10,
+        height: 20,
+        price: 100,
+        weight: 1000,
+        width: 15,
+        volume: 0.003,
+        density: 333333
       }]
     })
   })

@@ -18,7 +18,9 @@ export class GetItemsByIdsUseCase implements GetItemsByIds {
         height: item.getHeight(),
         price: item.getPrice(),
         weight: item.getWeight(),
-        width: item.getWidth()
+        width: item.getWidth(),
+        volume: item.calculateVolumeInCubicMeter(),
+        density: item.calculateDensity()
       }))
     }
   }

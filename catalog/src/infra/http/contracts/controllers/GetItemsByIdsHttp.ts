@@ -12,6 +12,8 @@ export type GetItemsByIdsHttpItem = {
   width: number
   height: number
   depth: number
+  volume: number
+  density: number
 }
 
 export type GetItemsByIdsHttpOutput = {

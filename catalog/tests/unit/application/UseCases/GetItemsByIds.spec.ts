@@ -47,7 +47,9 @@ describe('GetItem UseCase', () => {
           height: 10,
           price: 10,
           weight: 10,
-          width: 10
+          width: 10,
+          volume: 0.001,
+          density: 10000
         },
         {
           id: 'other_id',
@@ -56,7 +58,9 @@ describe('GetItem UseCase', () => {
           height: 10,
           price: 10,
           weight: 10,
-          width: 10
+          width: 10,
+          volume: 0.001,
+          density: 10000
         }
       ]
     })
