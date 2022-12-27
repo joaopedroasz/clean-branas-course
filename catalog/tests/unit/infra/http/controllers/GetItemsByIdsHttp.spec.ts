@@ -4,7 +4,8 @@ import {
   GetItemsByIdsHttpController,
   GetItemsByIdsHttpInput,
   MissingParamError,
-  badRequest
+  badRequest,
+  ok
 } from '@/infra/http'
 
 const makeHttpRequest = (overrides?: Partial<GetItemsByIdsHttpInput>): GetItemsByIdsHttpInput => ({
@@ -62,5 +63,26 @@ describe('GetItemsByIdsHttpController', () => {
     expect(executeSpy).toHaveBeenCalledWith({
       ids: ['any_item_id', 'other_item_id', 'another_item_id']
     })
+  })
+
+  it('should return GetItemsByIds result on success', async () => {
+    const { sut } = makeSut()
+    const input = makeHttpRequest()
+
+    const httpResponse = await sut.handle(input)
+
+    expect(httpResponse).toEqual(ok({
+      items: [
+        {
+          id: 'any_item_id',
+          depth: 1,
+          description: 'any_description',
+          height: 1,
+          price: 1,
+          weight: 1,
+          width: 1
+        }
+      ]
+    }))
   })
 })
