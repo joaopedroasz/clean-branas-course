@@ -8,15 +8,15 @@
 
    Add the following props to `Item` entity:
 
-   - [ ] `volume`;
-   - [ ] `density`;
+   - [x] `volume`;
+   - [x] `density`;
 
    Remove the methods that use to calculate the props above.
 
 2. Change the `Item` table:
 
-   - [ ] Add the `volume` column;
-   - [ ] Add the `density` column;
+   - [x] Add the `volume` column;
+   - [x] Add the `density` column;
 
 3. Create `ItemGateway` services:
 
