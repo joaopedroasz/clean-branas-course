@@ -1,7 +1,5 @@
 import { HttpResponse } from '../http'
 
-type Default = Record<string, any>
-
-export interface HttpController<Input = Default, Output = Default> {
+export interface HttpController<Input = any, Output = any> {
   handle: (input: Input) => Promise<HttpResponse<Output>>
 }
