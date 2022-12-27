@@ -35,10 +35,12 @@
     "git-commit-msg-linter": "^4.5.0",
     "husky": "^8.0.2",
     "lint-staged": "^13.1.0",
+    "prisma": "^4.8.0",
     "typescript": "*",
     "vitest": "^0.26.2"
   },
   "dependencies": {
+    "@prisma/client": "^4.8.0",
     "dotenv-cli": "^6.0.0"
   }
 }
