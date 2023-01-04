@@ -28,6 +28,7 @@
     "prepare": "cd .. && husky install ./stock/.husky",
     "build": "tsc --p ./tsconfig.build.json",
     "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules -r tsconfig-paths/register",
+    "dev:server": "yarn env:dev yarn dev ./src/infra/http/rest/main.ts",
     "test": "vitest --no-threads",
     "test:coverage": "vitest --coverage --no-threads",
     "test:push": "vitest --coverage --run --no-threads",
@@ -43,7 +44,8 @@
     "create:migrate:dev": "yarn env:dev prisma migrate dev --name",
     "run:migrate:test": "yarn env:test prisma migrate deploy",
     "run:migrate:dev": "yarn env:dev prisma migrate deploy",
-    "db:down": "docker-compose down"
+    "db:down": "docker-compose down",
+    "prisma:studio:dev": "yarn env:dev prisma studio"
   },
   "dependencies": {
     "@prisma/client": "^4.7.1",
