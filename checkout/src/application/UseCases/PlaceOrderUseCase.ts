@@ -4,6 +4,8 @@ import { GetCouponByCodeRepository } from '@/domain/repositories/Coupon'
 import { CountOrdersRepository, SaveOrderRepository } from '@/domain/repositories/Order'
 import { CalculateFreightGateway, CalculateFreightItem, DecreaseStockGateway, PlaceOrder } from '@/application/contracts'
 import { PlaceOrderInputDTO, PlaceOrderOutputDTO } from '@/application/DTOs'
+import { Queue } from '@/infra/queue'
+import { OrderPlaced } from '@/domain/event'
 
 export class PlaceOrderUseCase implements PlaceOrder {
   private readonly getItemByIdRepository: GetItemByIdRepository
@@ -12,6 +14,7 @@ export class PlaceOrderUseCase implements PlaceOrder {
   private readonly countOrdersRepository: CountOrdersRepository
   private readonly calculateFreightGateway: CalculateFreightGateway
   private readonly decreaseStockGateway: DecreaseStockGateway
+  private readonly queue: Queue
 
   constructor (
     getItemByIdRepository: GetItemByIdRepository,
@@ -19,7 +22,8 @@ export class PlaceOrderUseCase implements PlaceOrder {
     saveOrderRepository: SaveOrderRepository,
     countOrdersRepository: CountOrdersRepository,
     calculateFreightGateway: CalculateFreightGateway,
-    decreaseStockGateway: DecreaseStockGateway
+    decreaseStockGateway: DecreaseStockGateway,
+    queue: Queue
   ) {
     this.getItemByIdRepository = getItemByIdRepository
     this.getCouponByCodeRepository = getCouponByCodeRepository
@@ -27,6 +31,7 @@ export class PlaceOrderUseCase implements PlaceOrder {
     this.countOrdersRepository = countOrdersRepository
     this.calculateFreightGateway = calculateFreightGateway
     this.decreaseStockGateway = decreaseStockGateway
+    this.queue = queue
   }
 
   public async execute (input: PlaceOrderInputDTO): Promise<PlaceOrderOutputDTO> {
@@ -53,6 +58,13 @@ export class PlaceOrderUseCase implements PlaceOrder {
         itemId: orderItem.itemId,
         quantity: orderItem.quantity
       })
+      await this.queue.publish(new OrderPlaced({
+        code: order.getCode(),
+        items: {
+          id: orderItem.itemId,
+          quantity: orderItem.quantity
+        }
+      }))
     }
     const { freight } = await this.calculateFreightGateway.calculate({
       from,
