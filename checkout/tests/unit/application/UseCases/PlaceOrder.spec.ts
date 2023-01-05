@@ -5,6 +5,7 @@ import { GetItemByIdRepository } from '@/domain/repositories/Item'
 import { CalculateFreightGateway, CalculateFreightOutput, DecreaseStockGateway, DecreaseStockOutput, PlaceOrder } from '@/application/contracts'
 import { PlaceOrderInputDTO } from '@/application/DTOs'
 import { PlaceOrderUseCase } from '@/application/UseCases'
+import { Queue } from '@/infra/queue'
 
 const makeCoupon = (props?: Partial<CouponProps>): Coupon => new Coupon({
   code: 'any_code',
@@ -62,6 +63,13 @@ const makeDecreaseStockGateway = (): DecreaseStockGateway => ({
   })
 })
 
+const makeQueue = (): Queue => ({
+  connect: async (): Promise<void> => {},
+  close: async (): Promise<void> => {},
+  consume: async (): Promise<void> => {},
+  publish: async (): Promise<void> => {}
+})
+
 type SutType = {
   sut: PlaceOrder
   getItemByIdRepository: GetItemByIdRepository
@@ -70,6 +78,7 @@ type SutType = {
   countOrdersRepository: CountOrdersRepository
   calculateFreightGateway: CalculateFreightGateway
   decreaseStockGateway: DecreaseStockGateway
+  queue: Queue
 }
 
 const makeSut = (): SutType => {
@@ -79,13 +88,15 @@ const makeSut = (): SutType => {
   const countOrdersRepository = makeCountOrdersRepository()
   const calculateFreightGateway = makeCalculateFreightGateway()
   const decreaseStockGateway = makeDecreaseStockGateway()
+  const queue = makeQueue()
   const sut = new PlaceOrderUseCase(
     getItemByIdRepository,
     getCouponByCodeRepository,
     saveOrderRepository,
     countOrdersRepository,
     calculateFreightGateway,
-    decreaseStockGateway
+    decreaseStockGateway,
+    queue
   )
   return {
     sut,
@@ -94,11 +105,12 @@ const makeSut = (): SutType => {
     saveOrderRepository,
     countOrdersRepository,
     calculateFreightGateway,
-    decreaseStockGateway
+    decreaseStockGateway,
+    queue
   }
 }
 
-describe.only('PlaceOrder use case', () => {
+describe('PlaceOrder use case', () => {
   it('should return total value from placed order', async () => {
     const input: PlaceOrderInputDTO = {
       buyerCPF: '607.109.010-54',
