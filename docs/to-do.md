@@ -23,15 +23,21 @@
    - [ ] `GetItemById`; (Or change to `GetItemByIds`)
 
    **The dream feature**:
-   Implement a queue in `Catalog` service that will send a message like `ItemCreated` and this service will receive it and save the new item in the database.
+   Implement a queue in `Catalog` service that will send a **event** like `ItemCreated` and `Checkout` service will receive it and save the new item in the database.
 
-4. Update `ItemRepository` to handle the new columns:
+4. Add `queue` in `Checkout` service:
+
+   - [ ] When some request is made to `Checkout` endpoint, the `HttpController` will receive and validate the request, then it will send a **command** (external request) to queue;
+   - [ ] Still in `Checkout` service, some application service will service the **command**, execute the business rules and send a **event** to queue;
+   - [ ] Build receivers and consumers to handle the **events** and **commands**;
+
+5. Update `ItemRepository` to handle the new columns:
 
    - [ ] `GetItemById`;
    - [ ] `GetItemsByOrderCode`;
    - [ ] `GetItemsByOrderCPF`;
 
-5. Create resolvers to handle the following queries:
+6. Create resolvers to handle the following queries:
 
    - [ ] `PlaceOrder`;
    - [ ] `SearchOrderByCode`;
